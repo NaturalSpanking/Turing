@@ -1,0 +1,477 @@
+object MainForm: TMainForm
+  Left = 0
+  Top = 0
+  Caption = 'MainForm'
+  ClientHeight = 468
+  ClientWidth = 769
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  Menu = MainMenu1
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TSplitter
+    Left = 525
+    Top = 129
+    Height = 320
+    Align = alRight
+    ExplicitLeft = 565
+    ExplicitTop = 135
+  end
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 769
+    Height = 33
+    Align = alTop
+    TabOrder = 0
+    ExplicitWidth = 798
+    object StartBtn: TBitBtn
+      Left = 6
+      Top = 2
+      Width = 27
+      Height = 27
+      Glyph.Data = {
+        12090000424D120900000000000036000000280000001B0000001B0000000100
+        180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+        0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF80808000FF00FFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFF80808000FF0000FF0000FF00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+        0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF80808000FF0000FF00
+        00FF0000FF0000FF00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF80808000FF0000FF0000FF0000FF0000FF0000FF00
+        00FF00FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF80
+        808000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF0000FF00FFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF80808000FF0000FF0000FF0000
+        FF0000FF0000FF0000FF0000FF0000FF00808080808080FFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFF80808000FF0000FF0000FF0000FF0000FF0000FF0000FF0080
+        8080808080FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF80808000FF
+        0000FF0000FF0000FF0000FF00808080808080FFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF80808000FF0000FF0000FF008080808080
+        80FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFF80808000FF00808080808080FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+        0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF808080808080FFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFF000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00
+        0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+    end
+    object BitBtn2: TBitBtn
+      Left = 39
+      Top = 2
+      Width = 27
+      Height = 27
+      Enabled = False
+      TabOrder = 1
+    end
+  end
+  object BitBtn3: TBitBtn
+    Left = 72
+    Top = 2
+    Width = 27
+    Height = 27
+    Enabled = False
+    TabOrder = 1
+  end
+  object BitBtn4: TBitBtn
+    Left = 105
+    Top = 2
+    Width = 27
+    Height = 27
+    TabOrder = 2
+  end
+  object BitBtn5: TBitBtn
+    Left = 701
+    Top = 2
+    Width = 27
+    Height = 27
+    TabOrder = 3
+  end
+  object BitBtn6: TBitBtn
+    Left = 734
+    Top = 2
+    Width = 27
+    Height = 27
+    TabOrder = 4
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 449
+    Width = 769
+    Height = 19
+    Panels = <>
+    ExplicitLeft = 704
+    ExplicitTop = 456
+    ExplicitWidth = 0
+  end
+  object Panel2: TPanel
+    Left = 0
+    Top = 33
+    Width = 769
+    Height = 55
+    Align = alTop
+    TabOrder = 6
+    object StringGrid1: TStringGrid
+      Left = 26
+      Top = 1
+      Width = 717
+      Height = 53
+      Align = alClient
+      ColCount = 100
+      Ctl3D = True
+      DefaultColWidth = 25
+      FixedCols = 0
+      RowCount = 2
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -17
+      Font.Name = 'Tahoma'
+      Font.Style = []
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing]
+      ParentCtl3D = False
+      ParentFont = False
+      ScrollBars = ssNone
+      TabOrder = 0
+      ExplicitLeft = 20
+      ExplicitTop = 2
+      ColWidths = (
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25
+        25)
+    end
+    object BitBtn7: TBitBtn
+      Left = 1
+      Top = 1
+      Width = 25
+      Height = 53
+      Align = alLeft
+      Caption = '<'
+      TabOrder = 1
+      ExplicitLeft = 8
+      ExplicitTop = 2
+    end
+    object BitBtn8: TBitBtn
+      Left = 743
+      Top = 1
+      Width = 25
+      Height = 53
+      Align = alRight
+      Caption = '>'
+      TabOrder = 2
+      ExplicitLeft = 696
+      ExplicitTop = -8
+    end
+  end
+  object Panel3: TPanel
+    Left = 0
+    Top = 88
+    Width = 769
+    Height = 41
+    Align = alTop
+    TabOrder = 7
+    object BitBtn9: TBitBtn
+      Left = 6
+      Top = 6
+      Width = 27
+      Height = 27
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+    end
+    object BitBtn10: TBitBtn
+      Left = 39
+      Top = 5
+      Width = 27
+      Height = 27
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+    end
+    object BitBtn11: TBitBtn
+      Left = 185
+      Top = 5
+      Width = 27
+      Height = 27
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+    end
+    object BitBtn12: TBitBtn
+      Left = 218
+      Top = 5
+      Width = 27
+      Height = 27
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+    end
+    object BitBtn13: TBitBtn
+      Left = 251
+      Top = 5
+      Width = 27
+      Height = 27
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 4
+    end
+    object BitBtn14: TBitBtn
+      Left = 72
+      Top = 5
+      Width = 27
+      Height = 27
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 5
+    end
+  end
+  object StringGrid2: TStringGrid
+    Left = 0
+    Top = 129
+    Width = 525
+    Height = 320
+    Align = alClient
+    TabOrder = 8
+    ExplicitWidth = 529
+  end
+  object Panel4: TPanel
+    Left = 528
+    Top = 129
+    Width = 241
+    Height = 320
+    Align = alRight
+    TabOrder = 9
+    object Splitter2: TSplitter
+      Left = 1
+      Top = 165
+      Width = 239
+      Height = 3
+      Cursor = crVSplit
+      Align = alBottom
+      ExplicitTop = 1
+      ExplicitWidth = 167
+    end
+    object Memo1: TMemo
+      Left = 1
+      Top = 168
+      Width = 239
+      Height = 151
+      Align = alBottom
+      Lines.Strings = (
+        #1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1081)
+      TabOrder = 0
+      ExplicitWidth = 299
+    end
+    object Memo2: TMemo
+      Left = 1
+      Top = 1
+      Width = 239
+      Height = 164
+      Align = alClient
+      Lines.Strings = (
+        #1055#1086#1089#1090#1072#1085#1086#1074#1082#1072' '#1079#1072#1076#1072#1095#1080)
+      TabOrder = 1
+      ExplicitLeft = 32
+      ExplicitTop = 40
+      ExplicitWidth = 185
+      ExplicitHeight = 89
+    end
+  end
+  object MainMenu1: TMainMenu
+    Left = 248
+    object N1: TMenuItem
+      AutoHotkeys = maAutomatic
+      Caption = #1060#1072#1081#1083
+      object N2: TMenuItem
+        Caption = #1053#1086#1074#1099#1081
+        ShortCut = 16462
+      end
+      object N3: TMenuItem
+        Caption = #1054#1090#1082#1088#1099#1090#1100'...'
+        ShortCut = 16463
+      end
+      object N4: TMenuItem
+        Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
+        ShortCut = 16467
+      end
+      object N5: TMenuItem
+        Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082'...'
+      end
+      object N6: TMenuItem
+        Caption = #1042#1099#1093#1086#1076
+        ShortCut = 32883
+      end
+    end
+    object N7: TMenuItem
+      AutoHotkeys = maAutomatic
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      OnClick = N7Click
+    end
+    object N8: TMenuItem
+      AutoHotkeys = maAutomatic
+      Caption = #1057#1087#1088#1072#1074#1082#1072
+      object N9: TMenuItem
+        Caption = #1042#1099#1079#1086#1074' '#1089#1087#1088#1072#1074#1082#1080
+        ShortCut = 112
+      end
+      object N10: TMenuItem
+        Caption = #1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
+        ShortCut = 16496
+        OnClick = N10Click
+      end
+    end
+  end
+end

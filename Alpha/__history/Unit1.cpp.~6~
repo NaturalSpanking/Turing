@@ -1,0 +1,41 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit1.h"
+#include "Unit2.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TMainForm *MainForm;
+//---------------------------------------------------------------------------
+__fastcall TMainForm::TMainForm(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::N10Click(TObject *Sender)
+{
+AboutForm->ShowModal();
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::N7Click(TObject *Sender)
+{
+ShowMessage("Настройки");
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::N9Click(TObject *Sender)
+{
+ShowMessage("Вызов справки");
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::FormResize(TObject *Sender)
+{
+LoadTapeBtn->Left=MainForm->Width-51;
+SaveTapeBtn->Left=MainForm->Width-84;
+TapeGrid->ColCount=(MainForm->Width-50)/25-2;
+}
+//---------------------------------------------------------------------------
+

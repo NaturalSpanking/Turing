@@ -1,0 +1,35 @@
+int GetTapeLength();
+int SetTapeLength(int Length);
+
+int GetTape(int offset, int Length, char* Data);
+
+int GetTapePosition();
+int SetTapePosition(int pos);
+
+int SaveTape();
+int LoadTape();
+
+int GetAlphabet(char* Data);
+int GetAlphabetLength();
+bool InAlphabet(char C);
+int AddChar(char C);
+int DelChar(char C);
+
+int AddColumn();
+int AddColumn(int Number);
+int DelColumn(int Number);
+int ColCount();
+
+int GetCell(int Col, char Row, char* str);
+int SetCell(int Col, char Row, char* str);
+int GetCurrentColumnId();
+int GetCurrentRowId();
+
+int Step();
+int Reset();
+
+int SaveToFile(char* FName);
+int LoadFromFile(char* FName);
+int ResetAll;
+bool Is Changed();
+int GetLastError();
