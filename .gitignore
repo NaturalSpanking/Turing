@@ -1,6 +1,6 @@
-Win32/
-Turing.cache
-Turing.cbproj.local
+Alpha/Win32/
+Alpha/Turing.cache
+Alpha/Turing.cbproj.local
 
 # Windows image file caches
 Thumbs.db
