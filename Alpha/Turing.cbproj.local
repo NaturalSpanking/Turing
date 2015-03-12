@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
-    <Transaction>1899.12.30 00:00:00.000.842,=D:\Документы\Embarcadero\Builder\Turing\Alpha\ModelSupport_Turing\default.txaPackage</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.983,=D:\Документы\Embarcadero\Builder\Turing\Alpha\ModelSupport_Turing\default.txvpck</Transaction>
     <Transaction>1899.12.30 00:00:00.000.618,=D:\Документы\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.889,D:\Документы\Embarcadero\Studio\Projects\Project1.cbproj=D:\Документы\Embarcadero\Builder\Turing\Alpha\Turing.cbproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.279,D:\Документы\Embarcadero\Studio\Projects\Unit1.cpp=D:\Документы\Embarcadero\Builder\Turing\Alpha\Unit1.cpp</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.207,D:\Документы\Embarcadero\Studio\Projects\Project1PCH1.h=D:\Документы\Embarcadero\Builder\Turing\Alpha\Project1PCH1.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.603,=D:\Документы\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.889,D:\Документы\Embarcadero\Builder\Turing\Alpha\Turing.cbproj=D:\Документы\Embarcadero\Studio\Projects\Project1.cbproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.279,D:\Документы\Embarcadero\Builder\Turing\Alpha\Unit1.dfm=D:\Документы\Embarcadero\Studio\Projects\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.842,=D:\Документы\Embarcadero\Builder\Turing\Alpha\ModelSupport_Turing\default.txaPackage</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.279,D:\Документы\Embarcadero\Studio\Projects\Unit1.h=D:\Документы\Embarcadero\Builder\Turing\Alpha\Unit1.h</Transaction>
     <Transaction>1899.12.30 00:00:00.000.002,=D:\Документы\Embarcadero\Builder\Turing\Alpha\Unit2.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.207,D:\Документы\Embarcadero\Builder\Turing\Alpha\Project1PCH1.h=D:\Документы\Embarcadero\Studio\Projects\Project1PCH1.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.279,D:\Документы\Embarcadero\Builder\Turing\Alpha\Unit1.cpp=D:\Документы\Embarcadero\Studio\Projects\Unit1.cpp</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.279,D:\Документы\Embarcadero\Builder\Turing\Alpha\Unit1.h=D:\Документы\Embarcadero\Studio\Projects\Unit1.h</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.875,D:\Документы\Embarcadero\Builder\Turing\Alpha\TuringPCH1.h=D:\Документы\Embarcadero\Builder\Turing\Alpha\Project1PCH1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.875,D:\Документы\Embarcadero\Builder\Turing\Alpha\Project1PCH1.h=D:\Документы\Embarcadero\Builder\Turing\Alpha\TuringPCH1.h</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.279,D:\Документы\Embarcadero\Studio\Projects\Unit1.dfm=D:\Документы\Embarcadero\Builder\Turing\Alpha\Unit1.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.983,=D:\Документы\Embarcadero\Builder\Turing\Alpha\ModelSupport_Turing\default.txvpck</Transaction>
   </Transactions>
 </BorlandProject>
