@@ -141,14 +141,14 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 			(TableGrid->Cells[ACol][ARow].Length() - 4);
 	}
 
-	GridCell->Height = 28;
+	GridCell->Height = 26;
 	GridCell->Width = TableGrid->ColWidths[ACol];
 	GridCell->Canvas->Font->Size = 10;
 	GridCell->Canvas->TextOutW(5, 2, TableGrid->Cells[ACol][ARow][1]);
 	GridCell->Canvas->TextOutW(40, 2,
 		"Q" + TableGrid->Cells[ACol][ARow].SubString(3,
 		TableGrid->Cells[ACol][ARow].Length()));
-	BitBlt(GridCell->Canvas->Handle, 20, 4, 22, 28, GreenArrow->Canvas->Handle, //20   26
+	BitBlt(GridCell->Canvas->Handle, 20, 4, 22, 20, GreenArrow->Canvas->Handle, //20   26
 		0, 0, SRCCOPY);
 	BitBlt(TableGrid->Canvas->Handle, r.left, r.top, TableGrid->ColWidths[ACol],
 		22, GridCell->Canvas->Handle, 0, 0, SRCCOPY);

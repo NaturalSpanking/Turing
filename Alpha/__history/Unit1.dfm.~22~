@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 0
-  Top = 0
+  Left = 589
+  Top = 356
   Caption = 'MainForm'
   ClientHeight = 468
   ClientWidth = 767
@@ -12,6 +12,7 @@ object MainForm: TMainForm
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  Position = poScreenCenter
   OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
@@ -1246,7 +1247,21 @@ object MainForm: TMainForm
     Width = 523
     Height = 320
     Align = alClient
+    DefaultColWidth = 65
+    DoubleBuffered = True
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
+    ParentDoubleBuffered = False
+    ParentFont = False
     TabOrder = 4
+    OnDrawCell = TableGridDrawCell
+    OnKeyPress = TableGridKeyPress
+    ExplicitLeft = -2
+    ExplicitTop = 126
   end
   object TextPanel: TPanel
     Left = 526

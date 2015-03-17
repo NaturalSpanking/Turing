@@ -13,8 +13,6 @@ object MainForm: TMainForm
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
   OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
@@ -1269,7 +1267,7 @@ object MainForm: TMainForm
     Font.Height = -13
     Font.Name = 'Tahoma'
     Font.Style = []
-    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
+    Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing, goAlwaysShowEditor]
     ParentCtl3D = False
     ParentDoubleBuffered = False
     ParentFont = False

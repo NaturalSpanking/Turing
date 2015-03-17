@@ -96,13 +96,15 @@ void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 	System::WideChar &Key)
 
 {
-	ShowMessage(IntToStr(Key));
+	//ShowMessage(IntToStr(Key));
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::AddRowBtnClick(TObject *Sender) {
 	ShowMessage("Функция еще не реализована!");
-	AddRowBtn->Glyph->LoadFromResourceName((int)HInstance,"LeftGreenArrow");
+	TGridCracker* C;
+	ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
+	// AddRowBtn->Glyph->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
 }
 // ---------------------------------------------------------------------------
 
@@ -118,53 +120,61 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 	}
 	TableGrid->Cells[ACol][0] = "Q" + IntToStr(ACol);
 
-	if (TableGrid->Cells[ACol][ARow].Length()<3) {
+	if (TableGrid->Cells[ACol][ARow].Length() < 3) {
 		return;
 	}
 	TRect r;
-	// ShowMessage("qw");
 	r = TableGrid->CellRect(ACol, ARow);
-
-	/*TableGrid->Canvas->Pen->Color = clRed;
-	TableGrid->Canvas->MoveTo(r.left, r.top);
-	TableGrid->Canvas->LineTo(r.left + 5, r.top + 10);*/
 	TBitmap* sprite = new Graphics::TBitmap();
 	switch (TableGrid->Cells[ACol][ARow][2]) {
-	case '<':sprite->LoadFromResourceName((int)HInstance,"LeftGreenArrow"); break;
-	case '>':sprite->LoadFromResourceName((int)HInstance,"RightGreenArrow"); break;
-	case '.':sprite->LoadFromResourceName((int)HInstance,"Stopp"); break;
+	case '<':
+		sprite->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
+		break;
+	case '>':
+		sprite->LoadFromResourceName((int)HInstance, "RightGreenArrow");
+		break;
+	case '.':
+		sprite->LoadFromResourceName((int)HInstance, "Stopp");
+		break;
 	}
-	if (TableGrid->Cells[ACol][ARow].Length()*16.25>TableGrid->ColWidths[ACol]) {
-		TableGrid->ColWidths[ACol]+=(TableGrid->Cells[ACol][ARow].Length()-4);
+	if (TableGrid->Cells[ACol][ARow].Length() * 16.25 >
+		TableGrid->ColWidths[ACol]) {
+		TableGrid->ColWidths[ACol] +=
+			(TableGrid->Cells[ACol][ARow].Length() - 4);
 	}
 	TBitmap* spr = new Graphics::TBitmap();
-	spr->Height=19;
-	spr->Width=TableGrid->ColWidths[ACol];
-	spr->Canvas->Font->Size=10;
-	spr->Canvas->TextOutW(5,2,TableGrid->Cells[ACol][ARow][1]);
-	spr->Canvas->TextOutW(40,2,"Q"+TableGrid->Cells[ACol][ARow].SubString(3,TableGrid->Cells[ACol][ARow].Length()));
-	BitBlt(spr->Canvas->Handle,20,4,22,22,sprite->Canvas->Handle,0,0,SRCCOPY);
-	//ShowMessage(TableGrid->Cells[ACol][ARow][1]);
-	//sprite->LoadFromResourceName((int)HInstance,"RightGreenArrow");
-	//TextOut(TableGrid->Canvas->Handle,r.left+5,r.top+4,(LPCTSTR)TableGrid->Cells[ACol][ARow][2],2);
-	BitBlt(TableGrid->Canvas->Handle,r.left,r.top,TableGrid->ColWidths[ACol],22,spr->Canvas->Handle,0,0,SRCCOPY);
-	///TableGrid->Canvas->Font->Size=10;
-
-
-	//TableGrid->Canvas->TextOutW(r.left+5,r.top+4,TableGrid->Cells[ACol][ARow][1]);
+	spr->Height = 19;
+	spr->Width = TableGrid->ColWidths[ACol];
+	spr->Canvas->Font->Size = 10;
+	spr->Canvas->TextOutW(5, 2, TableGrid->Cells[ACol][ARow][1]);
+	spr->Canvas->TextOutW(40, 2, "Q" + TableGrid->Cells[ACol][ARow].SubString(3,
+		TableGrid->Cells[ACol][ARow].Length()));
+	BitBlt(spr->Canvas->Handle, 20, 4, 22, 22, sprite->Canvas->Handle, 0, 0,
+		SRCCOPY);
+	BitBlt(TableGrid->Canvas->Handle, r.left, r.top, TableGrid->ColWidths[ACol],
+		22, spr->Canvas->Handle, 0, 0, SRCCOPY);
 }
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::TableGridKeyPress(TObject *Sender,
 	System::WideChar &Key) {
-	// ShowMessage(Key);
-	if (((TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length()) == 1) &&
-		((Key != '>') && (Key != '<') && (Key != '.') && (Key != 8)&& (Key != 13))) {
-		Key=0;
+	TGridCracker* C;
+	// ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
+	if ((C->GetCaretPosition(TableGrid) == 1) && ((Key != '>') && (Key != '<')
+		&& (Key != '.') && (Key != 8) && (Key != 13))) {
+		Key = 0;
 	}
-	if (((TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length()) >= 2) &&
-		(((Key < '0') || (Key > '9')) && (Key != 8)&& (Key != 13))) {
-		Key=0;
+	if ((C->GetCaretPosition(TableGrid) >= 2) && (((Key < '0') || (Key > '9'))
+		&& (Key != 8) && (Key != 13))) {
+		Key = 0;
 	}
 }
 // ---------------------------------------------------------------------------
+
+int __fastcall TGridCracker::GetCaretPosition(TStringGrid *Grid) {
+	TGridCracker* s = reinterpret_cast<TGridCracker*>(Grid);
+	if (s->InplaceEditor == NULL) {
+		return -1;
+	}
+	return s->InplaceEditor->SelStart;
+}
