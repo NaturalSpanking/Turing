@@ -102,7 +102,7 @@ void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 
 void __fastcall TMainForm::AddRowBtnClick(TObject *Sender) {
 	ShowMessage("Функция еще не реализована!");
-	//AddRowBtn->Glyph->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
+	AddRowBtn->Glyph->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
 }
 // ---------------------------------------------------------------------------
 

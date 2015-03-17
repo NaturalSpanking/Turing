@@ -1,6 +1,6 @@
 object MainForm: TMainForm
-  Left = 589
-  Top = 356
+  Left = 0
+  Top = 0
   Caption = 'MainForm'
   ClientHeight = 468
   ClientWidth = 767
@@ -1247,20 +1247,12 @@ object MainForm: TMainForm
     Width = 523
     Height = 320
     Align = alClient
-    DefaultColWidth = 65
     DoubleBuffered = True
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
     ParentDoubleBuffered = False
-    ParentFont = False
     TabOrder = 4
     OnDrawCell = TableGridDrawCell
-    OnKeyPress = TableGridKeyPress
-    ExplicitLeft = -2
+    ExplicitLeft = 8
     ExplicitTop = 126
   end
   object TextPanel: TPanel
