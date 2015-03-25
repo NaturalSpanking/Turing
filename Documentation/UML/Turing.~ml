@@ -794,6 +794,7 @@
 </XPD:OBJ>
 <XPD:OBJ name="Attributes[2]" type="UMLAttribute" guid="imsz4Y0ohEKqF8X4WIT/dgAA">
 <XPD:ATTR name="Name" type="string">Tape SavedTape</XPD:ATTR>
+<XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
 <XPD:REF name="Owner">F/6pApolLUCk/pyqgTPKcAAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="Attributes[3]" type="UMLAttribute" guid="n+HRZnPx60mvhYDGWzTEHAAA">
