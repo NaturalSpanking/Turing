@@ -1,0 +1,15 @@
+//---------------------------------------------------------------------------
+
+#pragma hdrstop
+
+#include "TableMemento.h"
+void TableMemento::SaveToFile(std::vector<std::vector<rule> > table, char* pathToFile)
+{
+
+}
+
+std::vector<std::vector<rule> > TableMemento::LoadFromFile(char* pathToFile)
+{
+
+}
+#pragma package(smart_init)

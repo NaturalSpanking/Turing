@@ -1,0 +1,20 @@
+//---------------------------------------------------------------------------
+#include "TapeMemento.h"
+
+#ifndef TapeH
+#define TapeH
+class Tape
+{
+	friend class Machine;
+public:
+	Tape(int length);
+	Tape(Tape &X);
+	int GetLenght();
+	TapeMemento* CreateMemento();
+	int SetMemento(TapeMemento* m);
+private:
+	std::vector<char> tape;
+	int position;
+	int length;
+};
+#endif
