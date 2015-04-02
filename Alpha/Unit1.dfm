@@ -1276,8 +1276,6 @@ object MainForm: TMainForm
     TabOrder = 0
     OnDrawCell = TableGridDrawCell
     OnKeyPress = TableGridKeyPress
-    ExplicitLeft = -2
-    ExplicitTop = 126
   end
   object TextPanel: TPanel
     Left = 526

@@ -148,7 +148,8 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 	GridCell->Canvas->TextOutW(40, 2,
 		"Q" + TableGrid->Cells[ACol][ARow].SubString(3,
 		TableGrid->Cells[ACol][ARow].Length()));
-	BitBlt(GridCell->Canvas->Handle, 20, 4, 22, 28, GreenArrow->Canvas->Handle, //20   26
+	BitBlt(GridCell->Canvas->Handle, 20, 4, 22, 28, GreenArrow->Canvas->Handle,
+		// 20   26
 		0, 0, SRCCOPY);
 	BitBlt(TableGrid->Canvas->Handle, r.left, r.top, TableGrid->ColWidths[ACol],
 		22, GridCell->Canvas->Handle, 0, 0, SRCCOPY);
@@ -159,8 +160,20 @@ void __fastcall TMainForm::TableGridKeyPress(TObject *Sender,
 	System::WideChar &Key) {
 	TGridCracker* C;
 	// ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
+
+
+
+	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 2) {
+		if ((C->GetCaretPosition(TableGrid) == 0) &&
+			(TableGrid->Cells[TableGrid->Col][TableGrid->Row][1] != '.')) {
+		Key = 0;
+		}
+	}
+
 	if ((C->GetCaretPosition(TableGrid) == 1) && ((Key != '>') && (Key != '<')
-		&& (Key != '.') && (Key != 8) && (Key != 13))) {
+		&& (Key != '.') && (Key != 8) && (Key != 13))&&
+		((TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('>')!=0)||(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('<')!=0)||(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('.')!=0))
+		) {
 		Key = 0;
 	}
 	if ((C->GetCaretPosition(TableGrid) >= 2) && (((Key < '0') || (Key > '9'))
