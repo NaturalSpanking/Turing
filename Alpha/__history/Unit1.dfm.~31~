@@ -13,6 +13,8 @@ object MainForm: TMainForm
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
+  OnCreate = FormCreate
+  OnDestroy = FormDestroy
   OnResize = FormResize
   PixelsPerInch = 96
   TextHeight = 13
@@ -21,8 +23,7 @@ object MainForm: TMainForm
     Top = 129
     Height = 320
     Align = alRight
-    ExplicitLeft = 565
-    ExplicitTop = 135
+    ExplicitLeft = 520
   end
   object ControlPanel: TPanel
     Left = 0
@@ -30,7 +31,7 @@ object MainForm: TMainForm
     Width = 767
     Height = 33
     Align = alTop
-    TabOrder = 0
+    TabOrder = 1
     object StartBtn: TBitBtn
       Left = 6
       Top = 2
@@ -182,6 +183,7 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      TabStop = False
       OnClick = AddRowBtnClick
     end
     object PauseBtn: TBitBtn
@@ -334,6 +336,7 @@ object MainForm: TMainForm
         FFFFFFFF0000}
       NumGlyphs = 2
       TabOrder = 1
+      TabStop = False
     end
     object LoadTapeBtn: TBitBtn
       Left = 734
@@ -415,6 +418,7 @@ object MainForm: TMainForm
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
       TabOrder = 2
+      TabStop = False
       OnClick = AddRowBtnClick
     end
     object SaveTapeBtn: TBitBtn
@@ -497,6 +501,7 @@ object MainForm: TMainForm
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
       TabOrder = 3
+      TabStop = False
       OnClick = AddRowBtnClick
     end
     object StopBtn: TBitBtn
@@ -649,6 +654,7 @@ object MainForm: TMainForm
         FFFFFFFF0000}
       NumGlyphs = 2
       TabOrder = 4
+      TabStop = False
     end
     object StepBtn: TBitBtn
       Left = 105
@@ -730,6 +736,7 @@ object MainForm: TMainForm
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
       TabOrder = 5
+      TabStop = False
       OnClick = AddRowBtnClick
     end
   end
@@ -746,7 +753,7 @@ object MainForm: TMainForm
     Width = 767
     Height = 55
     Align = alTop
-    TabOrder = 2
+    TabOrder = 3
     object TapeGrid: TStringGrid
       Left = 26
       Top = 1
@@ -884,6 +891,7 @@ object MainForm: TMainForm
       Align = alLeft
       Caption = '<'
       TabOrder = 1
+      TabStop = False
       OnClick = TapeLeftBtnClick
     end
     object TapeRigthBtn: TBitBtn
@@ -894,6 +902,7 @@ object MainForm: TMainForm
       Align = alRight
       Caption = '>'
       TabOrder = 2
+      TabStop = False
       OnClick = TapeRigthBtnClick
     end
   end
@@ -903,7 +912,7 @@ object MainForm: TMainForm
     Width = 767
     Height = 41
     Align = alTop
-    TabOrder = 3
+    TabOrder = 4
     object AddRowBtn: TBitBtn
       Left = 6
       Top = 5
@@ -986,6 +995,7 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
       TabOrder = 0
+      TabStop = False
       OnClick = AddRowBtnClick
     end
     object DelRowBtn: TBitBtn
@@ -1070,6 +1080,7 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
       TabOrder = 1
+      TabStop = False
       OnClick = AddRowBtnClick
     end
     object AddColBtn: TBitBtn
@@ -1154,6 +1165,7 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
       TabOrder = 2
+      TabStop = False
       OnClick = AddRowBtnClick
     end
     object DelColBtn: TBitBtn
@@ -1238,6 +1250,7 @@ object MainForm: TMainForm
       ParentShowHint = False
       ShowHint = True
       TabOrder = 3
+      TabStop = False
       OnClick = AddRowBtnClick
     end
   end
@@ -1247,6 +1260,7 @@ object MainForm: TMainForm
     Width = 523
     Height = 320
     Align = alClient
+    Ctl3D = True
     DefaultColWidth = 65
     DoubleBuffered = True
     Font.Charset = DEFAULT_CHARSET
@@ -1255,9 +1269,10 @@ object MainForm: TMainForm
     Font.Name = 'Tahoma'
     Font.Style = []
     Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRangeSelect, goEditing]
+    ParentCtl3D = False
     ParentDoubleBuffered = False
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 0
     OnDrawCell = TableGridDrawCell
     OnKeyPress = TableGridKeyPress
   end
@@ -1270,7 +1285,7 @@ object MainForm: TMainForm
     TabOrder = 5
     object MemoSplitter: TSplitter
       Left = 1
-      Top = 165
+      Top = 157
       Width = 239
       Height = 3
       Cursor = crVSplit
@@ -1280,9 +1295,10 @@ object MainForm: TMainForm
     end
     object CommentMemo: TMemo
       Left = 1
-      Top = 168
+      Top = 160
       Width = 239
-      Height = 151
+      Height = 159
+      TabStop = False
       Align = alBottom
       Lines.Strings = (
         #1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1081)
@@ -1293,12 +1309,14 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 239
-      Height = 164
+      Height = 156
+      TabStop = False
       Align = alClient
       Lines.Strings = (
         #1055#1086#1089#1090#1072#1085#1086#1074#1082#1072' '#1079#1072#1076#1072#1095#1080)
       ScrollBars = ssVertical
       TabOrder = 1
+      ExplicitHeight = 167
     end
   end
   object MainMenu1: TMainMenu

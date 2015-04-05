@@ -1,8 +1,8 @@
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
 #ifndef Unit1H
 #define Unit1H
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 #include <System.Classes.hpp>
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
@@ -12,10 +12,11 @@
 #include <Vcl.ExtCtrls.hpp>
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Grids.hpp>
-//---------------------------------------------------------------------------
-class TMainForm : public TForm
-{
-__published:	// IDE-managed Components
+
+// ---------------------------------------------------------------------------
+class TMainForm : public TForm {
+__published: // IDE-managed Components
+
 	TMainMenu *MainMenu1;
 	TMenuItem *N1;
 	TMenuItem *N2;
@@ -55,28 +56,47 @@ __published:	// IDE-managed Components
 	TMenuItem *N13;
 	TMenuItem *N14;
 	TMenuItem *N15;
+
 	void __fastcall N10Click(TObject *Sender);
 	void __fastcall N7Click(TObject *Sender);
 	void __fastcall N9Click(TObject *Sender);
 	void __fastcall FormResize(TObject *Sender);
-	void __fastcall TapeGridDrawCell(TObject *Sender, int ACol, int ARow, TRect &Rect,
-		  TGridDrawState State);
+	void __fastcall TapeGridDrawCell(TObject *Sender, int ACol, int ARow,
+		TRect &Rect, TGridDrawState State);
 	void __fastcall TapeRigthBtnClick(TObject *Sender);
 	void __fastcall TapeLeftBtnClick(TObject *Sender);
-	void __fastcall TapeGridMouseWheelDown(TObject *Sender, TShiftState Shift, TPoint &MousePos,
-		  bool &Handled);
-	void __fastcall TapeGridMouseWheelUp(TObject *Sender, TShiftState Shift, TPoint &MousePos,
-		  bool &Handled);
+	void __fastcall TapeGridMouseWheelDown(TObject *Sender, TShiftState Shift,
+		TPoint &MousePos, bool &Handled);
+	void __fastcall TapeGridMouseWheelUp(TObject *Sender, TShiftState Shift,
+		TPoint &MousePos, bool &Handled);
 	void __fastcall N12Click(TObject *Sender);
 	void __fastcall TapeGridKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall AddRowBtnClick(TObject *Sender);
 	void __fastcall N6Click(TObject *Sender);
-private:	// User declarations
-int TapeOffset;
-public:		// User declarations
+	void __fastcall TableGridDrawCell(TObject *Sender, int ACol, int ARow,
+		TRect &Rect, TGridDrawState State);
+	void __fastcall TableGridKeyPress(TObject *Sender, System::WideChar &Key);
+	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
+
+private: // User declarations
+
+	int TapeOffset;
+	TBitmap* GreenArrow;
+	TBitmap* GridCell;
+
+public: // User declarations
+
 	__fastcall TMainForm(TComponent* Owner);
 };
-//---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+class TGridCracker : public TStringGrid {
+public:
+	int __fastcall GetCaretPosition(TStringGrid *Grid);
+};
+
+// ---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 #endif

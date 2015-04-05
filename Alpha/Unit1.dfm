@@ -1272,6 +1272,7 @@ object MainForm: TMainForm
     ParentCtl3D = False
     ParentDoubleBuffered = False
     ParentFont = False
+    PopupMenu = GridMenu
     TabOrder = 0
     OnDrawCell = TableGridDrawCell
     OnKeyPress = TableGridKeyPress
@@ -1316,7 +1317,6 @@ object MainForm: TMainForm
         #1055#1086#1089#1090#1072#1085#1086#1074#1082#1072' '#1079#1072#1076#1072#1095#1080)
       ScrollBars = ssVertical
       TabOrder = 1
-      ExplicitHeight = 167
     end
   end
   object MainMenu1: TMainMenu
@@ -1332,16 +1332,16 @@ object MainForm: TMainForm
       object N3: TMenuItem
         Caption = #1054#1090#1082#1088#1099#1090#1100'...'
         ShortCut = 16463
-        OnClick = AddRowBtnClick
+        OnClick = N3Click
       end
       object N4: TMenuItem
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100
         ShortCut = 16467
-        OnClick = AddRowBtnClick
+        OnClick = N4Click
       end
       object N5: TMenuItem
         Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1082#1072#1082'...'
-        OnClick = AddRowBtnClick
+        OnClick = N5Click
       end
       object N6: TMenuItem
         Caption = #1042#1099#1093#1086#1076
@@ -1388,6 +1388,26 @@ object MainForm: TMainForm
         Caption = #1057#1090#1086#1087
         ShortCut = 8312
       end
+    end
+  end
+  object SaveDialog: TSaveDialog
+    Filter = #1060#1072#1081#1083#1099' '#1052#1072#1096#1080#1085#1099' '#1058#1100#1102#1088#1080#1085#1075#1072'|*.mtur|'#1042#1089#1077' '#1092#1072#1081#1083#1099'|*.*'
+    Left = 288
+  end
+  object OpenDialog: TOpenDialog
+    Filter = #1060#1072#1081#1083#1099' '#1052#1072#1096#1080#1085#1099' '#1058#1100#1102#1088#1080#1085#1075#1072'|*.mtur|'#1042#1089#1077' '#1092#1072#1081#1083#1099'|*.*'
+    Left = 328
+  end
+  object GridMenu: TPopupMenu
+    MenuAnimation = [maRightToLeft, maTopToBottom]
+    Left = 368
+    object N16: TMenuItem
+      Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1090#1086#1095#1082#1091' '#1086#1089#1090#1072#1085#1086#1074#1072
+      OnClick = AddRowBtnClick
+    end
+    object N17: TMenuItem
+      Caption = #1042#1099#1087#1086#1083#1085#1080#1090#1100' '#1076#1086' '#1101#1090#1086#1075#1086' '#1084#1077#1089#1090#1072
+      OnClick = AddRowBtnClick
     end
   end
 end
