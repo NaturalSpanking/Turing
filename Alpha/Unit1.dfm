@@ -23,8 +23,7 @@ object MainForm: TMainForm
     Top = 129
     Height = 320
     Align = alRight
-    ExplicitLeft = 565
-    ExplicitTop = 135
+    ExplicitLeft = 520
   end
   object ControlPanel: TPanel
     Left = 0
@@ -1286,7 +1285,7 @@ object MainForm: TMainForm
     TabOrder = 5
     object MemoSplitter: TSplitter
       Left = 1
-      Top = 165
+      Top = 157
       Width = 239
       Height = 3
       Cursor = crVSplit
@@ -1296,9 +1295,9 @@ object MainForm: TMainForm
     end
     object CommentMemo: TMemo
       Left = 1
-      Top = 168
+      Top = 160
       Width = 239
-      Height = 151
+      Height = 159
       TabStop = False
       Align = alBottom
       Lines.Strings = (
@@ -1310,13 +1309,14 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 239
-      Height = 164
+      Height = 156
       TabStop = False
       Align = alClient
       Lines.Strings = (
         #1055#1086#1089#1090#1072#1085#1086#1074#1082#1072' '#1079#1072#1076#1072#1095#1080)
       ScrollBars = ssVertical
       TabOrder = 1
+      ExplicitHeight = 167
     end
   end
   object MainMenu1: TMainMenu

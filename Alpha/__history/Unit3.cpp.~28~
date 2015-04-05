@@ -1,0 +1,150 @@
+// ---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Unit3.h"
+#include "Unit1.h"
+// ---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TOptForm *OptForm;
+
+// ---------------------------------------------------------------------------
+__fastcall TOptForm::TOptForm(TComponent* Owner) : TForm(Owner) {
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TOptForm::OkBtnClick(TObject *Sender) {
+	try {
+		if (StrToInt(OptionsList->Cells[1][1]) < 50) {
+			MessageDlg("Длина ленты не может быть меньше 50.", mtWarning,
+				TMsgDlgButtons() << mbOK, 0);
+			OptionsList->Cells[1][1] = "50";
+			return;
+		}
+		if (StrToInt(OptionsList->Cells[1][2]) < 0) {
+			MessageDlg("Время не может быть отрицательным.", mtWarning,
+				TMsgDlgButtons() << mbOK, 0);
+			OptionsList->Cells[1][2] = "0";
+			return;
+		}
+		if (StrToInt(OptionsList->Cells[1][3]) < 0) {
+			MessageDlg("Время не может быть отрицательным.", mtWarning,
+				TMsgDlgButtons() << mbOK, 0);
+			OptionsList->Cells[1][3] = "0";
+			return;
+		}
+		if ((StrToInt(OptionsList->Cells[1][4]) < 0) ||
+			(StrToInt(OptionsList->Cells[1][4]) > 1) ||
+			(OptionsList->Cells[1][4].Length() > 1)) {
+			MessageDlg(
+				"Логический параметр может принимать только значения 0 или 1",
+				mtWarning, TMsgDlgButtons() << mbOK, 0);
+			OptionsList->Cells[1][4] = "1";
+			return;
+		}
+		if ((StrToInt(OptionsList->Cells[1][5]) < 0) ||
+			(StrToInt(OptionsList->Cells[1][5]) > 1) ||
+			(OptionsList->Cells[1][5].Length() > 1)) {
+			MessageDlg(
+				"Логический параметр может принимать только значения 0 или 1",
+				mtWarning, TMsgDlgButtons() << mbOK, 0);
+			OptionsList->Cells[1][5] = "1";
+			return;
+		}
+
+	}
+	catch (EConvertError *ex) {
+		MessageDlg("Все значения должны быть числовыми!", mtError,
+			TMsgDlgButtons() << mbOK, 0);
+		return;
+	}
+	if (OptionsList->Cells[1][4] == 1) {
+		MainForm->CommentMemo->Visible = true;
+		MainForm->MemoSplitter->Visible = true;
+	}
+	else {
+		MainForm->CommentMemo->Visible = false;
+		MainForm->MemoSplitter->Visible = false;
+	}
+	if (OptionsList->Cells[1][5] == 1) {
+		MainForm->ProblemMemo->Visible = true;
+		MainForm->MemoSplitter->Visible = true;
+		MainForm->MemoSplitter->Align = alBottom;
+		MainForm->CommentMemo->Align = alBottom;
+		MainForm->MemoSplitter->Top = MainForm->TextPanel->Height / 2;
+		MainForm->CommentMemo->Height = MainForm->TextPanel->Height / 2;
+	}
+	else {
+		MainForm->ProblemMemo->Visible = false;
+		MainForm->MemoSplitter->Visible = false;
+		MainForm->CommentMemo->Align = alClient;
+	}
+	if ((OptionsList->Cells[1][4] == 1) || (OptionsList->Cells[1][5] == 1)) {
+		MainForm->TextPanel->Visible = true;
+		MainForm->GridSplitter->Visible = true;
+		MainForm->GridSplitter->Left = MainForm->TableGrid->Width;
+	}
+	else {
+		MainForm->TextPanel->Visible = false;
+		MainForm->GridSplitter->Visible = false;
+	}
+	OptionsList->Strings->SaveToFile("Options.cfg");
+	BufList->Clear();
+	BufList->AddStrings(OptionsList->Strings);
+	OptForm->Close();
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TOptForm::CancelBtnClick(TObject *Sender) {
+	OptForm->Close();
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TOptForm::AssocBtnClick(TObject *Sender) {
+	TRegistry *R = new TRegistry;
+	R->RootKey = HKEY_CLASSES_ROOT;
+	try {
+		R->OpenKey("Turing_Machine_File", true);
+		R->WriteString("", "Файл Машины Тьюринга");
+		R->OpenKey("shell\\open\\command", true);
+		R->WriteString("", Application->ExeName + " %1");
+		R->CloseKey();
+		R->OpenKey(".mtur", true);
+		R->WriteString("", "Turing_Machine_File");
+		R->CloseKey();
+	}
+	catch (Exception *ex) {
+		MessageDlg("Доступ к реестру запрещен!", mtError,
+			TMsgDlgButtons() << mbOK, 0);
+	}
+	if (R->LastError == 0) {
+		MessageDlg("Успешно", mtInformation, TMsgDlgButtons() << mbOK, 0);
+	}
+	delete R;
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TOptForm::FormShow(TObject *Sender) {
+	BufList = new TStringList;
+//	BufList->AddStrings(OptionsList->Strings);
+	BufList->Add(Edit1->Text);
+	BufList->Add(Edit2->Text);
+	BufList->Add(Edit3->Text);
+	BufList->Add(CheckBox1->Checked?"1":"0");
+   	BufList->Add(CheckBox2->Checked?"1":"0");
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TOptForm::FormClose(TObject *Sender, TCloseAction &Action) {
+//	OptionsList->Strings->Clear();
+//	OptionsList->Strings->AddStrings(BufList);
+	Edit1->Text=BufList->Strings[0];
+	Edit2->Text=BufList->Strings[1];
+	Edit3->Text=BufList->Strings[2];
+	CheckBox1->Checked=BufList->Strings[3]=="1"?true:false;
+	CheckBox2->Checked=BufList->Strings[4]=="1"?true:false;
+	delete BufList;
+}
+// ---------------------------------------------------------------------------

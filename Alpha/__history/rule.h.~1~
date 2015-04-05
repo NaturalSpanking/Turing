@@ -5,7 +5,6 @@ struct rule
 	char symbol;
 	int shift;
 	int new_state;
-	bool is_breakpoint;
 };
 #endif
 

@@ -96,14 +96,12 @@ void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 	System::WideChar &Key)
 
 {
-	//ShowMessage(IntToStr(Key));
+	// ShowMessage(IntToStr(Key));
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::AddRowBtnClick(TObject *Sender) {
 	ShowMessage("Функция еще не реализована!");
-	TGridCracker* C;
-	ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
 	// AddRowBtn->Glyph->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
 }
 // ---------------------------------------------------------------------------
@@ -125,16 +123,16 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 	}
 	TRect r;
 	r = TableGrid->CellRect(ACol, ARow);
-	TBitmap* sprite = new Graphics::TBitmap();
+
 	switch (TableGrid->Cells[ACol][ARow][2]) {
 	case '<':
-		sprite->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
+		GreenArrow->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
 		break;
 	case '>':
-		sprite->LoadFromResourceName((int)HInstance, "RightGreenArrow");
+		GreenArrow->LoadFromResourceName((int)HInstance, "RightGreenArrow");
 		break;
 	case '.':
-		sprite->LoadFromResourceName((int)HInstance, "Stopp");
+		GreenArrow->LoadFromResourceName((int)HInstance, "Stopp");
 		break;
 	}
 	if (TableGrid->Cells[ACol][ARow].Length() * 16.25 >
@@ -142,17 +140,19 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 		TableGrid->ColWidths[ACol] +=
 			(TableGrid->Cells[ACol][ARow].Length() - 4);
 	}
-	TBitmap* spr = new Graphics::TBitmap();
-	spr->Height = 19;
-	spr->Width = TableGrid->ColWidths[ACol];
-	spr->Canvas->Font->Size = 10;
-	spr->Canvas->TextOutW(5, 2, TableGrid->Cells[ACol][ARow][1]);
-	spr->Canvas->TextOutW(40, 2, "Q" + TableGrid->Cells[ACol][ARow].SubString(3,
+
+	GridCell->Height = 28;
+	GridCell->Width = TableGrid->ColWidths[ACol];
+	GridCell->Canvas->Font->Size = 10;
+	GridCell->Canvas->TextOutW(5, 2, TableGrid->Cells[ACol][ARow][1]);
+	GridCell->Canvas->TextOutW(40, 2,
+		"Q" + TableGrid->Cells[ACol][ARow].SubString(3,
 		TableGrid->Cells[ACol][ARow].Length()));
-	BitBlt(spr->Canvas->Handle, 20, 4, 22, 22, sprite->Canvas->Handle, 0, 0,
-		SRCCOPY);
+	BitBlt(GridCell->Canvas->Handle, 20, 4, 22, 28, GreenArrow->Canvas->Handle,
+		// 20   26
+		0, 0, SRCCOPY);
 	BitBlt(TableGrid->Canvas->Handle, r.left, r.top, TableGrid->ColWidths[ACol],
-		22, spr->Canvas->Handle, 0, 0, SRCCOPY);
+		22, GridCell->Canvas->Handle, 0, 0, SRCCOPY);
 }
 
 // ---------------------------------------------------------------------------
@@ -160,8 +160,20 @@ void __fastcall TMainForm::TableGridKeyPress(TObject *Sender,
 	System::WideChar &Key) {
 	TGridCracker* C;
 	// ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
+
+
+
+	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 2) {
+		if ((C->GetCaretPosition(TableGrid) == 0) &&
+			(TableGrid->Cells[TableGrid->Col][TableGrid->Row][1] != '.')) {
+		Key = 0;
+		}
+	}
+
 	if ((C->GetCaretPosition(TableGrid) == 1) && ((Key != '>') && (Key != '<')
-		&& (Key != '.') && (Key != 8) && (Key != 13))) {
+		&& (Key != '.') && (Key != 8) && (Key != 13))&&
+		((TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('>')!=0)||(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('<')!=0)||(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('.')!=0))
+		) {
 		Key = 0;
 	}
 	if ((C->GetCaretPosition(TableGrid) >= 2) && (((Key < '0') || (Key > '9'))
@@ -178,3 +190,15 @@ int __fastcall TGridCracker::GetCaretPosition(TStringGrid *Grid) {
 	}
 	return s->InplaceEditor->SelStart;
 }
+
+void __fastcall TMainForm::FormCreate(TObject *Sender) {
+	GreenArrow = new Graphics::TBitmap();
+	GridCell = new Graphics::TBitmap();
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TMainForm::FormDestroy(TObject *Sender) {
+	delete(GreenArrow);
+	delete(GridCell);
+}
+// ---------------------------------------------------------------------------

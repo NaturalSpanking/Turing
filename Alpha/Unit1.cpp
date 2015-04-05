@@ -5,6 +5,7 @@
 
 #include "Unit1.h"
 #include "Unit2.h"
+#include "Unit3.h"
 // ---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -23,7 +24,7 @@ void __fastcall TMainForm::N10Click(TObject *Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::N7Click(TObject *Sender) {
-	ShowMessage("Настройки");
+	OptForm->ShowModal();
 }
 
 // ---------------------------------------------------------------------------
@@ -161,19 +162,18 @@ void __fastcall TMainForm::TableGridKeyPress(TObject *Sender,
 	TGridCracker* C;
 	// ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
 
-
-
 	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 2) {
 		if ((C->GetCaretPosition(TableGrid) == 0) &&
 			(TableGrid->Cells[TableGrid->Col][TableGrid->Row][1] != '.')) {
-		Key = 0;
+			Key = 0;
 		}
 	}
 
 	if ((C->GetCaretPosition(TableGrid) == 1) && ((Key != '>') && (Key != '<')
-		&& (Key != '.') && (Key != 8) && (Key != 13))&&
-		((TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('>')!=0)||(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('<')!=0)||(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('.')!=0))
-		) {
+		&& (Key != '.') && (Key != 8) && (Key != 13)) &&
+		((TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('>') != 0) ||
+		(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('<') != 0) ||
+		(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('.') != 0))) {
 		Key = 0;
 	}
 	if ((C->GetCaretPosition(TableGrid) >= 2) && (((Key < '0') || (Key > '9'))
@@ -194,6 +194,10 @@ int __fastcall TGridCracker::GetCaretPosition(TStringGrid *Grid) {
 void __fastcall TMainForm::FormCreate(TObject *Sender) {
 	GreenArrow = new Graphics::TBitmap();
 	GridCell = new Graphics::TBitmap();
+	if (ParamCount() > 0) {
+		ShowMessage("Открываем файл " + ParamStr(1));
+	}
+
 }
 // ---------------------------------------------------------------------------
 
@@ -202,3 +206,4 @@ void __fastcall TMainForm::FormDestroy(TObject *Sender) {
 	delete(GridCell);
 }
 // ---------------------------------------------------------------------------
+

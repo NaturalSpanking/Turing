@@ -6,7 +6,7 @@
 //---------------------------------------------------------------------------
 USEFORM("Unit2.cpp", AboutForm);
 USEFORM("Unit1.cpp", MainForm);
-USEFORM("Unit3.cpp", OptForm);
+USEFORM("Unit3.cpp", Form3);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
@@ -16,7 +16,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->MainFormOnTaskBar = true;
 		Application->CreateForm(__classid(TMainForm), &MainForm);
 		Application->CreateForm(__classid(TAboutForm), &AboutForm);
-		Application->CreateForm(__classid(TOptForm), &OptForm);
+		Application->CreateForm(__classid(TForm3), &Form3);
 		Application->Run();
 	}
 	catch (Exception &exception)
