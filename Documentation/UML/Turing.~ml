@@ -1430,15 +1430,15 @@
 <XPD:REF name="Owner">+oSw0TmQ+UK7WlDt0YiQ4AAA</XPD:REF>
 </XPD:OBJ>
 <XPD:OBJ name="Operations[2]" type="UMLOperation" guid="RxmuanHq8kOcUp/PdtyDRQAA">
-<XPD:ATTR name="Name" type="string">void SaveToFile</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">int SaveToFile</XPD:ATTR>
 <XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
 <XPD:REF name="Owner">+oSw0TmQ+UK7WlDt0YiQ4AAA</XPD:REF>
 <XPD:ATTR name="#Parameters" type="integer">2</XPD:ATTR>
-<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="6JJprbOca0Sq6Kq18quT5wAA">
+<XPD:OBJ name="Parameters[0]" type="UMLParameter" guid="04cB4ykcrUWmBL0HWtPKbwAA">
 <XPD:ATTR name="Name" type="string">vector&lt;vector&lt;rule&gt;&gt; table</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">RxmuanHq8kOcUp/PdtyDRQAA</XPD:REF>
 </XPD:OBJ>
-<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="x4dOgnIerEWqxRXokkLPTAAA">
+<XPD:OBJ name="Parameters[1]" type="UMLParameter" guid="o6cXaPVADkSrvXW1zPFNRgAA">
 <XPD:ATTR name="Name" type="string">char* pathToFile</XPD:ATTR>
 <XPD:REF name="BehavioralFeature">RxmuanHq8kOcUp/PdtyDRQAA</XPD:REF>
 </XPD:OBJ>
