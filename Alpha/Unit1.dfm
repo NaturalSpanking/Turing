@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 589
   Top = 356
-  Caption = 'MainForm'
+  Caption = #1052#1072#1096#1080#1085#1072' '#1058#1100#1102#1088#1080#1085#1075#1072
   ClientHeight = 468
   ClientWidth = 767
   Color = clBtnFace
@@ -13,6 +13,7 @@ object MainForm: TMainForm
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
+  ShowHint = True
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
@@ -37,6 +38,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
+      Hint = #1047#1072#1087#1091#1089#1082
       Glyph.Data = {
         82110000424D82110000000000003600000028000000360000001B0000000100
         1800000000004C11000000000000000000000000000000000000FFFFFFFFFFFF
@@ -180,8 +182,6 @@ object MainForm: TMainForm
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFF0000}
       NumGlyphs = 2
-      ParentShowHint = False
-      ShowHint = True
       TabOrder = 0
       TabStop = False
       OnClick = AddRowBtnClick
@@ -191,6 +191,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
+      Hint = #1055#1072#1091#1079#1072
       Enabled = False
       Glyph.Data = {
         82110000424D82110000000000003600000028000000360000001B0000000100
@@ -343,6 +344,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
+      Hint = #1042#1086#1089#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1083#1077#1085#1090#1091
       Glyph.Data = {
         12090000424D120900000000000036000000280000001B0000001B0000000100
         180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
@@ -426,6 +428,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
+      Hint = #1047#1072#1087#1086#1084#1085#1080#1090#1100' '#1083#1077#1085#1090#1091
       Glyph.Data = {
         12090000424D120900000000000036000000280000001B0000001B0000000100
         180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
@@ -509,6 +512,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
+      Hint = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100
       Enabled = False
       Glyph.Data = {
         82110000424D82110000000000003600000028000000360000001B0000000100
@@ -661,6 +665,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
+      Hint = #1057#1076#1077#1083#1072#1090#1100' '#1096#1072#1075
       Glyph.Data = {
         12090000424D120900000000000036000000280000001B0000001B0000000100
         180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
@@ -759,6 +764,7 @@ object MainForm: TMainForm
       Top = 1
       Width = 715
       Height = 53
+      Hint = #1051#1077#1085#1090#1072
       Align = alClient
       ColCount = 100
       Ctl3D = True
@@ -771,13 +777,16 @@ object MainForm: TMainForm
       Font.Height = -20
       Font.Name = 'Tahoma'
       Font.Style = []
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing]
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing, goFixedRowClick]
       ParentCtl3D = False
       ParentDoubleBuffered = False
       ParentFont = False
       ScrollBars = ssNone
       TabOrder = 0
       OnDrawCell = TapeGridDrawCell
+      OnExit = TapeGridExit
+      OnFixedCellClick = TapeGridFixedCellClick
+      OnKeyDown = TapeGridKeyDown
       OnKeyPress = TapeGridKeyPress
       OnMouseWheelDown = TapeGridMouseWheelDown
       OnMouseWheelUp = TapeGridMouseWheelUp
@@ -888,6 +897,7 @@ object MainForm: TMainForm
       Top = 1
       Width = 25
       Height = 53
+      Hint = #1057#1076#1074#1080#1085#1091#1090#1100' '#1082#1072#1088#1077#1090#1082#1091' '#1074#1083#1077#1074#1086
       Align = alLeft
       Caption = '<'
       TabOrder = 1
@@ -899,11 +909,12 @@ object MainForm: TMainForm
       Top = 1
       Width = 25
       Height = 53
+      Hint = #1057#1076#1074#1080#1085#1091#1090#1100' '#1082#1072#1088#1077#1090#1082#1091' '#1074#1087#1088#1072#1074#1086
       Align = alRight
       Caption = '>'
       TabOrder = 2
       TabStop = False
-      OnClick = TapeRigthBtnClick
+      OnClick = TapeRightBtnClick
     end
   end
   object GridPanel: TPanel
@@ -918,6 +929,7 @@ object MainForm: TMainForm
       Top = 5
       Width = 27
       Height = 27
+      Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1089#1080#1084#1074#1086#1083
       Glyph.Data = {
         12090000424D120900000000000036000000280000001B0000001B0000000100
         180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
@@ -992,8 +1004,6 @@ object MainForm: TMainForm
         0000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
-      ParentShowHint = False
-      ShowHint = True
       TabOrder = 0
       TabStop = False
       OnClick = AddRowBtnClick
@@ -1003,6 +1013,7 @@ object MainForm: TMainForm
       Top = 5
       Width = 27
       Height = 27
+      Hint = #1059#1076#1072#1083#1080#1090#1100' '#1089#1080#1084#1074#1086#1083
       Glyph.Data = {
         12090000424D120900000000000036000000280000001B0000001B0000000100
         180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
@@ -1088,6 +1099,7 @@ object MainForm: TMainForm
       Top = 5
       Width = 27
       Height = 27
+      Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1089#1086#1089#1090#1086#1103#1085#1080#1077
       Glyph.Data = {
         12090000424D120900000000000036000000280000001B0000001B0000000100
         180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
@@ -1173,6 +1185,7 @@ object MainForm: TMainForm
       Top = 5
       Width = 27
       Height = 27
+      Hint = #1059#1076#1072#1083#1080#1090#1100' '#1089#1086#1089#1090#1086#1103#1085#1080#1077
       Glyph.Data = {
         12090000424D120900000000000036000000280000001B0000001B0000000100
         180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
@@ -1259,6 +1272,7 @@ object MainForm: TMainForm
     Top = 129
     Width = 523
     Height = 320
+    Hint = #1058#1072#1073#1083#1080#1094#1072' '#1087#1077#1088#1077#1093#1086#1076#1086#1074
     Align = alClient
     Ctl3D = True
     DefaultColWidth = 65
@@ -1276,6 +1290,8 @@ object MainForm: TMainForm
     TabOrder = 0
     OnDrawCell = TableGridDrawCell
     OnKeyPress = TableGridKeyPress
+    ExplicitLeft = -2
+    ExplicitTop = 126
   end
   object TextPanel: TPanel
     Left = 526

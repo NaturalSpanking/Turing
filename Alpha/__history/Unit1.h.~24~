@@ -69,7 +69,7 @@ __published: // IDE-managed Components
 	void __fastcall FormResize(TObject *Sender);
 	void __fastcall TapeGridDrawCell(TObject *Sender, int ACol, int ARow,
 		TRect &Rect, TGridDrawState State);
-	void __fastcall TapeRightBtnClick(TObject *Sender);
+	void __fastcall TapeRigthBtnClick(TObject *Sender);
 	void __fastcall TapeLeftBtnClick(TObject *Sender);
 	void __fastcall TapeGridMouseWheelDown(TObject *Sender, TShiftState Shift,
 		TPoint &MousePos, bool &Handled);
@@ -87,10 +87,6 @@ __published: // IDE-managed Components
 	void __fastcall N4Click(TObject *Sender);
 	void __fastcall N5Click(TObject *Sender);
 	void __fastcall N3Click(TObject *Sender);
-	void __fastcall TapeGridFixedCellClick(TObject *Sender, int ACol, int ARow);
-	void __fastcall TapeGridExit(TObject *Sender);
-	void __fastcall TapeGridKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
-
 
 
 private: // User declarations
