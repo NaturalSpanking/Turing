@@ -4,7 +4,7 @@ object OptForm: TOptForm
   BorderIcons = [biSystemMenu]
   BorderStyle = bsSingle
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
-  ClientHeight = 270
+  ClientHeight = 188
   ClientWidth = 384
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -59,35 +59,9 @@ object OptForm: TOptForm
     Font.Style = []
     ParentFont = False
   end
-  object Label4: TLabel
-    Left = 8
-    Top = 160
-    Width = 124
-    Height = 16
-    Caption = #1062#1074#1077#1090' '#1090#1086#1095#1082#1080' '#1086#1089#1090#1072#1085#1086#1074#1072
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-  end
-  object Label5: TLabel
-    Left = 8
-    Top = 186
-    Width = 152
-    Height = 16
-    Caption = #1062#1074#1077#1090' '#1090#1077#1082#1091#1097#1077#1075#1086' '#1089#1086#1089#1090#1086#1103#1085#1080#1103
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -13
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-  end
   object AssocBtn: TButton
     Left = 28
-    Top = 237
+    Top = 157
     Width = 153
     Height = 25
     Caption = #1040#1089#1089#1086#1094#1080#1072#1094#1080#1103' '#1092#1072#1081#1083#1086#1074
@@ -96,7 +70,7 @@ object OptForm: TOptForm
   end
   object OkBtn: TButton
     Left = 220
-    Top = 237
+    Top = 157
     Width = 75
     Height = 25
     Caption = #1054#1050
@@ -105,7 +79,7 @@ object OptForm: TOptForm
   end
   object CancelBtn: TButton
     Left = 301
-    Top = 237
+    Top = 157
     Width = 75
     Height = 25
     Caption = #1054#1090#1084#1077#1085#1072
@@ -167,29 +141,5 @@ object OptForm: TOptForm
     ParentFont = False
     State = cbChecked
     TabOrder = 7
-  end
-  object Panel1: TPanel
-    Left = 255
-    Top = 156
-    Width = 121
-    Height = 20
-    Color = clRed
-    ParentBackground = False
-    TabOrder = 8
-    OnClick = PanelClick
-  end
-  object Panel2: TPanel
-    Left = 255
-    Top = 182
-    Width = 121
-    Height = 20
-    Color = clYellow
-    ParentBackground = False
-    TabOrder = 9
-    OnClick = PanelClick
-  end
-  object ColorDialog1: TColorDialog
-    Left = 303
-    Top = 190
   end
 end

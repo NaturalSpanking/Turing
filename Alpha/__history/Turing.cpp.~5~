@@ -17,8 +17,6 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->CreateForm(__classid(TMainForm), &MainForm);
 		Application->CreateForm(__classid(TAboutForm), &AboutForm);
 		Application->CreateForm(__classid(TOptForm), &OptForm);
-		Application->HintPause=2500;
-		Application->HintHidePause=9000;
 		Application->Run();
 	}
 	catch (Exception &exception)

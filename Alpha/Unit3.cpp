@@ -16,6 +16,8 @@ void TOptForm::ApplyToForm() {
 	Edit3->Text = BufList->Strings[2];
 	CheckBox1->Checked = BufList->Strings[3] == "1" ? true : false;
 	CheckBox2->Checked = BufList->Strings[4] == "1" ? true : false;
+	Panel1->Color=StrToInt(BufList->Strings[5]);
+	Panel2->Color=StrToInt(BufList->Strings[6]);
 }
 
 void TOptForm::ApplyToList() {
@@ -25,6 +27,8 @@ void TOptForm::ApplyToList() {
 	BufList->Add(Edit3->Text);
 	BufList->Add(CheckBox1->Checked ? "1" : "0");
 	BufList->Add(CheckBox2->Checked ? "1" : "0");
+	BufList->Add(IntToStr(Panel1->Color));
+	BufList->Add(IntToStr(Panel2->Color));
 }
 
 void TOptForm::ApplyChanges() {
@@ -151,3 +155,14 @@ void __fastcall TOptForm::FormDestroy(TObject *Sender) {
 	delete BufList;
 }
 // ---------------------------------------------------------------------------
+void __fastcall TOptForm::PanelClick(TObject *Sender)
+{
+TColorDialog *C = new TColorDialog(OptForm);
+C->Color=((TPanel*)Sender)->Color;
+if(C->Execute()){
+	((TPanel*)Sender)->Color=C->Color;
+}
+delete C;
+}
+//---------------------------------------------------------------------------
+

@@ -152,11 +152,20 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 	GridCell->Width = r.Width();
 	GridCell->Height = r.Height();
 	GridCell->Canvas->Brush->Color = clWhite;
-	if (ACol == 1) {
-		GridCell->Canvas->Brush->Color = RGB(0, 255, 255);
-		// GridCell->Canvas->Brush->Color=clYellow;
-	}
+	GridCell->Canvas->Brush->Style=bsSolid;
 	GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
+	if (ACol == 1) {
+		GridCell->Canvas->Brush->Color = OptForm->Panel2->Color;
+		GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
+	}
+	if (ARow == 1) {
+//		GridCell->Canvas->Brush->Color = RGB(159, 182, 205);
+		GridCell->Canvas->Pen->Color = OptForm->Panel1->Color;
+		GridCell->Canvas->Rectangle(0,0,r.Width(),r.Height());
+
+	}
+
+	GridCell->Canvas->Brush->Style=bsClear;
 	GridCell->Canvas->Font->Size = 10;
 	GridCell->Canvas->TextOutW(5, 4, TableGrid->Cells[ACol][ARow][1]);
 	GridCell->Canvas->TextOutW(40, 4,
@@ -170,28 +179,33 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 void __fastcall TMainForm::TableGridKeyPress(TObject *Sender,
 	System::WideChar &Key) {
 	TGridCracker* C;
+	static unsigned int i;
 	// ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
-
-	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 1) {
+	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 0) {
 		if ((C->GetCaretPosition(TableGrid) == 0) &&
 			((TableGrid->Cells[TableGrid->Col][TableGrid->Row][1] != '.') &&
 			(TableGrid->Cells[TableGrid->Col][TableGrid->Row][1] != '>') &&
 			(TableGrid->Cells[TableGrid->Col][TableGrid->Row][1] != '<'))) {
 			Key = 0;
+			i++;
 		}
 	}
-
-	if ((C->GetCaretPosition(TableGrid) == 1) &&
-		(((Key != '>') && (Key != '<') && (Key != '.') && (Key != 8) &&
-		(Key != 13)) || ((TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos
-		('>') != 0) || (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos
-		('<') != 0) || (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos
-		('.') != 0)))) {
+	if ((C->GetCaretPosition(TableGrid) == 1) && (Key != 8) && (Key != 13) &&
+		(((Key != '>') && (Key != '<') && (Key != '.')) ||
+		((TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('>') != 0) ||
+		(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('<') != 0) ||
+		(TableGrid->Cells[TableGrid->Col][TableGrid->Row].Pos('.') != 0)))) {
 		Key = 0;
+		i++;
 	}
 	if ((C->GetCaretPosition(TableGrid) >= 2) && (((Key < '0') || (Key > '9'))
 		&& (Key != 8) && (Key != 13))) {
 		Key = 0;
+		i++;
+	}
+	if (i > 10) {
+		ShowMessage("Открытие справки по вводу");
+		i = 0;
 	}
 }
 // ---------------------------------------------------------------------------
@@ -265,8 +279,7 @@ void __fastcall TMainForm::TapeGridExit(TObject *Sender) {
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeGridKeyDown(TObject *Sender, WORD &Key,
-	TShiftState Shift)
-{
+	TShiftState Shift) {
 	// ShowMessage(IntToStr(Key));
 	if ((TapeGrid->Col == 0) || (TapeGrid->Col == TapeGrid->ColCount - 1)) {
 		if (Key == VK_LEFT) {
