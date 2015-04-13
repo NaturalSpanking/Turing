@@ -1,0 +1,24 @@
+#pragma hdrstop
+
+#include "Tape.h"
+Tape::Tape(int len)
+{
+	tape.resize(len);
+}
+Tape::Tape(Tape &X)
+{
+	tape = X.tape;
+}
+int Tape::GetLenght()
+{
+
+}
+TapeMemento::TapeMemento* Tape::CreateMemento()
+{
+
+}
+int Tape::SetMemento(TapeMemento::TapeMemento* m)
+{
+
+}
+#pragma package(smart_init)

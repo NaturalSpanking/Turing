@@ -14,5 +14,6 @@ public:
 private:
 	std::vector<char> tape;
 	int position;
+	int length;
 };
 #endif
