@@ -32,39 +32,22 @@ int Table::AddCol(int index)
 }
 int Table::AddRow(char c)
 {
-	rule defRule;
-	defRule.symbol = table.back()[0].symbol+1;
-	table.push_back(std::vector<rule>(table[0].size(), defRule));
+
 	return 0;
 }
-int Table::DelCol()
+/*int Table::DelCol()
 {
-	for(unsigned i=0; i<table.size(); i++)
-	{
-		table[i].pop_back();
-	}
+
 }
-int Table::DelCol(int index)
+int Table::DelCol(int Index)
 {
- 	for(unsigned i=0; i<table.size(); i++)
-	{
-		table[i].erase(&table[i][index]);
-	}
-	return 0;
+
 }
 int Table::DelRow(char c)
 {
-	for(unsigned i=0; i<table.size(); i++)
-	{
-		if(table[i][0].symbol == c)
-		{
-			table.erase(&table[i]);
-			return 0;
-		}
-	}
-	return -1;
+
 }
-/*int Table::LoadMemento(char* pathToFile)
+int Table::LoadMemento(char* pathToFile)
 {
 
 }

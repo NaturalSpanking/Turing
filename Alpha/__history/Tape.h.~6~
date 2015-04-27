@@ -7,12 +7,12 @@ class Tape
 	friend class Machine;
 public:
 	Tape(int length);
-	Tape(Tape &X);
+	Tape(Tape* X);
 	int GetLenght();
 	TapeMemento* CreateMemento();
 	int SetMemento(TapeMemento* m);
 private:
-	std::vector<char> tape;
+	std::vector<char>* tape;
 	int position;
 	Tape();
 };

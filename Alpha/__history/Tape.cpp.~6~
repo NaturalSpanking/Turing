@@ -3,11 +3,11 @@
 #include "Tape.h"
 Tape::Tape(int len)
 {
-	tape = std::vector<char>(len, ' ');
+	tape.resize(len);
 }
 Tape::Tape(Tape &X)
 {
-	tape = std::vector<char>(X.tape);
+	tape = X.tape;
 }
 int Tape::GetLenght()
 {

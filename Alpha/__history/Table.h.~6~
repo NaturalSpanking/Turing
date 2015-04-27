@@ -18,7 +18,7 @@ public:
 	int LoadMemento(char* pathToFile);
 	int SaveMemento(char* pathToFile);
 private:
-	std::vector<std::vector<rule> > table;
+	std::vector<std::vector<rule> >* table;
 	Table();
 };
 #endif

@@ -8,7 +8,7 @@ class Table
 {
 	friend class Machine;
 public:
-	Table(unsigned Rows = 4, unsigned Columns = 4);
+	Table();
 	int AddCol();
 	int AddCol(int Index);
 	int AddRow(char c);
@@ -19,6 +19,5 @@ public:
 	int SaveMemento(char* pathToFile);
 private:
 	std::vector<std::vector<rule> > table;
-	Table();
 };
 #endif
