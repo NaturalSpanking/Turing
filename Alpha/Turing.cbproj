@@ -125,6 +125,10 @@
         <BCC_PCHName_Clang>TuringPCH1.h</BCC_PCHName_Clang>
     </PropertyGroup>
     <ItemGroup>
+        <CppCompile Include="Machine.cpp">
+            <DependentOn>Machine.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
+        </CppCompile>
         <None Include="ModelSupport_Turing\default.txaPackage"/>
         <None Include="ModelSupport_Turing\default.txvpck"/>
         <None Include="rule.h">

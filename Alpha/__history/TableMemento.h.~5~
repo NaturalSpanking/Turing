@@ -11,6 +11,7 @@ class TableMemento
 	friend class Table;
 
 private:
+	TapeMemento();
 	int SaveToFile(std::vector<std::vector<rule> > table, char* pathToFile);
 	std::vector<std::vector<rule> > LoadFromFile(char* pathToFile);
 };
