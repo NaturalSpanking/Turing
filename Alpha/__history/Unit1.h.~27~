@@ -64,7 +64,6 @@ __published: // IDE-managed Components
 	TPopupMenu *GridMenu;
 	TMenuItem *N16;
 	TMenuItem *N17;
-	TTimer *StatusTimer;
 
 	void __fastcall N10Click(TObject *Sender);
 	void __fastcall N7Click(TObject *Sender);
@@ -93,11 +92,7 @@ __published: // IDE-managed Components
 	void __fastcall TapeGridFixedCellClick(TObject *Sender, int ACol, int ARow);
 	void __fastcall TapeGridExit(TObject *Sender);
 	void __fastcall TapeGridKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
-	void __fastcall Upd();
-	void __fastcall StatusBarHint(UnicodeString Text);
-	void __fastcall StatusTimerTimer(TObject *Sender);
-	void __fastcall SaveTapeBtnClick(TObject *Sender);
-	void __fastcall LoadTapeBtnClick(TObject *Sender);
+//	void __fastcall Upd();
 
 
 

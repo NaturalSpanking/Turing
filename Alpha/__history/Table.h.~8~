@@ -1,5 +1,4 @@
 #include<vector>
-#include <System.Classes.hpp>
 #include "rule.h"
 
 #ifndef TableH
@@ -12,11 +11,11 @@ public:
 
 	int AddCol();
 	int AddCol(unsigned Index);
-	int AddRow(WideChar c);
+	int AddRow(char c);
 
 	int DelCol();
 	int DelCol(unsigned Index);
-	int DelRow(WideChar c);
+	int DelRow(char c);
 protected:
 	std::vector<std::vector<rule> > table;
 private:

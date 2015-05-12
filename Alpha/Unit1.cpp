@@ -12,6 +12,19 @@
 #pragma resource "asd.res"
 TMainForm *MainForm;
 
+#define TapeHalfLen 50
+#define TapeLen 101
+
+// ---------------------------------------------------------------------------
+void __fastcall TMainForm::Upd() {
+
+	for (int i = 0; i < TapeGrid->ColCount; i++) {
+		TapeGrid->Cells[i][1] =
+			machine->GetTapeChar(TapeOffset + (i - TapeGrid->ColCount / 2) +
+			TapeHalfLen);
+	}
+}
+
 // ---------------------------------------------------------------------------
 __fastcall TMainForm::TMainForm(TComponent* Owner) : TForm(Owner) {
 	TapeOffset = 0;
@@ -59,35 +72,40 @@ void __fastcall TMainForm::TapeGridDrawCell(TObject *Sender, int ACol, int ARow,
 		TapeGrid->Canvas->Brush->Style = bsClear;
 		TapeGrid->Canvas->Font->Size = 8;
 		TapeGrid->Canvas->Font->Color = clBlack;
+		if((TapeOffset - TapeGrid->ColCount / 2 + ACol>= -TapeHalfLen)&&
+		(TapeOffset - TapeGrid->ColCount / 2 + ACol<=TapeHalfLen)){
 		TapeGrid->Canvas->TextOutW(r.left + 3, r.top + 5,
 			IntToStr(TapeOffset - TapeGrid->ColCount / 2 + ACol));
+		}else{
+		  TapeGrid->Canvas->TextOutW(r.left + 3, r.top + 5,"ZZZ");
+		}
 	}
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeRightBtnClick(TObject *Sender) {
-	TapeOffset++;
-	TapeGrid->Refresh();
+		TapeOffset++;
+		Upd();
+		TapeGrid->Refresh();
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeLeftBtnClick(TObject *Sender) {
-	TapeOffset--;
-	TapeGrid->Refresh();
+		TapeOffset--;
+		Upd();
+		TapeGrid->Refresh();
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeGridMouseWheelDown(TObject *Sender,
 	TShiftState Shift, TPoint &MousePos, bool &Handled) {
-	TapeOffset++;
-	TapeGrid->Refresh();
+	TapeRightBtnClick(MainForm);
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeGridMouseWheelUp(TObject *Sender,
 	TShiftState Shift, TPoint &MousePos, bool &Handled) {
-	TapeOffset--;
-	TapeGrid->Refresh();
+	TapeLeftBtnClick(MainForm);
 }
 // ---------------------------------------------------------------------------
 
@@ -99,8 +117,16 @@ void __fastcall TMainForm::N12Click(TObject *Sender) {
 void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 	System::WideChar &Key)
 
-{
-	// ShowMessage(IntToStr(Key));
+{   if (Key==8) {Key=' ';}
+
+
+	if (machine->SetTapeChar(TapeOffset + (TapeGrid->Col -
+		TapeGrid->ColCount / 2) + TapeHalfLen, Key) != 0) {
+		StatusBarHint("Ошибка: выход за границы ленты.");
+		Key=0;
+		return;
+
+	}
 	TapeGrid->Cells[TapeGrid->Col][1] = Key;
 }
 // ---------------------------------------------------------------------------
@@ -152,20 +178,20 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 	GridCell->Width = r.Width();
 	GridCell->Height = r.Height();
 	GridCell->Canvas->Brush->Color = clWhite;
-	GridCell->Canvas->Brush->Style=bsSolid;
+	GridCell->Canvas->Brush->Style = bsSolid;
 	GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
 	if (ACol == 1) {
 		GridCell->Canvas->Brush->Color = OptForm->Panel2->Color;
 		GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
 	}
 	if (ARow == 1) {
-//		GridCell->Canvas->Brush->Color = RGB(159, 182, 205);
+		// GridCell->Canvas->Brush->Color = RGB(159, 182, 205);
 		GridCell->Canvas->Pen->Color = OptForm->Panel1->Color;
-		GridCell->Canvas->Rectangle(0,0,r.Width(),r.Height());
+		GridCell->Canvas->Rectangle(0, 0, r.Width(), r.Height());
 
 	}
 
-	GridCell->Canvas->Brush->Style=bsClear;
+	GridCell->Canvas->Brush->Style = bsClear;
 	GridCell->Canvas->Font->Size = 10;
 	GridCell->Canvas->TextOutW(5, 4, TableGrid->Cells[ACol][ARow][1]);
 	GridCell->Canvas->TextOutW(40, 4,
@@ -203,6 +229,10 @@ void __fastcall TMainForm::TableGridKeyPress(TObject *Sender,
 		Key = 0;
 		i++;
 	}
+	if (i == 5) {
+		StatusBarHint("Некорректный ввод. Ознакомьтесь с файлом справки.");
+
+	}
 	if (i > 10) {
 		ShowMessage("Открытие справки по вводу");
 		i = 0;
@@ -224,7 +254,8 @@ void __fastcall TMainForm::FormCreate(TObject *Sender) {
 	if (ParamCount() > 0) {
 		ShowMessage("Открываем файл " + ParamStr(1));
 	}
-
+	machine = machine->Create();
+	// TapeOffset=50;
 }
 // ---------------------------------------------------------------------------
 
@@ -263,10 +294,13 @@ void __fastcall TMainForm::TapeGridFixedCellClick(TObject *Sender, int ACol,
 {
 	if ((ACol == TapeGrid->ColCount / 2) && (ARow == 0)) {
 		TapeOffset = 0;
+		Upd();
 		TapeGrid->Refresh();
 	}
 	else {
+		// ShowMessage(IntToStr(TapeOffset + ACol - TapeGrid->ColCount /2));
 		TapeOffset += ACol - TapeGrid->ColCount / 2;
+		Upd();
 		TapeGrid->Refresh();
 
 	}
@@ -288,6 +322,34 @@ void __fastcall TMainForm::TapeGridKeyDown(TObject *Sender, WORD &Key,
 		if (Key == VK_RIGHT) {
 			TapeRightBtnClick(MainForm);
 		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TMainForm::StatusTimerTimer(TObject *Sender) {
+	StatusBar1->SimpleText = "";
+	StatusTimer->Enabled = false;
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TMainForm::StatusBarHint(UnicodeString Text) {
+	StatusBar1->SimpleText = Text;
+	StatusTimer->Enabled = true;
+}
+
+void __fastcall TMainForm::SaveTapeBtnClick(TObject *Sender) {
+	machine->SaveTape();
+	StatusBarHint("Лента сохранена.");
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TMainForm::LoadTapeBtnClick(TObject *Sender) {
+	if (machine->LoadTape() == 0) {
+		StatusBarHint("Лента восстановлена.");
+		Upd();
+	}
+	else {
+		StatusBarHint("Ошибка: лента не была сохранена.");
 	}
 }
 // ---------------------------------------------------------------------------

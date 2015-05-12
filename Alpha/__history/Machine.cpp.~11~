@@ -27,7 +27,7 @@ Machine::~Machine()
 int Machine::Step()
 {
 	rule errRule;
-	WideChar tempChar = GetTapeChar(GetTapePosition());
+	char tempChar = GetTapeChar(GetTapePosition());
 	if (tempChar == '\0') return -1;
 	rule tempRule = GetTableRule(currentState, tempChar);
 	if (tempRule == errRule) return -2;
@@ -47,7 +47,7 @@ int Machine::TraceProgram()
 	while (true)
 	{
 		rule errRule;
-		WideChar tempChar = GetTapeChar(GetTapePosition());
+		char tempChar = GetTapeChar(GetTapePosition());
 		if (tempChar == '\0') return -1;
 		rule tempRule = GetTableRule(currentState, tempChar);
 		if (tempRule == errRule) return -2;
@@ -80,7 +80,7 @@ int Machine::LoadTape()
 	return 0;
 }
 
-rule Machine::GetTableRule(unsigned state, WideChar c)
+rule Machine::GetTableRule(unsigned state, char c)
 {
 	rule errRule;
 	if (tab->table.size() == 0) return errRule;
@@ -94,7 +94,7 @@ rule Machine::GetTableRule(unsigned state, WideChar c)
 	return errRule;
 }
 
-int Machine::SetTableRule(unsigned state, WideChar c, rule r)
+int Machine::SetTableRule(unsigned state, char c, rule r)
 {
 	if (tab->table.size() == 0) return -1;
 	if (state > tab->table[0].size()) return -1;
@@ -115,7 +115,7 @@ int Machine::GetCurrentState()
 	return currentState;
 }
 
-int Machine::SetTapeChar(unsigned index, WideChar c)
+int Machine::SetTapeChar(unsigned index, char c)
 {
 	if (index >= tap->tape.size()) return -1;
 	tap->tape[index] = c;
@@ -131,7 +131,7 @@ int Machine::ShiftTape(int shift)
 	return 0;
 }
 
-WideChar Machine::GetTapeChar(unsigned index)
+char Machine::GetTapeChar(unsigned index)
 {
 	if (index >= tap->tape.size()) return '\0';
 	return tap->tape[index];

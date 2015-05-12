@@ -3,7 +3,7 @@
 #include "Tape.h"
 Tape::Tape(unsigned len)
 {
-	tape = std::vector<WideChar>(len, ' ');
+	tape = std::vector<char>(len, ' ');
 	position = len / 2;
 }
 int Tape::GetLenght()

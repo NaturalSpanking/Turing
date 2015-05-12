@@ -97,7 +97,6 @@ __published: // IDE-managed Components
 	void __fastcall StatusBarHint(UnicodeString Text);
 	void __fastcall StatusTimerTimer(TObject *Sender);
 	void __fastcall SaveTapeBtnClick(TObject *Sender);
-	void __fastcall LoadTapeBtnClick(TObject *Sender);
 
 
 

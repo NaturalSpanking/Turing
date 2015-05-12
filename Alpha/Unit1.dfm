@@ -421,7 +421,7 @@ object MainForm: TMainForm
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
       TabOrder = 2
       TabStop = False
-      OnClick = AddRowBtnClick
+      OnClick = LoadTapeBtnClick
     end
     object SaveTapeBtn: TBitBtn
       Left = 701
@@ -505,7 +505,7 @@ object MainForm: TMainForm
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
       TabOrder = 3
       TabStop = False
-      OnClick = AddRowBtnClick
+      OnClick = SaveTapeBtnClick
     end
     object StopBtn: TBitBtn
       Left = 72
@@ -751,6 +751,7 @@ object MainForm: TMainForm
     Width = 767
     Height = 19
     Panels = <>
+    SimplePanel = True
   end
   object TapePanel: TPanel
     Left = 0
@@ -1423,5 +1424,11 @@ object MainForm: TMainForm
       Caption = #1042#1099#1087#1086#1083#1085#1080#1090#1100' '#1076#1086' '#1101#1090#1086#1075#1086' '#1084#1077#1089#1090#1072
       OnClick = AddRowBtnClick
     end
+  end
+  object StatusTimer: TTimer
+    Enabled = False
+    Interval = 10000
+    OnTimer = StatusTimerTimer
+    Left = 408
   end
 end

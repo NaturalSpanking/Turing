@@ -74,7 +74,7 @@ void __fastcall TOptForm::OkBtnClick(TObject *Sender) {
 		if (StrToInt(Edit1->Text) < 50) {
 			MessageDlg("Смещение не может быть меньше 25.", mtWarning,
 				TMsgDlgButtons() << mbOK, 0);
-			Edit1->Text = "25";
+			Edit1->Text = "50";
 			return;
 		}
 		if (StrToInt(Edit2->Text) < 0) {

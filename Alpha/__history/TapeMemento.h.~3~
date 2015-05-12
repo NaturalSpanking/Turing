@@ -1,5 +1,4 @@
 #include <vector>
-#include <System.Classes.hpp>
 
 #ifndef TapeMementoH
 #define TapeMementoH
@@ -8,9 +7,9 @@ class TapeMemento
 	friend class Tape;
 protected:
 	TapeMemento();
-	void SetState(std::vector<WideChar> t);
-	std::vector<WideChar> GetState();
+	void SetState(std::vector<char> t);
+	std::vector<char> GetState();
 private:
-	std::vector<WideChar> tape;
+	std::vector<char> tape;
 };
 #endif

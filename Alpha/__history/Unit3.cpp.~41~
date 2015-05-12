@@ -72,9 +72,9 @@ __fastcall TOptForm::TOptForm(TComponent* Owner) : TForm(Owner) {
 void __fastcall TOptForm::OkBtnClick(TObject *Sender) {
 	try {
 		if (StrToInt(Edit1->Text) < 50) {
-			MessageDlg("Смещение не может быть меньше 25.", mtWarning,
+			MessageDlg("Длина ленты не может быть меньше 50.", mtWarning,
 				TMsgDlgButtons() << mbOK, 0);
-			Edit1->Text = "25";
+			Edit1->Text = "50";
 			return;
 		}
 		if (StrToInt(Edit2->Text) < 0) {
