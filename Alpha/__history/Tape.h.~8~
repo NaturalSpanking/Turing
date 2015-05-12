@@ -13,6 +13,7 @@ public:
 	TapeMemento* CreateMemento();
 	void SetMemento(TapeMemento* m);
 protected:
+public:
 	std::vector<char> tape;
 private:
 	int position;

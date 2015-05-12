@@ -1,13 +1,10 @@
 #pragma hdrstop
 
 #include "Tape.h"
-Tape::Tape(int len)
+Tape::Tape(unsigned len)
 {
 	tape = std::vector<char>(len, ' ');
-}
-Tape::Tape(Tape &X)
-{
-	tape = std::vector<char>(X.tape);
+	position = len / 2;
 }
 int Tape::GetLenght()
 {
@@ -15,13 +12,12 @@ int Tape::GetLenght()
 }
 TapeMemento* Tape::CreateMemento()
 {
-	TapeMemento* newTapeMemento = new TapeMemento;
+	TapeMemento* newTapeMemento = new TapeMemento();
 	newTapeMemento->SetState(tape);
 	return newTapeMemento;
 }
-int Tape::SetMemento(TapeMemento* m)
+void Tape::SetMemento(TapeMemento* m)
 {
 	tape = m->GetState();
-	return 0;
 }
 #pragma package(smart_init)

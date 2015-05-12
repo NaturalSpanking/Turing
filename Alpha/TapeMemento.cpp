@@ -1,6 +1,7 @@
 #pragma hdrstop
 
 #include "TapeMemento.h"
+TapeMemento::TapeMemento(){}
 void TapeMemento::SetState(std::vector<char> t)
 {
 	tape = t;

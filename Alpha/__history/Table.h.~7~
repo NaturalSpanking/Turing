@@ -17,6 +17,7 @@ public:
 	int DelCol(unsigned Index);
 	int DelRow(char c);
 protected:
+public:
 	std::vector<std::vector<rule> > table;
 private:
 	Table();

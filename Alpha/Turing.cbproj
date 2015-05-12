@@ -138,10 +138,6 @@
             <DependentOn>Table.h</DependentOn>
             <BuildOrder>10</BuildOrder>
         </CppCompile>
-        <CppCompile Include="TableMemento.cpp">
-            <DependentOn>TableMemento.h</DependentOn>
-            <BuildOrder>9</BuildOrder>
-        </CppCompile>
         <CppCompile Include="Tape.cpp">
             <DependentOn>Tape.h</DependentOn>
             <BuildOrder>7</BuildOrder>
