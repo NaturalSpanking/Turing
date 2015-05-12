@@ -1,10 +1,10 @@
 #pragma hdrstop
 
 #include "Tape.h"
-Tape::Tape(unsigned lenght)
+Tape::Tape(unsigned len)
 {
-	tape = std::vector<WideChar>(lenght, ' ');
-	position = lenght / 2;
+	tape = std::vector<WideChar>(len, ' ');
+	position = len / 2;
 }
 int Tape::GetLenght()
 {

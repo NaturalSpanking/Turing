@@ -122,13 +122,6 @@ int Machine::SetTapeChar(unsigned index, WideChar c)
 	return 0;
 }
 
-int Machine::SetTapePosition(unsigned position)
-{
-	if (position >= tap->tape.size()) return -1;
-	tap->position = position;
-	return 0;
-}
-
 int Machine::ShiftTape(int shift)
 {
 	if ((int)tap->position + shift > tap->position && shift > 0) return -1;

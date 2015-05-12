@@ -10,14 +10,13 @@ class Tape
 public:
 	Tape(unsigned length);
 	int GetLenght();
-	void Resize(unsigned length);
 
 	TapeMemento* CreateMemento();
 	void SetMemento(TapeMemento* m);
 protected:
 	std::vector<WideChar> tape;
-	int position;
 private:
+	int position;
 	Tape();
 };
 #endif

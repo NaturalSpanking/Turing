@@ -10,7 +10,6 @@ class Tape
 public:
 	Tape(unsigned length);
 	int GetLenght();
-	void Resize(unsigned length);
 
 	TapeMemento* CreateMemento();
 	void SetMemento(TapeMemento* m);

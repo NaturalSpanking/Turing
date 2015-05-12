@@ -30,7 +30,6 @@ public:
 	int GetCurrentState();
 
 	int SetTapeChar(unsigned index, WideChar c);
-	int SetTapePosition(unsigned index);
 	int ShiftTape(int shift);
 	WideChar GetTapeChar(unsigned index);
 	int GetTapePosition();

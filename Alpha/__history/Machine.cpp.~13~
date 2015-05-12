@@ -126,7 +126,6 @@ int Machine::SetTapePosition(unsigned position)
 {
 	if (position >= tap->tape.size()) return -1;
 	tap->position = position;
-	return 0;
 }
 
 int Machine::ShiftTape(int shift)
