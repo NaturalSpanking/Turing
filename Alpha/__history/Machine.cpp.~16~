@@ -13,8 +13,7 @@ Machine* Machine::Create(unsigned tapLen, unsigned tabRows, unsigned tabCol)
 	mach->tab = new Table(tabRows, tabCol);
 	mach->tap = new Tape(tapLen);
 	mach->currentState = 1;
-	mach->tapMem = NULL;
-	mach->tapMemSys = NULL;
+	mach->tapMem=NULL;
 	return mach;
 }
 
@@ -70,25 +69,16 @@ int Machine::TraceProgram()
 //int Machine::SaveProgram(char* pathToFile);
 //int Machine::LoadProgram(char* pathToFile);
 
-void Machine::SaveTape(WideChar isUser)
+void Machine::SaveTape()
 {
-	if (isUser == 'U') tapMem = tap->CreateMemento();
-	else tapMemSys = tap->CreateMemento();
+	tapMem = tap->CreateMemento();
 }
 
-int Machine::LoadTape(WideChar isUser)
+int Machine::LoadTape()
 {
-	if (isUser == 'U') {
-		if (tapMem == NULL) return -1;
-		tap->SetMemento(tapMem);
-		return 0;
-	}
-	else
-	{
-		if (tapMemSys == NULL) return -1;
-		tap->SetMemento(tapMemSys);
-		return 0;
-	}
+	if (tapMem == NULL) return -1;
+	tap->SetMemento(tapMem);
+	return 0;
 }
 
 WideChar Machine::GetAlphabet(int index){

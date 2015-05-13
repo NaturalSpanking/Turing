@@ -12,6 +12,7 @@ protected:
 	TapeMemento();
 	void SetState(Tape* t);
 	Tape* GetState();
+private:
 	Tape* tap;
 };
 #endif

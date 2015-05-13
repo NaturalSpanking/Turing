@@ -17,11 +17,13 @@ void Tape::Resize(unsigned lenght)
 TapeMemento* Tape::CreateMemento()
 {
 	TapeMemento* newTapeMemento = new TapeMemento();
-	newTapeMemento->SetState(tape);
+	newTapeMemento->SetState(this);
 	return newTapeMemento;
 }
 void Tape::SetMemento(TapeMemento* m)
 {
-	tape = m->GetState();
+	Tape *temp = m->GetState();
+	tape = temp->tape;
+	position = temp->position;
 }
 #pragma package(smart_init)

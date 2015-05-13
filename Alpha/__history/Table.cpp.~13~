@@ -38,7 +38,7 @@ int Table::AddCol(unsigned index)
 }
 int Table::AddRow(WideChar c)
 {
-	if (table.size() == 0 || c == ' ') return -1;
+	if (table.size() == 0) return -1;
 	for (unsigned i = 0; i < table.size(); i++)
 	{
 		if (table[i][0].symbol == c) return -1;
@@ -70,7 +70,7 @@ int Table::DelCol(unsigned index)
 }
 int Table::DelRow(WideChar c)
 {
-	if (table.size() == 1 || c == ' ') return -1;
+	if (table.size() == 1) return -1;
 	for(unsigned i=0; i<table.size(); i++)
 	{
 		if(table[i][0].symbol == c)

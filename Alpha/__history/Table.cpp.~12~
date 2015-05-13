@@ -5,16 +5,14 @@
 Table::Table() {}
 Table::Table(unsigned Rows, unsigned Columns)
 {
-	if(Rows < 1 || Columns < 1) return;
 	rule defRule;
 	char def = '0';
 	table = std::vector<std::vector<rule> >(Rows, std::vector<rule>(Columns, defRule));
-	table[0][0].symbol = ' ';
-	for(unsigned i=1; i<table.size(); i++)
+	for(unsigned i=0; i<table.size(); i++)
 	{
 		table[i][0].symbol = def;
 		def++;
-	}
+    }
 }
 int Table::AddCol()
 {
@@ -38,7 +36,7 @@ int Table::AddCol(unsigned index)
 }
 int Table::AddRow(WideChar c)
 {
-	if (table.size() == 0 || c == ' ') return -1;
+	if (table.size() == 0) return -1;
 	for (unsigned i = 0; i < table.size(); i++)
 	{
 		if (table[i][0].symbol == c) return -1;
@@ -51,7 +49,7 @@ int Table::AddRow(WideChar c)
 int Table::DelCol()
 {
 	if (table.size() == 0) return -1;
-	if (table[0].size() == 1 || table[0].size() == 2) return -1;
+	if (table[0].size() == 1) return -1;
 	for(unsigned i=0; i<table.size(); i++)
 	{
 		table[i].pop_back();
@@ -60,9 +58,9 @@ int Table::DelCol()
 }
 int Table::DelCol(unsigned index)
 {
-	if (table.size() == 0 || table.size() == 1) return -1;
+	if (table.size() == 0) return -1;
 	if (table[0].size() <= index || index == 0) return -1;
-	for(unsigned i=0; i<table.size(); i++)
+ 	for(unsigned i=0; i<table.size(); i++)
 	{
 		table[i].erase(table[i].begin() + index);
 	}
@@ -70,7 +68,7 @@ int Table::DelCol(unsigned index)
 }
 int Table::DelRow(WideChar c)
 {
-	if (table.size() == 1 || c == ' ') return -1;
+	if (table.size() == 1) return -1;
 	for(unsigned i=0; i<table.size(); i++)
 	{
 		if(table[i][0].symbol == c)

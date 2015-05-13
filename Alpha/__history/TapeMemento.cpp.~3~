@@ -14,7 +14,7 @@ TapeMemento::~TapeMemento()
 void TapeMemento::SetState(Tape *t)
 {
 	if(tap != NULL) delete(tap);
-	tap = new Tape(t->GetLenght());
+	tap = new Tape();
 	tap->tape = t->tape;
 	tap->position = t->position;
 }
