@@ -79,13 +79,4 @@ int Table::DelRow(WideChar c)
 	}
 	return -1;
 }
-
-int Table::ColCount(){
-	return table[0].size();
-}
-
-int Table::RowCount(){
-	return table.size();
-}
-
 #pragma package(smart_init)

@@ -29,8 +29,6 @@ public:
 	int SetTableRule(unsigned state, WideChar c, rule r);
 	int GetCurrentState();
 
-	WideChar GetAlphabet(int index);
-
 	int SetTapeChar(unsigned index, WideChar c);
 	int SetTapePosition(unsigned index);
 	int ShiftTape(int shift);

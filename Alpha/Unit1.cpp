@@ -12,17 +12,33 @@
 #pragma resource "asd.res"
 TMainForm *MainForm;
 
-#define TapeHalfLen 50
-#define TapeLen 101
-
 // ---------------------------------------------------------------------------
-void __fastcall TMainForm::Upd() {
+void __fastcall TMainForm::UpdTape() {
 
+//	TapeOffset=machine->GetTapePosition()-StrToInt(OptForm->Edit1->Text);
 	for (int i = 0; i < TapeGrid->ColCount; i++) {
 		TapeGrid->Cells[i][1] =
 			machine->GetTapeChar(TapeOffset + (i - TapeGrid->ColCount / 2) +
-			TapeHalfLen);
+			StrToInt(OptForm->Edit1->Text));
 	}
+	TapeGrid->Refresh();
+	TableGrid->Refresh();
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TMainForm::UpdTable() {
+	TableGrid->RowCount = machine->tab->RowCount() + 1;
+	TableGrid->ColCount = machine->tab->ColCount();
+	for (int i = 0; i < machine->tab->RowCount(); i++) {
+		TableGrid->Cells[0][i + 1] = machine->GetAlphabet(i);
+	}
+	for (int i = 1; i < machine->tab->ColCount(); i++) {
+		for (int j = 1; j <= machine->tab->RowCount(); j++) {
+			TableGrid->Cells[i][j] =
+				RuleToStr(machine->GetTableRule(i, TableGrid->Cells[0][j][1]));
+		}
+	}
+
 }
 
 // ---------------------------------------------------------------------------
@@ -72,28 +88,30 @@ void __fastcall TMainForm::TapeGridDrawCell(TObject *Sender, int ACol, int ARow,
 		TapeGrid->Canvas->Brush->Style = bsClear;
 		TapeGrid->Canvas->Font->Size = 8;
 		TapeGrid->Canvas->Font->Color = clBlack;
-		if((TapeOffset - TapeGrid->ColCount / 2 + ACol>= -TapeHalfLen)&&
-		(TapeOffset - TapeGrid->ColCount / 2 + ACol<=TapeHalfLen)){
-		TapeGrid->Canvas->TextOutW(r.left + 3, r.top + 5,
-			IntToStr(TapeOffset - TapeGrid->ColCount / 2 + ACol));
-		}else{
-		  TapeGrid->Canvas->TextOutW(r.left + 3, r.top + 5,"ZZZ");
+		if ((TapeOffset - TapeGrid->ColCount / 2 + ACol >=
+			-StrToInt(OptForm->Edit1->Text)) && (TapeOffset -
+			TapeGrid->ColCount / 2 + ACol <= StrToInt(OptForm->Edit1->Text))) {
+			TapeGrid->Canvas->TextOutW(r.left + 3, r.top + 5,
+				IntToStr(TapeOffset - TapeGrid->ColCount / 2 + ACol));
+		}
+		else {
+			TapeGrid->Canvas->TextOutW(r.left + 3, r.top + 5, "ZZZ");
 		}
 	}
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeRightBtnClick(TObject *Sender) {
-		TapeOffset++;
-		Upd();
-		TapeGrid->Refresh();
+	TapeOffset++;
+	UpdTape();
+	machine->ShiftTape(1);
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeLeftBtnClick(TObject *Sender) {
-		TapeOffset--;
-		Upd();
-		TapeGrid->Refresh();
+	TapeOffset--;
+	UpdTape();
+	machine->ShiftTape(-1);
 }
 // ---------------------------------------------------------------------------
 
@@ -117,13 +135,15 @@ void __fastcall TMainForm::N12Click(TObject *Sender) {
 void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 	System::WideChar &Key)
 
-{   if (Key==8) {Key=' ';}
-
+{
+	if (Key == 8) {
+		Key = ' ';
+	}
 
 	if (machine->SetTapeChar(TapeOffset + (TapeGrid->Col -
-		TapeGrid->ColCount / 2) + TapeHalfLen, Key) != 0) {
+		TapeGrid->ColCount / 2) + StrToInt(OptForm->Edit1->Text), Key) != 0) {
 		StatusBarHint("Ошибка: выход за границы ленты.");
-		Key=0;
+		Key = 0;
 		return;
 
 	}
@@ -132,8 +152,14 @@ void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::AddRowBtnClick(TObject *Sender) {
-	ShowMessage("Функция еще не реализована!");
 	// AddRowBtn->Glyph->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
+	UnicodeString C;
+	C = InputBox("Добавить строку", "Введите символ", "");
+	if (C == "") {
+		return;
+	}
+	machine->tab->AddRow(C[1]);
+	UpdTable();
 }
 // ---------------------------------------------------------------------------
 
@@ -180,7 +206,7 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 	GridCell->Canvas->Brush->Color = clWhite;
 	GridCell->Canvas->Brush->Style = bsSolid;
 	GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
-	if (ACol == 1) {
+	if (ACol == machine->GetCurrentState()&&(TableGrid->Cells[0][ARow].SubString(1,1)==TapeGrid->Cells[TapeGrid->ColCount / 2][1])) {
 		GridCell->Canvas->Brush->Color = OptForm->Panel2->Color;
 		GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
 	}
@@ -204,6 +230,9 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::TableGridKeyPress(TObject *Sender,
 	System::WideChar &Key) {
+	if (Key == 13) {
+		SetRule();
+	}
 	TGridCracker* C;
 	static unsigned int i;
 	// ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
@@ -294,14 +323,12 @@ void __fastcall TMainForm::TapeGridFixedCellClick(TObject *Sender, int ACol,
 {
 	if ((ACol == TapeGrid->ColCount / 2) && (ARow == 0)) {
 		TapeOffset = 0;
-		Upd();
-		TapeGrid->Refresh();
+		UpdTape();
 	}
 	else {
 		// ShowMessage(IntToStr(TapeOffset + ACol - TapeGrid->ColCount /2));
 		TapeOffset += ACol - TapeGrid->ColCount / 2;
-		Upd();
-		TapeGrid->Refresh();
+		UpdTape();
 
 	}
 }
@@ -346,10 +373,126 @@ void __fastcall TMainForm::SaveTapeBtnClick(TObject *Sender) {
 void __fastcall TMainForm::LoadTapeBtnClick(TObject *Sender) {
 	if (machine->LoadTape() == 0) {
 		StatusBarHint("Лента восстановлена.");
-		Upd();
+		UpdTape();
 	}
 	else {
 		StatusBarHint("Ошибка: лента не была сохранена.");
 	}
 }
+
 // ---------------------------------------------------------------------------
+void __fastcall TMainForm::AddColBtnClick(TObject *Sender) {
+	machine->tab->AddCol(TableGrid->Col);
+	UpdTable();
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TMainForm::DelColBtnClick(TObject *Sender) {
+	if (machine->tab->DelCol(TableGrid->Col) != 0) {
+		StatusBarHint("Нельзя удалить последний столбец.");
+	}
+	UpdTable();
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TMainForm::DelRowBtnClick(TObject *Sender) {
+	// ShowMessage(TableGrid->Cells[TableGrid->Row][0]);
+	if (machine->tab->DelRow(TableGrid->Cells[0][TableGrid->Row][1]) != 0) {
+		StatusBarHint("Нельзя удалить последнюю строку.");
+	}
+	UpdTable();
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TMainForm::TableGridSelectCell(TObject *Sender, int ACol,
+	int ARow, bool &CanSelect) {
+	SetRule();
+}
+
+int __fastcall TMainForm::SetRule() {
+	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 2) {
+		// ShowMessage(StrToInt(TableGrid->Col));
+		if (machine->SetTableRule(TableGrid->Col,
+			TableGrid->Cells[0][TableGrid->Row][1],
+			StrToRule(TableGrid->Cells[TableGrid->Col][TableGrid->Row])) != 0) {
+			StatusBarHint("Ошибка при добавлении правила.");
+		}
+		UpdTable();
+	}
+}
+
+// ---------------------------------------------------------------------------
+rule StrToRule(UnicodeString Str) {
+	rule r;
+	r.symbol = Str[1];
+	if (Str[2] == '<') {
+		r.shift = -1;
+	}
+	if (Str[2] == '>') {
+		r.shift = 1;
+	}
+	if (Str[2] == '.') {
+		r.shift = 0;
+	}
+	r.new_state = StrToInt(Str.SubString(3, Str.Length()));
+	// ShowMessage(IntToStr(r.new_state));
+	return r;
+}
+
+UnicodeString RuleToStr(rule Rule) {
+	UnicodeString S = "";
+	S += Rule.symbol;
+	if (Rule.shift == -1) {
+		S += '<';
+	}
+	if (Rule.shift == 1) {
+		S += '>';
+	}
+	if (Rule.shift == 0) {
+		S += '.';
+	}
+	S += IntToStr(Rule.new_state);
+	if (Rule.shift == -2) {
+		S = "";
+	}
+	return S;
+}
+
+
+void __fastcall TMainForm::StepBtnClick(TObject *Sender)
+{
+machine->SetTapePosition(TapeOffset+StrToInt(OptForm->Edit1->Text));
+int ErrCode=machine->Step();
+if(ErrCode==-1){
+StatusBarHint("Ошибка: символ.");	
+}
+if(ErrCode==-2){
+StatusBarHint("Ошибка: отсутствует правило перехода.");	
+}
+if(ErrCode==1){
+MessageDlg("Выполнение успешно завершено.",mtInformation,TMsgDlgButtons()<<mbOK,0);	
+}
+if(ErrCode!=0){
+if (!PauseBtn->Enabled) {
+	StepTimer->Enabled=false;
+}}
+TapeOffset=machine->GetTapePosition()-StrToInt(OptForm->Edit1->Text);
+UpdTape();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::StartBtnClick(TObject *Sender)
+{
+StartBtn->Enabled=false;
+PauseBtn->Enabled=true;	
+StepBtn->Click();
+StepTimer->Enabled=true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::StepTimerTimer(TObject *Sender)
+{
+StepBtn->Click();	
+}
+//---------------------------------------------------------------------------
+

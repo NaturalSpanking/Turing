@@ -17,10 +17,6 @@ public:
 	int DelCol();
 	int DelCol(unsigned Index);
 	int DelRow(WideChar c);
-
-	int ColCount();
-	int RowCount();
-
 protected:
 	std::vector<std::vector<rule> > table;
 private:

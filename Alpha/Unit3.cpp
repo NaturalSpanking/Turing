@@ -62,6 +62,10 @@ void TOptForm::ApplyChanges() {
 		MainForm->TextPanel->Visible = false;
 		MainForm->GridSplitter->Visible = false;
 	}
+	MainForm->machine->tap->Resize(StrToInt(Edit1->Text)*2+1);
+	MainForm->StepTimer->Interval=StrToInt(Edit2->Text);
+	MainForm->UpdTape();
+	MainForm->UpdTable();
 }
 
 // ---------------------------------------------------------------------------
@@ -71,7 +75,7 @@ __fastcall TOptForm::TOptForm(TComponent* Owner) : TForm(Owner) {
 // ---------------------------------------------------------------------------
 void __fastcall TOptForm::OkBtnClick(TObject *Sender) {
 	try {
-		if (StrToInt(Edit1->Text) < 50) {
+		if (StrToInt(Edit1->Text) < 25) {
 			MessageDlg("Смещение не может быть меньше 25.", mtWarning,
 				TMsgDlgButtons() << mbOK, 0);
 			Edit1->Text = "25";

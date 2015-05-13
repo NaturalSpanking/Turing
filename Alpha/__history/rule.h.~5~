@@ -2,7 +2,7 @@
 #define ruleH
 struct rule
 {
-	WideChar symbol;
+	char symbol;
 	int shift;
 	int new_state;
 	int is_breakpoint;

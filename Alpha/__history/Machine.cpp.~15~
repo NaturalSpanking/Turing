@@ -13,7 +13,6 @@ Machine* Machine::Create(unsigned tapLen, unsigned tabRows, unsigned tabCol)
 	mach->tab = new Table(tabRows, tabCol);
 	mach->tap = new Tape(tapLen);
 	mach->currentState = 1;
-	mach->tapMem=NULL;
 	return mach;
 }
 
@@ -103,7 +102,6 @@ rule Machine::GetTableRule(unsigned state, WideChar c)
 
 int Machine::SetTableRule(unsigned state, WideChar c, rule r)
 {
-
 	if (tab->table.size() == 0) return -1;
 	if (state > tab->table[0].size()) return -1;
 
@@ -139,7 +137,7 @@ int Machine::SetTapePosition(unsigned position)
 
 int Machine::ShiftTape(int shift)
 {
-	if ((int)tap->position + shift > tap->tape.size() && shift > 0) return -1;
+	if ((int)tap->position + shift > tap->position && shift > 0) return -1;
 	if (shift == 0) return 0;
 	if ((int)tap->position + shift < 0 && shift < 0) return -1;
 	tap->position += shift;

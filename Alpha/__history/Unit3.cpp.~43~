@@ -16,6 +16,8 @@ void TOptForm::ApplyToForm() {
 	Edit3->Text = BufList->Strings[2];
 	CheckBox1->Checked = BufList->Strings[3] == "1" ? true : false;
 	CheckBox2->Checked = BufList->Strings[4] == "1" ? true : false;
+	Panel1->Color=StrToInt(BufList->Strings[5]);
+	Panel2->Color=StrToInt(BufList->Strings[6]);
 }
 
 void TOptForm::ApplyToList() {
@@ -25,6 +27,41 @@ void TOptForm::ApplyToList() {
 	BufList->Add(Edit3->Text);
 	BufList->Add(CheckBox1->Checked ? "1" : "0");
 	BufList->Add(CheckBox2->Checked ? "1" : "0");
+	BufList->Add(IntToStr(Panel1->Color));
+	BufList->Add(IntToStr(Panel2->Color));
+}
+
+void TOptForm::ApplyChanges() {
+	if (CheckBox1->Checked) {
+		MainForm->CommentMemo->Visible = true;
+		MainForm->MemoSplitter->Visible = true;
+	}
+	else {
+		MainForm->CommentMemo->Visible = false;
+		MainForm->MemoSplitter->Visible = false;
+	}
+	if (CheckBox2->Checked) {
+		MainForm->ProblemMemo->Visible = true;
+		MainForm->MemoSplitter->Visible = true;
+		MainForm->MemoSplitter->Align = alBottom;
+		MainForm->CommentMemo->Align = alBottom;
+		MainForm->MemoSplitter->Top = MainForm->TextPanel->Height / 2;
+		MainForm->CommentMemo->Height = MainForm->TextPanel->Height / 2;
+	}
+	else {
+		MainForm->ProblemMemo->Visible = false;
+		MainForm->MemoSplitter->Visible = false;
+		MainForm->CommentMemo->Align = alClient;
+	}
+	if ((CheckBox1->Checked) || (CheckBox2->Checked)) {
+		MainForm->TextPanel->Visible = true;
+		MainForm->GridSplitter->Visible = true;
+		MainForm->GridSplitter->Left = MainForm->TableGrid->Width;
+	}
+	else {
+		MainForm->TextPanel->Visible = false;
+		MainForm->GridSplitter->Visible = false;
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -35,9 +72,9 @@ __fastcall TOptForm::TOptForm(TComponent* Owner) : TForm(Owner) {
 void __fastcall TOptForm::OkBtnClick(TObject *Sender) {
 	try {
 		if (StrToInt(Edit1->Text) < 50) {
-			MessageDlg("ƒлина ленты не может быть меньше 50.", mtWarning,
+			MessageDlg("—мещение не может быть меньше 25.", mtWarning,
 				TMsgDlgButtons() << mbOK, 0);
-			Edit1->Text = "50";
+			Edit1->Text = "25";
 			return;
 		}
 		if (StrToInt(Edit2->Text) < 0) {
@@ -52,61 +89,13 @@ void __fastcall TOptForm::OkBtnClick(TObject *Sender) {
 			Edit3->Text = "0";
 			return;
 		}
-		if ((StrToInt(OptionsList->Cells[1][4]) < 0) ||
-			(StrToInt(OptionsList->Cells[1][4]) > 1) ||
-			(OptionsList->Cells[1][4].Length() > 1)) {
-			MessageDlg(
-				"Ћогический параметр может принимать только значени€ 0 или 1",
-				mtWarning, TMsgDlgButtons() << mbOK, 0);
-			OptionsList->Cells[1][4] = "1";
-			return;
-		}
-		if ((StrToInt(OptionsList->Cells[1][5]) < 0) ||
-			(StrToInt(OptionsList->Cells[1][5]) > 1) ||
-			(OptionsList->Cells[1][5].Length() > 1)) {
-			MessageDlg(
-				"Ћогический параметр может принимать только значени€ 0 или 1",
-				mtWarning, TMsgDlgButtons() << mbOK, 0);
-			OptionsList->Cells[1][5] = "1";
-			return;
-		}
-
 	}
 	catch (EConvertError *ex) {
-		MessageDlg("¬се значени€ должны быть числовыми!", mtError,
+		MessageDlg("¬се значени€ должны быть числовыми!", mtWarning,
 			TMsgDlgButtons() << mbOK, 0);
 		return;
 	}
-	if (OptionsList->Cells[1][4] == 1) {
-		MainForm->CommentMemo->Visible = true;
-		MainForm->MemoSplitter->Visible = true;
-	}
-	else {
-		MainForm->CommentMemo->Visible = false;
-		MainForm->MemoSplitter->Visible = false;
-	}
-	if (OptionsList->Cells[1][5] == 1) {
-		MainForm->ProblemMemo->Visible = true;
-		MainForm->MemoSplitter->Visible = true;
-		MainForm->MemoSplitter->Align = alBottom;
-		MainForm->CommentMemo->Align = alBottom;
-		MainForm->MemoSplitter->Top = MainForm->TextPanel->Height / 2;
-		MainForm->CommentMemo->Height = MainForm->TextPanel->Height / 2;
-	}
-	else {
-		MainForm->ProblemMemo->Visible = false;
-		MainForm->MemoSplitter->Visible = false;
-		MainForm->CommentMemo->Align = alClient;
-	}
-	if ((OptionsList->Cells[1][4] == 1) || (OptionsList->Cells[1][5] == 1)) {
-		MainForm->TextPanel->Visible = true;
-		MainForm->GridSplitter->Visible = true;
-		MainForm->GridSplitter->Left = MainForm->TableGrid->Width;
-	}
-	else {
-		MainForm->TextPanel->Visible = false;
-		MainForm->GridSplitter->Visible = false;
-	}
+	ApplyChanges();
 	ApplyToList();
 	BufList->SaveToFile("Options.cfg");
 	OptForm->Close();
@@ -157,6 +146,7 @@ void __fastcall TOptForm::FormCreate(TObject *Sender) {
 	if (FileExists("Options.cfg")) {
 		BufList->LoadFromFile("Options.cfg");
 		ApplyToForm();
+		ApplyChanges();
 	}
 }
 // ---------------------------------------------------------------------------
@@ -165,3 +155,14 @@ void __fastcall TOptForm::FormDestroy(TObject *Sender) {
 	delete BufList;
 }
 // ---------------------------------------------------------------------------
+void __fastcall TOptForm::PanelClick(TObject *Sender)
+{
+TColorDialog *C = new TColorDialog(OptForm);
+C->Color=((TPanel*)Sender)->Color;
+if(C->Execute()){
+	((TPanel*)Sender)->Color=C->Color;
+}
+delete C;
+}
+//---------------------------------------------------------------------------
+

@@ -65,7 +65,9 @@ __published: // IDE-managed Components
 	TMenuItem *N16;
 	TMenuItem *N17;
 	TTimer *StatusTimer;
+	TTimer *StepTimer;
 
+    int __fastcall SetRule();
 	void __fastcall N10Click(TObject *Sender);
 	void __fastcall N7Click(TObject *Sender);
 	void __fastcall N9Click(TObject *Sender);
@@ -93,11 +95,23 @@ __published: // IDE-managed Components
 	void __fastcall TapeGridFixedCellClick(TObject *Sender, int ACol, int ARow);
 	void __fastcall TapeGridExit(TObject *Sender);
 	void __fastcall TapeGridKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
-	void __fastcall Upd();
+	void __fastcall UpdTape();
+	void __fastcall UpdTable();
 	void __fastcall StatusBarHint(UnicodeString Text);
 	void __fastcall StatusTimerTimer(TObject *Sender);
 	void __fastcall SaveTapeBtnClick(TObject *Sender);
 	void __fastcall LoadTapeBtnClick(TObject *Sender);
+	void __fastcall AddColBtnClick(TObject *Sender);
+	void __fastcall DelColBtnClick(TObject *Sender);
+	void __fastcall DelRowBtnClick(TObject *Sender);
+	void __fastcall TableGridSelectCell(TObject *Sender, int ACol, int ARow, bool &CanSelect);
+	void __fastcall StepBtnClick(TObject *Sender);
+	void __fastcall StartBtnClick(TObject *Sender);
+	void __fastcall StepTimerTimer(TObject *Sender);
+
+
+
+
 
 
 
@@ -106,10 +120,10 @@ private: // User declarations
 	int TapeOffset;
 	TBitmap* GreenArrow;
 	TBitmap* GridCell;
-	Machine* machine;
+
 
 public: // User declarations
-
+	Machine* machine;
 	__fastcall TMainForm(TComponent* Owner);
 };
 
@@ -118,6 +132,9 @@ class TGridCracker : public TStringGrid {
 public:
 	int __fastcall GetCaretPosition(TStringGrid *Grid);
 };
+
+rule StrToRule(UnicodeString Str);
+UnicodeString RuleToStr(rule Rule);
 
 // ---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;

@@ -184,7 +184,7 @@ object MainForm: TMainForm
       NumGlyphs = 2
       TabOrder = 0
       TabStop = False
-      OnClick = AddRowBtnClick
+      OnClick = StartBtnClick
     end
     object PauseBtn: TBitBtn
       Left = 39
@@ -742,7 +742,7 @@ object MainForm: TMainForm
         FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF000000}
       TabOrder = 5
       TabStop = False
-      OnClick = AddRowBtnClick
+      OnClick = StepBtnClick
     end
   end
   object StatusBar1: TStatusBar
@@ -1093,7 +1093,7 @@ object MainForm: TMainForm
       ShowHint = True
       TabOrder = 1
       TabStop = False
-      OnClick = AddRowBtnClick
+      OnClick = DelRowBtnClick
     end
     object AddColBtn: TBitBtn
       Left = 72
@@ -1179,7 +1179,7 @@ object MainForm: TMainForm
       ShowHint = True
       TabOrder = 2
       TabStop = False
-      OnClick = AddRowBtnClick
+      OnClick = AddColBtnClick
     end
     object DelColBtn: TBitBtn
       Left = 105
@@ -1265,7 +1265,7 @@ object MainForm: TMainForm
       ShowHint = True
       TabOrder = 3
       TabStop = False
-      OnClick = AddRowBtnClick
+      OnClick = DelColBtnClick
     end
   end
   object TableGrid: TStringGrid
@@ -1291,6 +1291,7 @@ object MainForm: TMainForm
     TabOrder = 0
     OnDrawCell = TableGridDrawCell
     OnKeyPress = TableGridKeyPress
+    OnSelectCell = TableGridSelectCell
   end
   object TextPanel: TPanel
     Left = 526
@@ -1342,7 +1343,6 @@ object MainForm: TMainForm
       object N2: TMenuItem
         Caption = #1053#1086#1074#1099#1081
         ShortCut = 16462
-        OnClick = AddRowBtnClick
       end
       object N3: TMenuItem
         Caption = #1054#1090#1082#1088#1099#1090#1100'...'
@@ -1418,11 +1418,9 @@ object MainForm: TMainForm
     Left = 368
     object N16: TMenuItem
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1090#1086#1095#1082#1091' '#1086#1089#1090#1072#1085#1086#1074#1072
-      OnClick = AddRowBtnClick
     end
     object N17: TMenuItem
       Caption = #1042#1099#1087#1086#1083#1085#1080#1090#1100' '#1076#1086' '#1101#1090#1086#1075#1086' '#1084#1077#1089#1090#1072
-      OnClick = AddRowBtnClick
     end
   end
   object StatusTimer: TTimer
@@ -1430,5 +1428,10 @@ object MainForm: TMainForm
     Interval = 10000
     OnTimer = StatusTimerTimer
     Left = 408
+  end
+  object StepTimer: TTimer
+    Enabled = False
+    OnTimer = StepTimerTimer
+    Left = 448
   end
 end
