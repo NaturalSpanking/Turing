@@ -29,7 +29,7 @@ public:
 	rule GetTableRule(unsigned state, WideChar c);
 	int SetTableRule(unsigned state, WideChar c, rule r);
 	int GetCurrentState();
-	int IsBreakepoint(unsigned state, WideChar c);
+	bool IsBreakepoint(unsigned state, WideChar c);
 	WideChar GetAlphabet(int index);
 
 	int SetTapeChar(unsigned index, WideChar c);
