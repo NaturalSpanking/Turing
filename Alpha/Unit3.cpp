@@ -18,6 +18,7 @@ void TOptForm::ApplyToForm() {
 	CheckBox2->Checked = BufList->Strings[4] == "1" ? true : false;
 	Panel1->Color=StrToInt(BufList->Strings[5]);
 	Panel2->Color=StrToInt(BufList->Strings[6]);
+	CheckBox3->Checked = BufList->Strings[7] == "1" ? true : false;
 }
 
 void TOptForm::ApplyToList() {
@@ -29,6 +30,7 @@ void TOptForm::ApplyToList() {
 	BufList->Add(CheckBox2->Checked ? "1" : "0");
 	BufList->Add(IntToStr(Panel1->Color));
 	BufList->Add(IntToStr(Panel2->Color));
+	BufList->Add(CheckBox3->Checked ? "1" : "0");
 }
 
 void TOptForm::ApplyChanges() {

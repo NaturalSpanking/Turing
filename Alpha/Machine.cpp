@@ -98,7 +98,7 @@ int Machine::IsBreakepoint(unsigned state, WideChar c)
 
 	for (unsigned i = 0; i < tab->table.size(); i++)
 	{
-		if (tab->table[i][0].symbol == c && tab->table[i][0].is_breakpoint == 1) return 1;
+		if (tab->table[i][0].symbol == c && tab->table[i][state].is_breakpoint == 1) return 1;
 	}
 	return 0;
 }

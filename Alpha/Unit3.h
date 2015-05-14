@@ -32,6 +32,7 @@ __published:	// IDE-managed Components
 	TPanel *Panel1;
 	TPanel *Panel2;
 	TColorDialog *ColorDialog1;
+	TCheckBox *CheckBox3;
 	void __fastcall OkBtnClick(TObject *Sender);
 	void __fastcall CancelBtnClick(TObject *Sender);
 	void __fastcall AssocBtnClick(TObject *Sender);

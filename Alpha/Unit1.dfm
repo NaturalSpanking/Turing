@@ -38,7 +38,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
-      Hint = #1047#1072#1087#1091#1089#1082
+      Hint = #1047#1072#1087#1091#1089#1082' (F9)'
       Glyph.Data = {
         82110000424D82110000000000003600000028000000360000001B0000000100
         1800000000004C11000000000000000000000000000000000000FFFFFFFFFFFF
@@ -191,7 +191,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
-      Hint = #1055#1072#1091#1079#1072
+      Hint = #1055#1072#1091#1079#1072' (F10)'
       Enabled = False
       Glyph.Data = {
         82110000424D82110000000000003600000028000000360000001B0000000100
@@ -338,6 +338,7 @@ object MainForm: TMainForm
       NumGlyphs = 2
       TabOrder = 1
       TabStop = False
+      OnClick = PauseBtnClick
     end
     object LoadTapeBtn: TBitBtn
       Left = 734
@@ -512,7 +513,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
-      Hint = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100
+      Hint = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100' (Shift+F9)'
       Enabled = False
       Glyph.Data = {
         82110000424D82110000000000003600000028000000360000001B0000000100
@@ -665,7 +666,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
-      Hint = #1057#1076#1077#1083#1072#1090#1100' '#1096#1072#1075
+      Hint = #1057#1076#1077#1083#1072#1090#1100' '#1096#1072#1075' (F8)'
       Glyph.Data = {
         12090000424D120900000000000036000000280000001B0000001B0000000100
         180000000000DC08000000000000000000000000000000000000FFFFFFFFFFFF
@@ -1389,7 +1390,7 @@ object MainForm: TMainForm
       object N12: TMenuItem
         Caption = #1057#1090#1072#1088#1090
         ShortCut = 120
-        OnClick = N12Click
+        OnClick = StartBtnClick
       end
       object N13: TMenuItem
         Caption = #1064#1072#1075
@@ -1415,9 +1416,11 @@ object MainForm: TMainForm
   end
   object GridMenu: TPopupMenu
     MenuAnimation = [maRightToLeft, maTopToBottom]
+    OnPopup = GridMenuPopup
     Left = 368
     object N16: TMenuItem
       Caption = #1044#1086#1073#1072#1074#1080#1090#1100' '#1090#1086#1095#1082#1091' '#1086#1089#1090#1072#1085#1086#1074#1072
+      OnClick = N16Click
     end
     object N17: TMenuItem
       Caption = #1042#1099#1087#1086#1083#1085#1080#1090#1100' '#1076#1086' '#1101#1090#1086#1075#1086' '#1084#1077#1089#1090#1072

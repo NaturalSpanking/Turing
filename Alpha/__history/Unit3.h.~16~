@@ -10,22 +10,45 @@
 #include <Vcl.Grids.hpp>
 #include <Vcl.ValEdit.hpp>
 #include <Registry.hpp>
+#include <Vcl.ExtCtrls.hpp>
+#include <Vcl.Dialogs.hpp>
 //---------------------------------------------------------------------------
-class TForm3 : public TForm
+class TOptForm : public TForm
 {
 __published:	// IDE-managed Components
-	TValueListEditor *OptionsList;
 	TButton *AssocBtn;
 	TButton *OkBtn;
 	TButton *CancelBtn;
+	TLabel *Label1;
+	TEdit *Edit1;
+	TEdit *Edit2;
+	TLabel *Label2;
+	TEdit *Edit3;
+	TLabel *Label3;
+	TCheckBox *CheckBox1;
+	TCheckBox *CheckBox2;
+	TLabel *Label4;
+	TLabel *Label5;
+	TPanel *Panel1;
+	TPanel *Panel2;
+	TColorDialog *ColorDialog1;
 	void __fastcall OkBtnClick(TObject *Sender);
 	void __fastcall CancelBtnClick(TObject *Sender);
 	void __fastcall AssocBtnClick(TObject *Sender);
-private:	// User declarations
+	void __fastcall FormShow(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall FormDestroy(TObject *Sender);
+	void __fastcall PanelClick(TObject *Sender);
+private:
+	TStringList *BufList;
+	void ApplyToForm();
+	void ApplyToList();
+	void ApplyChanges();
 public:		// User declarations
-	__fastcall TForm3(TComponent* Owner);
+	__fastcall TOptForm(TComponent* Owner);
 };
 //---------------------------------------------------------------------------
-extern PACKAGE TForm3 *Form3;
+extern PACKAGE TOptForm *OptForm;
 //---------------------------------------------------------------------------
 #endif

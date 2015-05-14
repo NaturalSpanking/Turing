@@ -15,7 +15,7 @@ TMainForm *MainForm;
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::UpdTape() {
 
-//	TapeOffset=machine->GetTapePosition()-StrToInt(OptForm->Edit1->Text);
+	// TapeOffset=machine->GetTapePosition()-StrToInt(OptForm->Edit1->Text);
 	for (int i = 0; i < TapeGrid->ColCount; i++) {
 		TapeGrid->Cells[i][1] =
 			machine->GetTapeChar(TapeOffset + (i - TapeGrid->ColCount / 2) +
@@ -95,7 +95,8 @@ void __fastcall TMainForm::TapeGridDrawCell(TObject *Sender, int ACol, int ARow,
 				IntToStr(TapeOffset - TapeGrid->ColCount / 2 + ACol));
 		}
 		else {
-			TapeGrid->Canvas->TextOutW(r.left + 3, r.top + 5, "ZZZ");
+//			TapeGrid->Canvas->TextOutW(r.left + 3, r.top + 5, "ZZZ"); 0x2660
+			TapeGrid->Canvas->TextOutW(r.left + 10, r.top + 5, ((WideChar)0x2660));
 		}
 	}
 }
@@ -127,11 +128,6 @@ void __fastcall TMainForm::TapeGridMouseWheelUp(TObject *Sender,
 }
 // ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::N12Click(TObject *Sender) {
-	ShowMessage("Старт");
-}
-// ---------------------------------------------------------------------------
-
 void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 	System::WideChar &Key)
 
@@ -146,7 +142,7 @@ void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 		Key = 0;
 		return;
 
-	}
+	}else{StatusBarHint("Готово.");}
 	TapeGrid->Cells[TapeGrid->Col][1] = Key;
 }
 // ---------------------------------------------------------------------------
@@ -158,7 +154,9 @@ void __fastcall TMainForm::AddRowBtnClick(TObject *Sender) {
 	if (C == "") {
 		return;
 	}
-	machine->tab->AddRow(C[1]);
+	if (machine->tab->AddRow(C[1]) == -1) {
+		StatusBarHint("Символ уже существует.");
+	};
 	UpdTable();
 }
 // ---------------------------------------------------------------------------
@@ -206,11 +204,13 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 	GridCell->Canvas->Brush->Color = clWhite;
 	GridCell->Canvas->Brush->Style = bsSolid;
 	GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
-	if (ACol == machine->GetCurrentState()&&(TableGrid->Cells[0][ARow].SubString(1,1)==TapeGrid->Cells[TapeGrid->ColCount / 2][1])) {
+	if (ACol == machine->GetCurrentState() &&
+		(TableGrid->Cells[0][ARow].SubString(1,
+		1) == TapeGrid->Cells[TapeGrid->ColCount / 2][1])) {
 		GridCell->Canvas->Brush->Color = OptForm->Panel2->Color;
 		GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
 	}
-	if (ARow == 1) {
+	if (machine->IsBreakepoint(ACol, TableGrid->Cells[0][ARow][1]) == 1) {
 		// GridCell->Canvas->Brush->Color = RGB(159, 182, 205);
 		GridCell->Canvas->Pen->Color = OptForm->Panel1->Color;
 		GridCell->Canvas->Rectangle(0, 0, r.Width(), r.Height());
@@ -372,6 +372,8 @@ void __fastcall TMainForm::SaveTapeBtnClick(TObject *Sender) {
 
 void __fastcall TMainForm::LoadTapeBtnClick(TObject *Sender) {
 	if (machine->LoadTape() == 0) {
+		TapeOffset = machine->GetTapePosition() -
+			StrToInt(OptForm->Edit1->Text);
 		StatusBarHint("Лента восстановлена.");
 		UpdTape();
 	}
@@ -398,7 +400,7 @@ void __fastcall TMainForm::DelColBtnClick(TObject *Sender) {
 void __fastcall TMainForm::DelRowBtnClick(TObject *Sender) {
 	// ShowMessage(TableGrid->Cells[TableGrid->Row][0]);
 	if (machine->tab->DelRow(TableGrid->Cells[0][TableGrid->Row][1]) != 0) {
-		StatusBarHint("Нельзя удалить последнюю строку.");
+		StatusBarHint("Нельзя удалить пустой символ.");
 	}
 	UpdTable();
 }
@@ -409,20 +411,21 @@ void __fastcall TMainForm::TableGridSelectCell(TObject *Sender, int ACol,
 	SetRule();
 }
 
-int __fastcall TMainForm::SetRule() {
+void __fastcall TMainForm::SetRule() {
 	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 2) {
 		// ShowMessage(StrToInt(TableGrid->Col));
 		if (machine->SetTableRule(TableGrid->Col,
 			TableGrid->Cells[0][TableGrid->Row][1],
 			StrToRule(TableGrid->Cells[TableGrid->Col][TableGrid->Row])) != 0) {
 			StatusBarHint("Ошибка при добавлении правила.");
-		}
+		}else{StatusBarHint("Готово.");}
 		UpdTable();
+
 	}
 }
 
 // ---------------------------------------------------------------------------
-rule StrToRule(UnicodeString Str) {
+rule __fastcall TMainForm::StrToRule(UnicodeString Str) {
 	rule r;
 	r.symbol = Str[1];
 	if (Str[2] == '<') {
@@ -435,11 +438,13 @@ rule StrToRule(UnicodeString Str) {
 		r.shift = 0;
 	}
 	r.new_state = StrToInt(Str.SubString(3, Str.Length()));
+	r.is_breakpoint = machine->IsBreakepoint(TableGrid->Col,
+		TableGrid->Cells[0][TableGrid->Row][1]);
 	// ShowMessage(IntToStr(r.new_state));
 	return r;
 }
 
-UnicodeString RuleToStr(rule Rule) {
+UnicodeString __fastcall TMainForm::RuleToStr(rule Rule) {
 	UnicodeString S = "";
 	S += Rule.symbol;
 	if (Rule.shift == -1) {
@@ -458,41 +463,91 @@ UnicodeString RuleToStr(rule Rule) {
 	return S;
 }
 
+void __fastcall TMainForm::StepBtnClick(TObject *Sender) {
+	machine->SetTapePosition(TapeOffset + StrToInt(OptForm->Edit1->Text));
+	int ErrCode = machine->Step();
+	TapeOffset = machine->GetTapePosition() - StrToInt(OptForm->Edit1->Text);
+	UpdTape();
+	if (ErrCode != 0) {
+		PauseBtn->Enabled = false;
+		PauseBtn->Tag = 0;
+		StartBtn->Enabled = true;
+		StepTimer->Enabled = false;
+	}
+	if (ErrCode == -1) {
+		StatusBarHint("Ошибка: выход за пределы ленты.");
+	}
+	if (ErrCode == -2) {
+		StatusBarHint("Ошибка: отсутствует правило перехода.");
+	}
+	if (ErrCode == 1) {
+		StatusBarHint("Готово.");
+		MessageDlg("Выполнение успешно завершено.", mtInformation,
+			TMsgDlgButtons() << mbOK, 0);
+	}
+}
+// ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::StepBtnClick(TObject *Sender)
-{
-machine->SetTapePosition(TapeOffset+StrToInt(OptForm->Edit1->Text));
-int ErrCode=machine->Step();
-if(ErrCode==-1){
-StatusBarHint("Ошибка: символ.");	
+void __fastcall TMainForm::StartBtnClick(TObject *Sender) {
+	if (!StartBtn->Enabled) {
+		return;
+	}
+	if ((PauseBtn->Tag == 0)&&(OptForm->CheckBox3->Checked)) {
+		SaveTapeBtn->Click();
+	}
+	StartBtn->Enabled = false;
+	PauseBtn->Enabled = true;
+	StepBtn->Click();
+	StepTimer->Enabled = true;
+	StatusBarHint("Выполнение...");
 }
-if(ErrCode==-2){
-StatusBarHint("Ошибка: отсутствует правило перехода.");	
-}
-if(ErrCode==1){
-MessageDlg("Выполнение успешно завершено.",mtInformation,TMsgDlgButtons()<<mbOK,0);	
-}
-if(ErrCode!=0){
-if (!PauseBtn->Enabled) {
-	StepTimer->Enabled=false;
-}}
-TapeOffset=machine->GetTapePosition()-StrToInt(OptForm->Edit1->Text);
-UpdTape();
-}
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::StartBtnClick(TObject *Sender)
-{
-StartBtn->Enabled=false;
-PauseBtn->Enabled=true;	
-StepBtn->Click();
-StepTimer->Enabled=true;
+void __fastcall TMainForm::StepTimerTimer(TObject *Sender) {
+	StepBtn->Click();
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 
-void __fastcall TMainForm::StepTimerTimer(TObject *Sender)
-{
-StepBtn->Click();	
+void __fastcall TMainForm::N16Click(TObject *Sender) {
+	rule r;
+	r = machine->GetTableRule(TableGrid->Col,
+		TableGrid->Cells[0][TableGrid->Row][1]);
+	if (r.new_state == -1) {
+		StatusBarHint("Ошибка: отсутствует правило перехода.");
+		return;
+	}
+	r.is_breakpoint < 1 ? r.is_breakpoint = 1 : r.is_breakpoint = 0;
+	machine->SetTableRule(TableGrid->Col,
+		TableGrid->Cells[0][TableGrid->Row][1], r);
+
+	;
+	TableGrid->Refresh();
 }
-//---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+void __fastcall TMainForm::GridMenuPopup(TObject *Sender) {
+	if (machine->IsBreakepoint(TableGrid->Col,
+		TableGrid->Cells[0][TableGrid->Row][1]) == 1) {
+		N16->Caption = "Удалить точку останова";
+		// ShowMessage("qwe213");
+	}
+	else {
+		N16->Caption = "Добавить точку останова";
+		// ShowMessage("qwe");
+	}
+}
+// ---------------------------------------------------------------------------
+
+void __fastcall TMainForm::PauseBtnClick(TObject *Sender) {
+	if (!PauseBtn->Enabled) {
+		return;
+	}
+	PauseBtn->Tag = 1;
+	StepBtn->Enabled = false;
+	StartBtn->Enabled = true;
+	StepTimer->Enabled = false;
+	PauseBtn->Enabled = false;
+	StatusBarHint("Пауза.");
+}
+// ---------------------------------------------------------------------------
 

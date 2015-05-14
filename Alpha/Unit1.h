@@ -67,7 +67,7 @@ __published: // IDE-managed Components
 	TTimer *StatusTimer;
 	TTimer *StepTimer;
 
-    int __fastcall SetRule();
+    void __fastcall SetRule();
 	void __fastcall N10Click(TObject *Sender);
 	void __fastcall N7Click(TObject *Sender);
 	void __fastcall N9Click(TObject *Sender);
@@ -80,7 +80,6 @@ __published: // IDE-managed Components
 		TPoint &MousePos, bool &Handled);
 	void __fastcall TapeGridMouseWheelUp(TObject *Sender, TShiftState Shift,
 		TPoint &MousePos, bool &Handled);
-	void __fastcall N12Click(TObject *Sender);
 	void __fastcall TapeGridKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall AddRowBtnClick(TObject *Sender);
 	void __fastcall N6Click(TObject *Sender);
@@ -108,6 +107,11 @@ __published: // IDE-managed Components
 	void __fastcall StepBtnClick(TObject *Sender);
 	void __fastcall StartBtnClick(TObject *Sender);
 	void __fastcall StepTimerTimer(TObject *Sender);
+	void __fastcall N16Click(TObject *Sender);
+	void __fastcall GridMenuPopup(TObject *Sender);
+	rule __fastcall StrToRule(UnicodeString Str);
+	UnicodeString __fastcall RuleToStr(rule Rule);
+	void __fastcall PauseBtnClick(TObject *Sender);
 
 
 
@@ -132,9 +136,6 @@ class TGridCracker : public TStringGrid {
 public:
 	int __fastcall GetCaretPosition(TStringGrid *Grid);
 };
-
-rule StrToRule(UnicodeString Str);
-UnicodeString RuleToStr(rule Rule);
 
 // ---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
