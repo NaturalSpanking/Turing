@@ -13,6 +13,8 @@ Machine* Machine::Create(unsigned tapLen, unsigned tabRows, unsigned tabCol)
 	mach->tab = new Table(tabRows, tabCol);
 	mach->tap = new Tape(tapLen);
 	mach->currentState = 1;
+	mach->tapMem = NULL;
+	mach->tapMemSys = NULL;
 	return mach;
 }
 
@@ -68,16 +70,43 @@ int Machine::TraceProgram()
 //int Machine::SaveProgram(char* pathToFile);
 //int Machine::LoadProgram(char* pathToFile);
 
-void Machine::SaveTape()
+void Machine::SaveTape(WideChar isUser)
 {
-	tapMem = tap->CreateMemento();
+	if (isUser == 'U') tapMem = tap->CreateMemento();
+	else tapMemSys = tap->CreateMemento();
 }
 
-int Machine::LoadTape()
+int Machine::LoadTape(WideChar isUser)
 {
-	if (tapMem == NULL) return -1;
-	tap->SetMemento(tapMem);
+	if (isUser == 'U') {
+		if (tapMem == NULL) return -1;
+		tap->SetMemento(tapMem);
+		return 0;
+	}
+	else
+	{
+		if (tapMemSys == NULL) return -1;
+		tap->SetMemento(tapMemSys);
+		return 0;
+	}
+}
+
+int Machine::IsBreakepoint(unsigned state, WideChar c)
+{
+	if (tab->table.size() == 0) return -1;
+	if (state > tab->table[0].size()) return -1;
+
+	for (unsigned i = 0; i < tab->table.size(); i++)
+	{
+		if (tab->table[i][0].symbol == c && tab->table[i][state].is_breakpoint == 1) return 1;
+	}
 	return 0;
+}
+
+WideChar Machine::GetAlphabet(int index){
+	if (tab->table.size() == 0) return 0;
+	if (index > tab->table.size()) return 0;
+	return tab->table[index][0].symbol;
 }
 
 rule Machine::GetTableRule(unsigned state, WideChar c)
@@ -96,6 +125,7 @@ rule Machine::GetTableRule(unsigned state, WideChar c)
 
 int Machine::SetTableRule(unsigned state, WideChar c, rule r)
 {
+
 	if (tab->table.size() == 0) return -1;
 	if (state > tab->table[0].size()) return -1;
 
@@ -131,7 +161,7 @@ int Machine::SetTapePosition(unsigned position)
 
 int Machine::ShiftTape(int shift)
 {
-	if ((int)tap->position + shift > tap->position && shift > 0) return -1;
+	if ((int)tap->position + shift > tap->tape.size() && shift > 0) return -1;
 	if (shift == 0) return 0;
 	if ((int)tap->position + shift < 0 && shift < 0) return -1;
 	tap->position += shift;

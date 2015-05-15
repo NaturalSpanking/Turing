@@ -10,9 +10,11 @@ class Table
 public:
 	Table(unsigned Rows, unsigned Columns);
 
+	int AddCol();
 	int AddCol(unsigned Index);
 	int AddRow(WideChar c);
 
+	int DelCol();
 	int DelCol(unsigned Index);
 	int DelRow(WideChar c);
 

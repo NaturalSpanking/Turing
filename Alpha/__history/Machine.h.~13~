@@ -19,8 +19,7 @@ public:
 	static Machine* Create(unsigned tapLen = 101, unsigned tabRows = 4, unsigned tabCol = 5);
 
 	int Step();
-//	int TraceProgram();
-	int SetInitialState();
+	int TraceProgram();
 
 	int SaveProgram(char* pathToFile);
 	int LoadProgram(char* pathToFile);

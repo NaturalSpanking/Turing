@@ -135,13 +135,11 @@ int Machine::IsBreakepoint(unsigned state, WideChar c)
 	return 0;
 }
 
-//Получение значения символа 1-го столбца(символы алфавита) по его индексу
 WideChar Machine::GetAlphabet(int index){
 	if (tab->table.size() == 0) return 0;
 	if (index > tab->table.size()) return 0;
 	return tab->table[index][0].symbol;
 }
-
 //Получение правила из ячейки
 //Возвращаемые значения:
 //errRule - такой ячейки не существует
