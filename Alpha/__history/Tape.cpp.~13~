@@ -1,30 +1,25 @@
 #pragma hdrstop
 
 #include "Tape.h"
-//Инициализация ленты заданной длины
 Tape::Tape(unsigned lenght)
 {
 	tape = std::vector<WideChar>(lenght, ' ');
 	position = lenght / 2;
 }
-//Получение длины ленты
 int Tape::GetLenght()
 {
 	return tape.size();
 }
-//Изменение размеров ленты
 void Tape::Resize(unsigned lenght)
 {
 	tape.resize(lenght, ' ');
 }
-//Создание временного хранилища
 TapeMemento* Tape::CreateMemento()
 {
 	TapeMemento* newTapeMemento = new TapeMemento();
 	newTapeMemento->SetState(this);
 	return newTapeMemento;
 }
-//Загрузка временного хранилища
 void Tape::SetMemento(TapeMemento* m)
 {
 	Tape *temp = m->GetState();

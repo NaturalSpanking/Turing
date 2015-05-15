@@ -3,7 +3,6 @@
 #include "Table.h"
 
 Table::Table() {}
-//Инициализация таблицы
 Table::Table(unsigned Rows, unsigned Columns)
 {
 	if(Rows < 1 || Columns < 1) return;
@@ -17,10 +16,7 @@ Table::Table(unsigned Rows, unsigned Columns)
 		def++;
 	}
 }
-//Добавление столбца вместо столбца по индексу(со смещением его вперед)
-//Возвращаемые значения:
-//-1 - добавление за место несуществующего столбца\пустая таблицы
-// 0 - успешно добавлен
+
 int Table::AddCol(unsigned index)
 {
 	if (table.size() == 0) return -1;
@@ -32,10 +28,6 @@ int Table::AddCol(unsigned index)
 	}
 	return 0;
 }
-//Добавление строки в конец с символом "c"
-//Возвращаемые значения:
-//-1 - попытка добавить строку с уже существующим символом алфавита
-// 0 - успешно добавлена
 int Table::AddRow(WideChar c)
 {
 	if (table.size() == 0 || c == ' ') return -1;
@@ -48,10 +40,7 @@ int Table::AddRow(WideChar c)
 	table.back()[0].symbol = c;
 	return 0;
 }
-//Удаление столбца по индексу
-//Возвращаемые значения:
-//-1 - попытка удалить не существующий толбец
-// 0 - успешно удалена
+
 int Table::DelCol(unsigned index)
 {
 	if (table.size() == 0) return -1;
@@ -62,10 +51,6 @@ int Table::DelCol(unsigned index)
 	}
 	return 0;
 }
-//Удаление строки с символом "c"
-//Возвращаемые значения:
-//-1 - попытка удалить не существующую строку
-// 0 - успешно удалена
 int Table::DelRow(WideChar c)
 {
 	if (table.size() == 1 || c == ' ') return -1;
@@ -79,12 +64,11 @@ int Table::DelRow(WideChar c)
 	}
 	return -1;
 }
-//Получение количества столбцов
+
 int Table::ColCount(){
-	if (table.size() == 0) return -1;
 	return table[0].size();
 }
-//Получение количества строк
+
 int Table::RowCount(){
 	return table.size();
 }
