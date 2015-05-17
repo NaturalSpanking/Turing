@@ -297,7 +297,7 @@ void __fastcall TMainForm::FormDestroy(TObject *Sender) {
 void __fastcall TMainForm::N4Click(TObject *Sender) {
 	SaveDialog->FilterIndex = 1;
 	if (SaveDialog->Execute(MainForm->Handle)) {
-		ShowMessage("Функция еще не реализована!");
+		machine->SaveProgram(SaveDialog->FileName.w_str());
 	}
 }
 // ---------------------------------------------------------------------------
@@ -305,14 +305,16 @@ void __fastcall TMainForm::N4Click(TObject *Sender) {
 void __fastcall TMainForm::N5Click(TObject *Sender) {
 	SaveDialog->FilterIndex = 2;
 	if (SaveDialog->Execute(MainForm->Handle)) {
-		ShowMessage("Функция еще не реализована!");
+		machine->SaveProgram(SaveDialog->FileName.w_str());
 	}
 }
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::N3Click(TObject *Sender) {
 	if (OpenDialog->Execute(MainForm->Handle)) {
-		ShowMessage("Функция еще не реализована!");
+		machine->LoadProgram(OpenDialog->FileName.w_str());
+		UpdTable();
+		UpdTape();
 	}
 }
 // ---------------------------------------------------------------------------

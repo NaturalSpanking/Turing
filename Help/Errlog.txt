@@ -10,5 +10,5 @@ Compile time: 0 minutes, 1 second
 0	Graphics
 
 
-Created d:\TestHelp\TuringHelp.chm, 139,958 bytes
-Compression decreased file by 293,854 bytes.
+Created d:\TestHelp\TuringHelp.chm, 149,418 bytes
+Compression decreased file by 293,461 bytes.
