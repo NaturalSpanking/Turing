@@ -28,7 +28,6 @@ Machine::~Machine()
 }
 //Шаг машины
 //Возвращаемые значения:
-//-3 - Символ в ленте или символ в таблице не существует в алфавите
 //-2 - Машина перешла в незаполенную ячейку таблицы
 //-1 - Не удалось получить символ из ленты(выход за границы ленты)
 // 0 - Шаг успешно завершен
@@ -39,14 +38,12 @@ int Machine::Step()
 	rule errRule;
 	WideChar tempChar = GetTapeChar(GetTapePosition());
 	if (tempChar == '\0') return -1;
-	if (!InAlphabet(tempChar)) return -3;
 	rule tempRule = GetTableRule(currentState, tempChar);
 	if (tempRule == errRule)
 	{
 		currentState = 1;
 		return -2;
 	}
-	if (!InAlphabet(tempRule.symbol)) return -3;
 
 	SetTapeChar(GetTapePosition(), tempRule.symbol);
 	ShiftTape(tempRule.shift);
@@ -56,8 +53,8 @@ int Machine::Step()
 		currentState = 1;
 		return 1;
 	}
-	if(IsBreakepoint(tempRule.symbol, tempRule.new_state) == 1) return 2;
-	else return 0;
+	if(tempRule.is_breakpoint == 0) return 0;
+	else return 2;
 }
 
 /*int Machine::TraceProgram()
