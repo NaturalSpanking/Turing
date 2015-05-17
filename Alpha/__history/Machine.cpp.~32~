@@ -106,7 +106,7 @@ int Machine::SaveProgram(WideChar* pathToFile)
 	//запись ленты
 	for (unsigned i = 0; i < tap->tape.size(); i++)
 	{
-		file << (char)tap->tape[i];
+		file << (WideChar)tap->tape[i];
 	}
 	file << "\n";
 
@@ -117,7 +117,7 @@ int Machine::SaveProgram(WideChar* pathToFile)
 		{
 			if (ii != 0)
 			{
-				if (tab->table[i][ii].symbol != ' ') file << (char)tab->table[i][ii].symbol;
+				if (tab->table[i][ii].symbol != ' ') file << tab->table[i][ii].symbol;
 				else file << " ";
 				if (tab->table[i][ii].shift != -2)
 				{
@@ -131,7 +131,7 @@ int Machine::SaveProgram(WideChar* pathToFile)
 			}
 			else
 			{
-				file << (char)tab->table[i][ii].symbol;
+				file << tab->table[i][ii].symbol;
 			}
 			if (ii+1 < Columns) file << " ";
 		}

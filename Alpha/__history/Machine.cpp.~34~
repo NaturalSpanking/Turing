@@ -131,7 +131,7 @@ int Machine::SaveProgram(WideChar* pathToFile)
 			}
 			else
 			{
-				file << (char)tab->table[i][ii].symbol;
+				file << tab->table[i][ii].symbol;
 			}
 			if (ii+1 < Columns) file << " ";
 		}
