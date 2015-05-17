@@ -13,6 +13,7 @@
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Grids.hpp>
 #include <Vcl.Dialogs.hpp>
+#include "ShellAPI.h"
 
 #include "machine.h"
 
@@ -64,7 +65,11 @@ __published: // IDE-managed Components
 	TPopupMenu *GridMenu;
 	TMenuItem *N16;
 	TMenuItem *N17;
+	TTimer *StatusTimer;
+	TTimer *StepTimer;
 
+
+    void __fastcall SetRule();
 	void __fastcall N10Click(TObject *Sender);
 	void __fastcall N7Click(TObject *Sender);
 	void __fastcall N9Click(TObject *Sender);
@@ -77,7 +82,6 @@ __published: // IDE-managed Components
 		TPoint &MousePos, bool &Handled);
 	void __fastcall TapeGridMouseWheelUp(TObject *Sender, TShiftState Shift,
 		TPoint &MousePos, bool &Handled);
-	void __fastcall N12Click(TObject *Sender);
 	void __fastcall TapeGridKeyPress(TObject *Sender, System::WideChar &Key);
 	void __fastcall AddRowBtnClick(TObject *Sender);
 	void __fastcall N6Click(TObject *Sender);
@@ -92,8 +96,26 @@ __published: // IDE-managed Components
 	void __fastcall TapeGridFixedCellClick(TObject *Sender, int ACol, int ARow);
 	void __fastcall TapeGridExit(TObject *Sender);
 	void __fastcall TapeGridKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
-//	void __fastcall Upd();
-
+	void __fastcall UpdTape();
+	void __fastcall UpdTable();
+	void __fastcall StatusBarHint(UnicodeString Text);
+	void __fastcall StatusTimerTimer(TObject *Sender);
+	void __fastcall SaveTapeBtnClick(TObject *Sender);
+	void __fastcall LoadTapeBtnClick(TObject *Sender);
+	void __fastcall AddColBtnClick(TObject *Sender);
+	void __fastcall DelColBtnClick(TObject *Sender);
+	void __fastcall DelRowBtnClick(TObject *Sender);
+	void __fastcall TableGridSelectCell(TObject *Sender, int ACol, int ARow, bool &CanSelect);
+	void __fastcall StepBtnClick(TObject *Sender);
+	void __fastcall StartBtnClick(TObject *Sender);
+	void __fastcall StepTimerTimer(TObject *Sender);
+	void __fastcall N16Click(TObject *Sender);
+	void __fastcall GridMenuPopup(TObject *Sender);
+	rule __fastcall StrToRule(UnicodeString Str);
+	UnicodeString __fastcall RuleToStr(rule Rule);
+	void __fastcall PauseBtnClick(TObject *Sender);
+	void __fastcall StopBtnClick(TObject *Sender);
+	void __fastcall TableGridKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 
 
 private: // User declarations
@@ -101,10 +123,10 @@ private: // User declarations
 	int TapeOffset;
 	TBitmap* GreenArrow;
 	TBitmap* GridCell;
-	Machine* machine;
+
 
 public: // User declarations
-
+	Machine* machine;
 	__fastcall TMainForm(TComponent* Owner);
 };
 

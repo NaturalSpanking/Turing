@@ -116,6 +116,7 @@
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <Debugger_RunParams>&quot;D:\Docs\Embarcadero\Builder\Turing\Alpha\Win32\Debug\моя любимая программа.mtur&quot;</Debugger_RunParams>
         <LinkPackageStatics>rtl.lib;vcl.lib</LinkPackageStatics>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <UsePackages>false</UsePackages>

@@ -149,14 +149,18 @@ void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
 
 void __fastcall TMainForm::AddRowBtnClick(TObject *Sender) {
 	// AddRowBtn->Glyph->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
-	UnicodeString C;
-	C = InputBox("Добавить строку", "Введите символ", "");
+	UnicodeString C,S;
+	C = InputBox("Добавить символы", "Введите символы", "");
 	if (C == "") {
 		return;
 	}
-	if (machine->tab->AddRow(C[1]) == -1) {
-		StatusBarHint("Символ уже существует.");
-	};
+	for (int i = 1; i <= C.Length(); i++) {
+	if (machine->tab->AddRow(C[i]) == -1) {
+		S="Символ '";
+		S+=C[i];
+		S+="' уже существует.";
+		StatusBarHint(S);
+	}};
 	UpdTable();
 }
 // ---------------------------------------------------------------------------
@@ -280,12 +284,19 @@ int __fastcall TGridCracker::GetCaretPosition(TStringGrid *Grid) {
 void __fastcall TMainForm::FormCreate(TObject *Sender) {
 	GreenArrow = new Graphics::TBitmap();
 	GridCell = new Graphics::TBitmap();
-	if (ParamCount() > 0) {
-		ShowMessage("Открываем файл " + ParamStr(1));
-	}
 	machine = machine->Create();
-	// TapeOffset=50;
-}
+	if (ParamCount() > 0) {
+	if(machine->LoadProgram(SaveDialog->FileName.w_str())==0){
+			StatusBarHint("Файл открыт.");
+		}else{
+			MessageDlg("Не удалось открыть файл. Доступ запрещен.",mtError,TMsgDlgButtons()<<mbOK,0);
+		};
+	 //	UpdTable();
+	 //	UpdTape();
+	}
+//		ShowMessage("Открываем файл " + ParamStr(1));
+	}
+
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::FormDestroy(TObject *Sender) {
@@ -305,7 +316,7 @@ void __fastcall TMainForm::N4Click(TObject *Sender) {
 			MessageDlg("Не удалось записать файл. Доступ запрещен.",mtError,TMsgDlgButtons()<<mbOK,0);
 		};
 	}}else{
-		if(machine->SaveProgram(SaveDialog->FileName.w_str())==0){
+		if(machine->SaveProgram(SaveDialog->FileName)==0){
 			StatusBarHint("Файл сохранен.");
 			SaveDialog->Tag=1;
 		}else{
@@ -330,7 +341,12 @@ void __fastcall TMainForm::N5Click(TObject *Sender) {
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::N3Click(TObject *Sender) {
 	if (OpenDialog->Execute(MainForm->Handle)) {
-		ShowMessage(IntToStr(machine->LoadProgram(OpenDialog->FileName.w_str())));
+	ShowMessage(IntToStr(machine->LoadProgram(OpenDialog->FileName)));
+	if(machine->LoadProgram(OpenDialog->FileName)==0){
+			StatusBarHint("Файл открыт.");
+		}else{
+			MessageDlg("Не удалось открыть файл. Доступ запрещен.",mtError,TMsgDlgButtons()<<mbOK,0);
+		};
 		UpdTable();
 		UpdTape();
 	}
@@ -398,7 +414,7 @@ void __fastcall TMainForm::LoadTapeBtnClick(TObject *Sender) {
 		UpdTape();
 	}
 	else {
-		StatusBarHint("Ошибка: лента не была сохранена.");
+		StatusBarHint("Ошибка: Лента не была сохранена.");
 	}
 }
 
@@ -406,12 +422,13 @@ void __fastcall TMainForm::LoadTapeBtnClick(TObject *Sender) {
 void __fastcall TMainForm::AddColBtnClick(TObject *Sender) {
 	machine->tab->AddCol(TableGrid->Col);
 	UpdTable();
+
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::DelColBtnClick(TObject *Sender) {
 	if (machine->tab->DelCol(TableGrid->Col) != 0) {
-		StatusBarHint("Нельзя удалить последний столбец.");
+		StatusBarHint("Ошибка: Нельзя удалить состояние.");
 	}
 	UpdTable();
 }
@@ -420,7 +437,7 @@ void __fastcall TMainForm::DelColBtnClick(TObject *Sender) {
 void __fastcall TMainForm::DelRowBtnClick(TObject *Sender) {
 	// ShowMessage(TableGrid->Cells[TableGrid->Row][0]);
 	if (machine->tab->DelRow(TableGrid->Cells[0][TableGrid->Row][1]) != 0) {
-		StatusBarHint("Нельзя удалить пустой символ.");
+		StatusBarHint("Ошибка: Нельзя удалить пустой символ.");
 	}
 	UpdTable();
 }
@@ -492,21 +509,28 @@ void __fastcall TMainForm::StepBtnClick(TObject *Sender) {
 		PauseBtn->Enabled = false;
 		PauseBtn->Tag = 0;
 		StartBtn->Enabled = true;
+		StopBtn->Enabled = false;
 		StepTimer->Enabled = false;
 	}
 	if (ErrCode == -1) {
-		StatusBarHint("Ошибка: выход за пределы ленты.");
+		StatusBarHint("Ошибка: Выход за пределы ленты.");
 	}
 	if (ErrCode == -2) {
-		StatusBarHint("Ошибка: отсутствует правило перехода.");
+		StatusBarHint("Ошибка: Отсутствует правило перехода.");
 	}
 	if (ErrCode == 1) {
 		StatusBarHint("Готово.");
 		MessageDlg("Выполнение успешно завершено.", mtInformation,
 			TMsgDlgButtons() << mbOK, 0);
 	}
-	if (ErrCode == -2) {
+	if (ErrCode == 2) {
 		StatusBarHint("Достигнута точка останова.");
+	}
+	if (ErrCode == -4) {
+		StatusBarHint("Ошибка: Неизвестное состояние.");
+	}
+	if (ErrCode == -3) {
+		StatusBarHint("Ошибка: Неизвестный символ.");
 	}
 }
 // ---------------------------------------------------------------------------
@@ -520,6 +544,7 @@ void __fastcall TMainForm::StartBtnClick(TObject *Sender) {
 	}
 	StartBtn->Enabled = false;
 	PauseBtn->Enabled = true;
+	StopBtn->Enabled = true;
 	StepBtn->Click();
 	StepTimer->Enabled = true;
 	StatusBarHint("Выполнение...");
@@ -566,11 +591,44 @@ void __fastcall TMainForm::PauseBtnClick(TObject *Sender) {
 		return;
 	}
 	PauseBtn->Tag = 1;
-	StepBtn->Enabled = false;
+//	StepBtn->Enabled = false;
 	StartBtn->Enabled = true;
 	StepTimer->Enabled = false;
 	PauseBtn->Enabled = false;
 	StatusBarHint("Пауза.");
 }
 // ---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::StopBtnClick(TObject *Sender)
+{
+	PauseBtn->Tag = 0;
+//	StepBtn->Enabled = false;
+	StartBtn->Enabled = true;
+	StepTimer->Enabled = false;
+	PauseBtn->Enabled = false;
+	StopBtn->Enabled = false;
+	machine->SetInitialState();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::GridPanelClick(TObject *Sender)
+{
+TStringList * qwe;
+qwe = new TStringList;
+qwe->Add("qwe");
+AnsiString A;
+UnicodeString W;
+//W="фыва.mtur";
+W="D:\\Docs\\Embarcadero\\Builder\\Turing\\Alpha\\Win32\\Debug\\йцу";
+A=W;
+//ShowMessage(A);
+std::ifstream file;
+//file.open(W);
+file.open(A.c_str());
+if(!file.is_open()){
+ShowMessage("fail");
+}
+}
+//---------------------------------------------------------------------------
 

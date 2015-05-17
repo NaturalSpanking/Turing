@@ -16,8 +16,8 @@ void TOptForm::ApplyToForm() {
 	Edit3->Text = BufList->Strings[2];
 	CheckBox1->Checked = BufList->Strings[3] == "1" ? true : false;
 	CheckBox2->Checked = BufList->Strings[4] == "1" ? true : false;
-	Panel1->Color=StrToInt(BufList->Strings[5]);
-	Panel2->Color=StrToInt(BufList->Strings[6]);
+	Panel1->Color = StrToInt(BufList->Strings[5]);
+	Panel2->Color = StrToInt(BufList->Strings[6]);
 	CheckBox3->Checked = BufList->Strings[7] == "1" ? true : false;
 }
 
@@ -64,8 +64,16 @@ void TOptForm::ApplyChanges() {
 		MainForm->TextPanel->Visible = false;
 		MainForm->GridSplitter->Visible = false;
 	}
-	MainForm->machine->tap->Resize(StrToInt(Edit1->Text)*2+1);
-	MainForm->StepTimer->Interval=StrToInt(Edit2->Text);
+	if (MainForm->Tag == 0) {
+		MainForm->machine->tap->Resize(StrToInt(Edit1->Text)*2 + 1);
+	}
+	else {
+		Edit1->Text = IntToStr((MainForm->machine->tap->GetLenght() - 1) / 2);
+		MainForm->Tag=0;
+	}
+	MainForm->StepTimer->Interval = StrToInt(Edit2->Text);
+	MainForm->ShadowSaveTimer->Interval=StrToInt(Edit3->Text)*60000;
+	MainForm->ShadowSaveTimer->Enabled=true;
 	MainForm->UpdTape();
 	MainForm->UpdTable();
 }
@@ -120,7 +128,7 @@ void __fastcall TOptForm::AssocBtnClick(TObject *Sender) {
 		R->OpenKey("Turing_Machine_File", true);
 		R->WriteString("", "Файл Машины Тьюринга");
 		R->OpenKey("shell\\open\\command", true);
-		R->WriteString("", Application->ExeName + " %1");
+		R->WriteString("", Application->ExeName + " \"%1\"");
 		R->CloseKey();
 		R->OpenKey(".mtur", true);
 		R->WriteString("", "Turing_Machine_File");
@@ -160,15 +168,14 @@ void __fastcall TOptForm::FormCreate(TObject *Sender) {
 void __fastcall TOptForm::FormDestroy(TObject *Sender) {
 	delete BufList;
 }
-// ---------------------------------------------------------------------------
-void __fastcall TOptForm::PanelClick(TObject *Sender)
-{
-TColorDialog *C = new TColorDialog(OptForm);
-C->Color=((TPanel*)Sender)->Color;
-if(C->Execute()){
-	((TPanel*)Sender)->Color=C->Color;
-}
-delete C;
-}
-//---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+void __fastcall TOptForm::PanelClick(TObject *Sender) {
+	TColorDialog *C = new TColorDialog(OptForm);
+	C->Color = ((TPanel*)Sender)->Color;
+	if (C->Execute()) {
+		((TPanel*)Sender)->Color = C->Color;
+	}
+	delete C;
+}
+// ---------------------------------------------------------------------------

@@ -16,8 +16,9 @@ void TOptForm::ApplyToForm() {
 	Edit3->Text = BufList->Strings[2];
 	CheckBox1->Checked = BufList->Strings[3] == "1" ? true : false;
 	CheckBox2->Checked = BufList->Strings[4] == "1" ? true : false;
-	Panel1->Color=StrToInt(BufList->Strings[5]);
-	Panel2->Color=StrToInt(BufList->Strings[6]);
+	Panel1->Color = StrToInt(BufList->Strings[5]);
+	Panel2->Color = StrToInt(BufList->Strings[6]);
+	CheckBox3->Checked = BufList->Strings[7] == "1" ? true : false;
 }
 
 void TOptForm::ApplyToList() {
@@ -29,6 +30,7 @@ void TOptForm::ApplyToList() {
 	BufList->Add(CheckBox2->Checked ? "1" : "0");
 	BufList->Add(IntToStr(Panel1->Color));
 	BufList->Add(IntToStr(Panel2->Color));
+	BufList->Add(CheckBox3->Checked ? "1" : "0");
 }
 
 void TOptForm::ApplyChanges() {
@@ -62,6 +64,16 @@ void TOptForm::ApplyChanges() {
 		MainForm->TextPanel->Visible = false;
 		MainForm->GridSplitter->Visible = false;
 	}
+	if (MainForm->Tag == 0) {
+		MainForm->machine->tap->Resize(StrToInt(Edit1->Text)*2 + 1);
+	}
+	else {
+		Edit1->Text = IntToStr((MainForm->machine->tap->GetLenght() - 1) / 2);
+	}
+	MainForm->StepTimer->Interval = StrToInt(Edit2->Text);
+	MainForm->ShadowSaveTimer->Interval=StrToInt(Edit3->Text)*60000;
+	MainForm->UpdTape();
+	MainForm->UpdTable();
 }
 
 // ---------------------------------------------------------------------------
@@ -71,10 +83,10 @@ __fastcall TOptForm::TOptForm(TComponent* Owner) : TForm(Owner) {
 // ---------------------------------------------------------------------------
 void __fastcall TOptForm::OkBtnClick(TObject *Sender) {
 	try {
-		if (StrToInt(Edit1->Text) < 50) {
-			MessageDlg("Длина ленты не может быть меньше 50.", mtWarning,
+		if (StrToInt(Edit1->Text) < 25) {
+			MessageDlg("Смещение не может быть меньше 25.", mtWarning,
 				TMsgDlgButtons() << mbOK, 0);
-			Edit1->Text = "50";
+			Edit1->Text = "25";
 			return;
 		}
 		if (StrToInt(Edit2->Text) < 0) {
@@ -114,7 +126,7 @@ void __fastcall TOptForm::AssocBtnClick(TObject *Sender) {
 		R->OpenKey("Turing_Machine_File", true);
 		R->WriteString("", "Файл Машины Тьюринга");
 		R->OpenKey("shell\\open\\command", true);
-		R->WriteString("", Application->ExeName + " %1");
+		R->WriteString("", Application->ExeName + " \"%1\"");
 		R->CloseKey();
 		R->OpenKey(".mtur", true);
 		R->WriteString("", "Turing_Machine_File");
@@ -154,15 +166,14 @@ void __fastcall TOptForm::FormCreate(TObject *Sender) {
 void __fastcall TOptForm::FormDestroy(TObject *Sender) {
 	delete BufList;
 }
-// ---------------------------------------------------------------------------
-void __fastcall TOptForm::PanelClick(TObject *Sender)
-{
-TColorDialog *C = new TColorDialog(OptForm);
-C->Color=((TPanel*)Sender)->Color;
-if(C->Execute()){
-	((TPanel*)Sender)->Color=C->Color;
-}
-delete C;
-}
-//---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+void __fastcall TOptForm::PanelClick(TObject *Sender) {
+	TColorDialog *C = new TColorDialog(OptForm);
+	C->Color = ((TPanel*)Sender)->Color;
+	if (C->Execute()) {
+		((TPanel*)Sender)->Color = C->Color;
+	}
+	delete C;
+}
+// ---------------------------------------------------------------------------

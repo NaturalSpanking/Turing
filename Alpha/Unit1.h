@@ -13,6 +13,7 @@
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Grids.hpp>
 #include <Vcl.Dialogs.hpp>
+#include "ShellAPI.h"
 
 #include "machine.h"
 
@@ -66,6 +67,7 @@ __published: // IDE-managed Components
 	TMenuItem *N17;
 	TTimer *StatusTimer;
 	TTimer *StepTimer;
+	TTimer *ShadowSaveTimer;
 
 
     void __fastcall SetRule();
@@ -114,7 +116,10 @@ __published: // IDE-managed Components
 	UnicodeString __fastcall RuleToStr(rule Rule);
 	void __fastcall PauseBtnClick(TObject *Sender);
 	void __fastcall StopBtnClick(TObject *Sender);
-	void __fastcall GridPanelClick(TObject *Sender);
+	void __fastcall TableGridKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
+	void __fastcall N2Click(TObject *Sender);
+	void __fastcall ShadowSaveTimerTimer(TObject *Sender);
+
 
 private: // User declarations
 

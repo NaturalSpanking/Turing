@@ -14,7 +14,6 @@ class Machine
 private:
 	int currentState;
 	TapeMemento* tapMem;
-	TapeMemento* tapMemSys;
 	static Machine* mach;
 	Machine();
 public:
@@ -29,8 +28,8 @@ public:
 
 	int SaveProgram(UnicodeString pathToFile);
 	int LoadProgram(UnicodeString pathToFile);
-	void SaveTape(WideChar isUser = 'U');
-	int LoadTape(WideChar isUser = 'U');
+	void SaveTape();
+	int LoadTape();
 	int CheckTable();
 
 	rule GetTableRule(unsigned state, WideChar c);

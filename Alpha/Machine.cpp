@@ -15,7 +15,6 @@ Machine* Machine::Create(unsigned tapLen, unsigned tabRows, unsigned tabCol)
 	mach->tap = new Tape(tapLen);
 	mach->currentState = 1;
 	mach->tapMem = NULL;
-	mach->tapMemSys = NULL;
 	return mach;
 }
 //ƒеструктор
@@ -267,31 +266,21 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 	return 0;
 }
 //—охранение ленты в временное хранилище
-//isUser == U - сохранение в пользовательское хранилище
-//isUser != U - сохранение в системное хранилище
-void Machine::SaveTape(WideChar isUser)
+
+void Machine::SaveTape()
 {
-	if (isUser == 'U') tapMem = tap->CreateMemento();
-	else tapMemSys = tap->CreateMemento();
+	tapMem = tap->CreateMemento();
 }
-//isUser == U - загрузка из пользовательского хранилищеа
-//isUser != U - загрузка из системного хранилищеа
+
 //¬озвращаемые значени€:
 //-1 - не найдено хранилище(лента не разу не сохранена)
 // 0 - загрузка успешна
-int Machine::LoadTape(WideChar isUser)
+int Machine::LoadTape()
 {
-	if (isUser == 'U') {
 		if (tapMem == NULL) return -1;
 		tap->SetMemento(tapMem);
 		return 0;
-	}
-	else
-	{
-		if (tapMemSys == NULL) return -1;
-		tap->SetMemento(tapMemSys);
-		return 0;
-	}
+
 }
 //ѕроверка корректности таблицы
 //¬озвращаемые значени€:

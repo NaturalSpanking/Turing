@@ -780,7 +780,7 @@ object MainForm: TMainForm
       Font.Height = -20
       Font.Name = 'Tahoma'
       Font.Style = []
-      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goEditing, goFixedRowClick]
+      Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goFixedRowClick]
       ParentCtl3D = False
       ParentDoubleBuffered = False
       ParentFont = False
@@ -927,7 +927,6 @@ object MainForm: TMainForm
     Height = 41
     Align = alTop
     TabOrder = 4
-    OnClick = GridPanelClick
     object AddRowBtn: TBitBtn
       Left = 6
       Top = 5
@@ -1293,6 +1292,7 @@ object MainForm: TMainForm
     PopupMenu = GridMenu
     TabOrder = 0
     OnDrawCell = TableGridDrawCell
+    OnKeyDown = TableGridKeyDown
     OnKeyPress = TableGridKeyPress
     OnSelectCell = TableGridSelectCell
   end
@@ -1347,6 +1347,7 @@ object MainForm: TMainForm
       object N2: TMenuItem
         Caption = #1053#1086#1074#1099#1081
         ShortCut = 16462
+        OnClick = N2Click
       end
       object N3: TMenuItem
         Caption = #1054#1090#1082#1088#1099#1090#1100'...'
@@ -1442,5 +1443,11 @@ object MainForm: TMainForm
     Enabled = False
     OnTimer = StepTimerTimer
     Left = 448
+  end
+  object ShadowSaveTimer: TTimer
+    Enabled = False
+    Interval = 120000
+    OnTimer = ShadowSaveTimerTimer
+    Left = 496
   end
 end
