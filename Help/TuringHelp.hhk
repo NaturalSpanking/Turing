@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD>
+<BODY>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Литература">
+		<param name="Local" value="~htm\Литература.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Машина Тьюринга">
+		<param name="Local" value="~htm\Машина Тьюринга.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Лента">
+		<param name="Local" value="~htm\Лента.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Таблица">
+		<param name="Local" value="~htm\Таблица.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Текстовое описание">
+		<param name="Local" value="~htm\Текстовое описание.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Ввод данных">
+		<param name="Local" value="~htm\Ввод данных.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Выполнение">
+		<param name="Local" value="~htm\Выполнение.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Отладка">
+		<param name="Local" value="~htm\Отладка.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Ошибки">
+		<param name="Local" value="~htm\Ошибки.htm">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Сохранение и загрузка">
+		<param name="Local" value="~htm\Сохранение и загрузка.htm">
+		</OBJECT>
+</UL>
+</BODY>
+</HTML>
+

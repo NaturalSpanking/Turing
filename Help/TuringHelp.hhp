@@ -1,0 +1,86 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=TuringHelp.chm
+Contents file=TuringHelp.hhc
+Index file=TuringHelp.hhk
+Binary Index=Yes
+Create CHI file=Yes
+Binary TOC=Yes
+Full-text search=Yes
+Language=0x0419
+Title=Машина Тьюринга - Файл справки
+Error log file=Errlog.txt
+Default Window=main
+
+[WINDOWS]
+main="Машина Тьюринга - Файл справки","TuringHelp.hhc",,"~htm\Машина Тьюринга.htm",,,,,,0x40520,240,0x200E,[262,184,862,664],,,,0,0,0,0
+
+[FILES]
+~htm\Литература.htm
+~htm\Машина Тьюринга.htm
+~htm\Лента.htm
+~htm\Таблица.htm
+~htm\Текстовое описание.htm
+~htm\Ввод данных.htm
+~htm\Выполнение.htm
+~htm\Отладка.htm
+~htm\Ошибки.htm
+~htm\Сохранение и загрузка.htm
+~htm\Литература.files\colorschememapping.xml
+~htm\Литература.files\filelist.xml
+~htm\Литература.files\themedata.thmx
+~htm\Машина Тьюринга.files\colorschememapping.xml
+~htm\Машина Тьюринга.files\filelist.xml
+~htm\Машина Тьюринга.files\image001.gif
+~htm\Машина Тьюринга.files\themedata.thmx
+~htm\Лента.files\colorschememapping.xml
+~htm\Лента.files\filelist.xml
+~htm\Лента.files\image001.png
+~htm\Лента.files\image002.jpg
+~htm\Лента.files\image003.png
+~htm\Лента.files\image004.jpg
+~htm\Лента.files\themedata.thmx
+~htm\Таблица.files\colorschememapping.xml
+~htm\Таблица.files\filelist.xml
+~htm\Таблица.files\image001.png
+~htm\Таблица.files\image002.jpg
+~htm\Таблица.files\image003.png
+~htm\Таблица.files\image004.jpg
+~htm\Таблица.files\image005.png
+~htm\Таблица.files\image006.jpg
+~htm\Таблица.files\themedata.thmx
+~htm\Текстовое описание.files\colorschememapping.xml
+~htm\Текстовое описание.files\filelist.xml
+~htm\Текстовое описание.files\image001.png
+~htm\Текстовое описание.files\image002.jpg
+~htm\Текстовое описание.files\themedata.thmx
+~htm\Ввод данных.files\colorschememapping.xml
+~htm\Ввод данных.files\filelist.xml
+~htm\Ввод данных.files\image001.png
+~htm\Ввод данных.files\themedata.thmx
+~htm\Выполнение.files\colorschememapping.xml
+~htm\Выполнение.files\filelist.xml
+~htm\Выполнение.files\image001.png
+~htm\Выполнение.files\image002.jpg
+~htm\Выполнение.files\image003.png
+~htm\Выполнение.files\image004.jpg
+~htm\Выполнение.files\themedata.thmx
+~htm\Отладка.files\colorschememapping.xml
+~htm\Отладка.files\filelist.xml
+~htm\Отладка.files\image001.png
+~htm\Отладка.files\image002.jpg
+~htm\Отладка.files\image003.png
+~htm\Отладка.files\image004.jpg
+~htm\Отладка.files\themedata.thmx
+~htm\Ошибки.files\colorschememapping.xml
+~htm\Ошибки.files\filelist.xml
+~htm\Ошибки.files\image001.png
+~htm\Ошибки.files\item0001.xml
+~htm\Ошибки.files\props002.xml
+~htm\Ошибки.files\themedata.thmx
+~htm\Сохранение и загрузка.files\colorschememapping.xml
+~htm\Сохранение и загрузка.files\filelist.xml
+~htm\Сохранение и загрузка.files\image001.jpg
+~htm\Сохранение и загрузка.files\image002.jpg
+~htm\Сохранение и загрузка.files\themedata.thmx
+

@@ -1,0 +1,14 @@
+Microsoft HTML Help Compiler 4.74.8702
+
+Compiling d:\TestHelp\TuringHelp.chm
+
+
+Compile time: 0 minutes, 1 second
+11	Topics
+30	Local links
+8	Internet links
+0	Graphics
+
+
+Created d:\TestHelp\TuringHelp.chm, 139,958 bytes
+Compression decreased file by 293,854 bytes.
