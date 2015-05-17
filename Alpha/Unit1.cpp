@@ -154,7 +154,7 @@ void __fastcall TMainForm::AddRowBtnClick(TObject *Sender) {
 	if (C == "") {
 		return;
 	}
-	for (int i = 1; i < C.Length(); i++) {
+	for (int i = 1; i <= C.Length(); i++) {
 	if (machine->tab->AddRow(C[i]) == -1) {
 		S="Символ '";
 		S+=C[i];

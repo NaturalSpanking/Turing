@@ -113,6 +113,7 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 	for (unsigned i = 0; i < tap->tape.size(); i++)
 	{
 		file << tap->tape[i];
+		file << " ";
 	}
 	file << "\n";
 
@@ -123,8 +124,8 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 		{
 			if (ii != 0)
 			{
-				if (tab->table[i][ii].symbol != ' ') file << (char)tab->table[i][ii].symbol;
-				else file << " ";
+				if (tab->table[i][ii].symbol != ' ') file << tab->table[i][ii].symbol;
+				else file << 32;
 				if (tab->table[i][ii].shift != -2)
 				{
 					if (tab->table[i][ii].shift == 1) file << ">";
@@ -137,7 +138,7 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 			}
 			else
 			{
-				file << (char)tab->table[i][ii].symbol;
+				file << tab->table[i][ii].symbol;
 			}
 			if (ii+1 < Columns) file << " ";
 		}
@@ -185,11 +186,12 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 	//Получение ленты
 	file.ignore();
 	if (!file.good()) return -2;
-	file.getline(buff, BUFF_SIZE);
-	if (strlen(buff) != params[0]) return -2;
+
 	for (unsigned i = 0; i < params[0]; i++)
 	{
-		tap->tape[i] = buff[i];
+		file >> buff;
+		file.ignore();
+		tap->tape[i] = atoi(buff);
 	}
 
 	//Получение таблицы
@@ -199,23 +201,27 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 		if (!file.good()) return -2;
 		for (unsigned ii = 0; ii < params[2]; ii++)
 		{
+			rule tempRule;
 			if (!file.good()) return -2;
 			if (ii != 0)
 			{
-				buff[0] = '\0';
-				buff[1] = '\0';
-				file.read(buff, 1);
-				if (buff[0] == '\n' || buff[0] == '\0') return -2;
-				tab->table[i][ii].symbol = buff[0];
+				int counter = 0;
+				do
+				{
+					buff[counter+1] = '\0';
+					file.read(buff+counter, 1);
+					counter++;
+				}while(file.peek() != ' ' && file.peek() != '>' && file.peek() != '<' && file.peek() != '.');
+				tempRule.symbol = atoi(buff);
 
 				buff[0] = '\0';
 				buff[1] = '\0';
 				file.read(buff, 1);
 				if (buff[0] != '>' && buff[0] != '<' && buff[0] != '.' && buff[0] != ' ') return -2;
-				if (buff[0] == '>') tab->table[i][ii].shift = 1;
-				if (buff[0] == '<') tab->table[i][ii].shift = -1;
-				if (buff[0] == '.') tab->table[i][ii].shift = 0;
-				if (buff[0] == ' ') tab->table[i][ii].shift = -2;
+				if (buff[0] == '>') tempRule.shift = 1;
+				if (buff[0] == '<') tempRule.shift = -1;
+				if (buff[0] == '.') tempRule.shift = 0;
+				if (buff[0] == ' ') tempRule.shift = -2;
 
 				if (file.peek() == ' ')
 				{
@@ -228,9 +234,9 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 					intTemp = atoi(buff);
 					if (intTemp < 0) return -2;
 				}
-				tab->table[i][ii].new_state = intTemp;
+				tempRule.new_state = intTemp;
 
-				tab->table[i][ii].is_breakpoint = 0;
+				tempRule.is_breakpoint = 0;
 
 				if (ii + 1 == params[2] && file.peek() != '\n') return -2;
 				else file.ignore();
@@ -239,17 +245,17 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 			{
 				buff[0] = '\0';
 				buff[1] = '\0';
-				file.read(buff, 1);
+				file >> buff;
 				file.ignore();
-				if (buff[0] == '\n' || buff[0] == '\0') return -2;
-				tab->table[i][ii].symbol = buff[0];
+				tempRule.symbol = atoi(buff);
 			}
+			tab->table[i][ii] = tempRule;
 		}
 	}
 	if (CheckTable() == -1){
 		for (unsigned i = 0; i < tab->table.size(); i++)
 		{
-			for (unsigned ii = 1; ii < tab->table.size(); ii++)
+			for (unsigned ii = 1; ii < tab->table[0].size(); ii++)
 			{
 				tab->table[i][ii] = defRule;
 			}

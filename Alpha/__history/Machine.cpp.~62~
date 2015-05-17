@@ -34,7 +34,7 @@ Machine::~Machine()
 //-1 - не удалось получить символ из ленты(выход за границы ленты)
 // 0 - шаг успешно завершен
 // 1 - шаг успешно завершен с переходом машины в 0-е состо€ние(окончание программы)
-// 2 - шаг успешно завершен с выходом на €чейке с точкой останова
+// 2 - шаг успешно завершен, следующа€ €чейка - точка останова
 int Machine::Step()
 {
 	rule errRule;
@@ -48,7 +48,7 @@ int Machine::Step()
 		return -2;
 	}
 	if (!InAlphabet(tempRule.symbol)) return -3;
-	if (tempRule.new_state < 0 || tempRule.new_state > tab->table[0].size()) return -4; 
+	if (tempRule.new_state < 0 || tempRule.new_state > (int)tab->table[0].size()) return -4;
 
 	SetTapeChar(GetTapePosition(), tempRule.symbol);
 	ShiftTape(tempRule.shift);
@@ -97,12 +97,14 @@ void Machine::SetInitialState()
 //¬озвращаемые значени€:
 //-1 - не удалось открыть файл дл€ записи
 // 0 - сохранение успешно
-int Machine::SaveProgram(WideChar* pathToFile)
+int Machine::SaveProgram(UnicodeString pathToFile)
 {
 	std::ofstream file;
 	unsigned Rows = tab->table.size();
 	unsigned Columns = tab->table[0].size();
-	file.open(pathToFile);
+	AnsiString A;
+	A=pathToFile;
+	file.open(A.c_str());
 	if (!file.is_open()) return -1;
 
 	file << tap->tape.size() << " " << Rows << " " << Columns << "\n";
@@ -111,6 +113,7 @@ int Machine::SaveProgram(WideChar* pathToFile)
 	for (unsigned i = 0; i < tap->tape.size(); i++)
 	{
 		file << tap->tape[i];
+		file << " ";
 	}
 	file << "\n";
 
@@ -121,8 +124,8 @@ int Machine::SaveProgram(WideChar* pathToFile)
 		{
 			if (ii != 0)
 			{
-				if (tab->table[i][ii].symbol != ' ') file << (char)tab->table[i][ii].symbol;
-				else file << " ";
+				if (tab->table[i][ii].symbol != ' ') file << tab->table[i][ii].symbol;
+				else file << 32;
 				if (tab->table[i][ii].shift != -2)
 				{
 					if (tab->table[i][ii].shift == 1) file << ">";
@@ -135,7 +138,7 @@ int Machine::SaveProgram(WideChar* pathToFile)
 			}
 			else
 			{
-				file << (char)tab->table[i][ii].symbol;
+				file << tab->table[i][ii].symbol;
 			}
 			if (ii+1 < Columns) file << " ";
 		}
@@ -151,9 +154,11 @@ int Machine::SaveProgram(WideChar* pathToFile)
 //-2 - BadFile
 //-1 - не удалось открыть файл дл€ чтени€
 // 0 - сохранение успешно
-int Machine::LoadProgram(WideChar* pathToFile){
+int Machine::LoadProgram(UnicodeString pathToFile){
 	std::ifstream file;
-	file.open(pathToFile);
+	AnsiString A;
+	A=pathToFile;
+	file.open(A.c_str());
 	if (!file.is_open()) return -1;
 	//1 - tapLen
 	//2 - Rows
@@ -181,11 +186,13 @@ int Machine::LoadProgram(WideChar* pathToFile){
 	//ѕолучение ленты
 	file.ignore();
 	if (!file.good()) return -2;
-	file.getline(buff, BUFF_SIZE);
-	if (strlen(buff) != params[0]) return -2;
+//	file.getline(buff, BUFF_SIZE);
+//	if (strlen(buff) != params[0]) return -2;
 	for (unsigned i = 0; i < params[0]; i++)
 	{
-		tap->tape[i] = buff[i];
+		file >> buff;
+		file.ignore();
+		tap->tape[i] = atoi(buff);
 	}
 
 	//ѕолучение таблицы
@@ -195,23 +202,27 @@ int Machine::LoadProgram(WideChar* pathToFile){
 		if (!file.good()) return -2;
 		for (unsigned ii = 0; ii < params[2]; ii++)
 		{
+			rule tempRule;
 			if (!file.good()) return -2;
 			if (ii != 0)
 			{
-				buff[0] = '\0';
-				buff[1] = '\0';
-				file.read(buff, 1);
-				if (buff[0] == '\n' || buff[0] == '\0') return -2;
-				tab->table[i][ii].symbol = buff[0];
+				int counter = 0;
+				do
+				{
+					buff[counter+1] = '\0';
+					file.read(buff+counter, 1);
+					counter++;
+				}while(file.peek() != ' ' && file.peek() != '>' && file.peek() != '<' && file.peek() != '.');
+				tempRule.symbol = atoi(buff);
 
 				buff[0] = '\0';
 				buff[1] = '\0';
 				file.read(buff, 1);
 				if (buff[0] != '>' && buff[0] != '<' && buff[0] != '.' && buff[0] != ' ') return -2;
-				if (buff[0] == '>') tab->table[i][ii].shift = 1;
-				if (buff[0] == '<') tab->table[i][ii].shift = -1;
-				if (buff[0] == '.') tab->table[i][ii].shift = 0;
-				if (buff[0] == ' ') tab->table[i][ii].shift = -2;
+				if (buff[0] == '>') tempRule.shift = 1;
+				if (buff[0] == '<') tempRule.shift = -1;
+				if (buff[0] == '.') tempRule.shift = 0;
+				if (buff[0] == ' ') tempRule.shift = -2;
 
 				if (file.peek() == ' ')
 				{
@@ -224,9 +235,9 @@ int Machine::LoadProgram(WideChar* pathToFile){
 					intTemp = atoi(buff);
 					if (intTemp < 0) return -2;
 				}
-				tab->table[i][ii].new_state = intTemp;
+				tempRule.new_state = intTemp;
 
-				tab->table[i][ii].is_breakpoint = 0;
+				tempRule.is_breakpoint = 0;
 
 				if (ii + 1 == params[2] && file.peek() != '\n') return -2;
 				else file.ignore();
@@ -235,11 +246,11 @@ int Machine::LoadProgram(WideChar* pathToFile){
 			{
 				buff[0] = '\0';
 				buff[1] = '\0';
-				file.read(buff, 1);
+				file >> buff;
 				file.ignore();
-				if (buff[0] == '\n' || buff[0] == '\0') return -2;
-				tab->table[i][ii].symbol = buff[0];
+				tempRule.symbol = atoi(buff);
 			}
+			tab->table[i][ii] = tempRule;
 		}
 	}
 	if (CheckTable() == -1){
