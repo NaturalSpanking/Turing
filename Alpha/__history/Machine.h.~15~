@@ -1,14 +1,9 @@
-#ifndef MachineH
-#define MachineH
-
 #include "Tape.h"
 #include "Table.h"
-#include <fstream>
-#include <streambuf>
 #include <System.Classes.hpp>
 
-#define BUFF_SIZE 1024
-
+#ifndef MachineH
+#define MachineH
 class Machine
 {
 private:
@@ -25,19 +20,17 @@ public:
 
 	int Step();
 //	int TraceProgram();
-	void SetInitialState();
+	int SetInitialState();
 
-	int SaveProgram(WideChar* pathToFile);
-	int LoadProgram(WideChar* pathToFile);
+	int SaveProgram(char* pathToFile);
+	int LoadProgram(char* pathToFile);
 	void SaveTape(WideChar isUser = 'U');
 	int LoadTape(WideChar isUser = 'U');
-	int CheckTable();
 
 	rule GetTableRule(unsigned state, WideChar c);
 	int SetTableRule(unsigned state, WideChar c, rule r);
 	int GetCurrentState();
 	int IsBreakepoint(unsigned state, WideChar c);
-	bool InAlphabet(WideChar c);
 	WideChar GetAlphabet(int index);
 
 	int SetTapeChar(unsigned index, WideChar c);

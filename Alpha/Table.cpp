@@ -6,9 +6,9 @@ Table::Table() {}
 //Инициализация таблицы
 Table::Table(unsigned Rows, unsigned Columns)
 {
-	if(Rows < 1 || Columns < 1) return;
+	if(Columns < 1) return;
 	rule defRule;
-	char def = '0';
+	WideChar def = '0';
 	table = std::vector<std::vector<rule> >(Rows, std::vector<rule>(Columns, defRule));
 	table[0][0].symbol = ' ';
 	for(unsigned i=1; i<table.size(); i++)
@@ -23,7 +23,6 @@ Table::Table(unsigned Rows, unsigned Columns)
 // 0 - успешно добавлен
 int Table::AddCol(unsigned index)
 {
-	if (table.size() == 0) return -1;
 	if (table[0].size() < index) return -1;
 	rule defRule;
 	for(unsigned i = 0; i < table.size(); i++)
@@ -38,7 +37,7 @@ int Table::AddCol(unsigned index)
 // 0 - успешно добавлена
 int Table::AddRow(WideChar c)
 {
-	if (table.size() == 0 || c == ' ') return -1;
+	if (c == ' ') return -1;
 	for (unsigned i = 0; i < table.size(); i++)
 	{
 		if (table[i][0].symbol == c) return -1;
@@ -54,7 +53,6 @@ int Table::AddRow(WideChar c)
 // 0 - успешно удалена
 int Table::DelCol(unsigned index)
 {
-	if (table.size() == 0) return -1;
 	if (index >= table[0].size() || index == 0 || table[0].size() == 2) return -1;
 	for(unsigned i=0; i<table.size(); i++)
 	{
@@ -81,7 +79,6 @@ int Table::DelRow(WideChar c)
 }
 //Получение количества столбцов
 int Table::ColCount(){
-	if (table.size() == 0) return -1;
 	return table[0].size();
 }
 //Получение количества строк

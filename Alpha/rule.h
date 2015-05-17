@@ -1,5 +1,6 @@
 #ifndef ruleH
 #define ruleH
+
 struct rule
 {
 	WideChar symbol;
@@ -19,5 +20,6 @@ struct rule
 		return 0;
 	}
 };
+
 #endif
 

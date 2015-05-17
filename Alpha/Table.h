@@ -1,9 +1,10 @@
+#ifndef TableH
+#define TableH
+
 #include<vector>
 #include <System.Classes.hpp>
 #include "rule.h"
 
-#ifndef TableH
-#define TableH
 class Table
 {
 	friend class Machine;
