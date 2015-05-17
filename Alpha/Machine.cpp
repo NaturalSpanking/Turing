@@ -97,12 +97,14 @@ void Machine::SetInitialState()
 //¬озвращаемые значени€:
 //-1 - не удалось открыть файл дл€ записи
 // 0 - сохранение успешно
-int Machine::SaveProgram(WideChar* pathToFile)
+int Machine::SaveProgram(UnicodeString pathToFile)
 {
 	std::ofstream file;
 	unsigned Rows = tab->table.size();
 	unsigned Columns = tab->table[0].size();
-	file.open(pathToFile);
+	AnsiString A;
+	A=pathToFile;
+	file.open(A.c_str());
 	if (!file.is_open()) return -1;
 
 	file << tap->tape.size() << " " << Rows << " " << Columns << "\n";
@@ -151,9 +153,11 @@ int Machine::SaveProgram(WideChar* pathToFile)
 //-2 - BadFile
 //-1 - не удалось открыть файл дл€ чтени€
 // 0 - сохранение успешно
-int Machine::LoadProgram(WideChar* pathToFile){
+int Machine::LoadProgram(UnicodeString pathToFile){
 	std::ifstream file;
-	file.open(pathToFile);
+	AnsiString A;
+	A=pathToFile;
+	file.open(A.c_str());
 	if (!file.is_open()) return -1;
 	//1 - tapLen
 	//2 - Rows

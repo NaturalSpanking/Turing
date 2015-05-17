@@ -67,6 +67,7 @@ __published: // IDE-managed Components
 	TTimer *StatusTimer;
 	TTimer *StepTimer;
 
+
     void __fastcall SetRule();
 	void __fastcall N10Click(TObject *Sender);
 	void __fastcall N7Click(TObject *Sender);
@@ -112,12 +113,8 @@ __published: // IDE-managed Components
 	rule __fastcall StrToRule(UnicodeString Str);
 	UnicodeString __fastcall RuleToStr(rule Rule);
 	void __fastcall PauseBtnClick(TObject *Sender);
-
-
-
-
-
-
+	void __fastcall StopBtnClick(TObject *Sender);
+	void __fastcall GridPanelClick(TObject *Sender);
 
 private: // User declarations
 

@@ -28,12 +28,13 @@ Machine::~Machine()
 }
 //Шаг машины
 //Возвращаемые значения:
-//-3 - Символ в ленте или символ в таблице не существует в алфавите
-//-2 - Машина перешла в незаполенную ячейку таблицы
-//-1 - Не удалось получить символ из ленты(выход за границы ленты)
-// 0 - Шаг успешно завершен
-// 1 - Шаг успешно завершен с переходом машины в 0-е состояние(окончание программы)
-// 2 - Шаг успешно завершен с выходом на ячейке с точкой останова
+//-4 - состояние в которое нужно перейти не существует
+//-3 - символ в ленте или символ в таблице не существует в алфавите
+//-2 - машина перешла в незаполенную ячейку таблицы
+//-1 - не удалось получить символ из ленты(выход за границы ленты)
+// 0 - шаг успешно завершен
+// 1 - шаг успешно завершен с переходом машины в 0-е состояние(окончание программы)
+// 2 - шаг успешно завершен, следующая ячейка - точка останова
 int Machine::Step()
 {
 	rule errRule;
@@ -47,6 +48,7 @@ int Machine::Step()
 		return -2;
 	}
 	if (!InAlphabet(tempRule.symbol)) return -3;
+	if (tempRule.new_state < 0 || tempRule.new_state > (int)tab->table[0].size()) return -4;
 
 	SetTapeChar(GetTapePosition(), tempRule.symbol);
 	ShiftTape(tempRule.shift);
@@ -95,21 +97,23 @@ void Machine::SetInitialState()
 //Возвращаемые значения:
 //-1 - не удалось открыть файл для записи
 // 0 - сохранение успешно
-int Machine::SaveProgram(WideChar* pathToFile)
+int Machine::SaveProgram(UnicodeString pathToFile)
 {
 	std::ofstream file;
 	unsigned Rows = tab->table.size();
 	unsigned Columns = tab->table[0].size();
-	file.open(pathToFile);
+	AnsiString A;
+	A=pathToFile;
+		char* c = A.c_str();
+	file.open(A.c_str());
 	if (!file.is_open()) return -1;
 
-	//запись даных
 	file << tap->tape.size() << " " << Rows << " " << Columns << "\n";
 
-	//запись ленты
+	//Запись ленты
 	for (unsigned i = 0; i < tap->tape.size(); i++)
 	{
-		file << (char)tap->tape[i];
+		file << tap->tape[i];
 	}
 	file << "\n";
 
@@ -150,11 +154,14 @@ int Machine::SaveProgram(WideChar* pathToFile)
 //-2 - BadFile
 //-1 - не удалось открыть файл для чтения
 // 0 - сохранение успешно
-int Machine::LoadProgram(WideChar* pathToFile){
+int Machine::LoadProgram(UnicodeString pathToFile){
 	std::ifstream file;
-	file.open(pathToFile);
+	AnsiString A;
+	A=pathToFile;
+	char* c = A.c_str();
+//	file.open();
+	file.open("D:\TestHelp\Errlog.txt");
 	if (!file.is_open()) return -1;
-
 	//1 - tapLen
 	//2 - Rows
 	//3 - Columns

@@ -27,8 +27,8 @@ public:
 //	int TraceProgram();
 	void SetInitialState();
 
-	int SaveProgram(WideChar* pathToFile);
-	int LoadProgram(WideChar* pathToFile);
+	int SaveProgram(UnicodeString pathToFile);
+	int LoadProgram(UnicodeString pathToFile);
 	void SaveTape(WideChar isUser = 'U');
 	int LoadTape(WideChar isUser = 'U');
 	int CheckTable();

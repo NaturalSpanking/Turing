@@ -106,6 +106,8 @@
         <ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\debug\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <ILINK_LibraryPath>$(BDS)\lib\win32\release\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <LinkPackageImports>rtl.bpi;vcl.bpi</LinkPackageImports>
     </PropertyGroup>

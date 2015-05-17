@@ -660,6 +660,7 @@ object MainForm: TMainForm
       NumGlyphs = 2
       TabOrder = 4
       TabStop = False
+      OnClick = StopBtnClick
     end
     object StepBtn: TBitBtn
       Left = 105
@@ -926,6 +927,7 @@ object MainForm: TMainForm
     Height = 41
     Align = alTop
     TabOrder = 4
+    OnClick = GridPanelClick
     object AddRowBtn: TBitBtn
       Left = 6
       Top = 5
@@ -1341,6 +1343,7 @@ object MainForm: TMainForm
     object N1: TMenuItem
       AutoHotkeys = maAutomatic
       Caption = #1060#1072#1081#1083
+      OnClick = PauseBtnClick
       object N2: TMenuItem
         Caption = #1053#1086#1074#1099#1081
         ShortCut = 16462
@@ -1395,6 +1398,7 @@ object MainForm: TMainForm
       object N13: TMenuItem
         Caption = #1064#1072#1075
         ShortCut = 119
+        OnClick = StepBtnClick
       end
       object N14: TMenuItem
         Caption = #1055#1072#1091#1079#1072
@@ -1407,10 +1411,12 @@ object MainForm: TMainForm
     end
   end
   object SaveDialog: TSaveDialog
+    DefaultExt = 'mtur'
     Filter = #1060#1072#1081#1083#1099' '#1052#1072#1096#1080#1085#1099' '#1058#1100#1102#1088#1080#1085#1075#1072'|*.mtur|'#1042#1089#1077' '#1092#1072#1081#1083#1099'|*.*'
     Left = 288
   end
   object OpenDialog: TOpenDialog
+    FileName = 'qwe'
     Filter = #1060#1072#1081#1083#1099' '#1052#1072#1096#1080#1085#1099' '#1058#1100#1102#1088#1080#1085#1075#1072'|*.mtur|'#1042#1089#1077' '#1092#1072#1081#1083#1099'|*.*'
     Left = 328
   end
