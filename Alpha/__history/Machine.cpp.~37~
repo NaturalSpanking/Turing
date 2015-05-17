@@ -28,6 +28,7 @@ Machine::~Machine()
 }
 //Шаг машины
 //Возвращаемые значения:
+//-3 - Символ в ленте или символ в таблице не существует в алфавите
 //-2 - Машина перешла в незаполенную ячейку таблицы
 //-1 - Не удалось получить символ из ленты(выход за границы ленты)
 // 0 - Шаг успешно завершен
@@ -38,12 +39,14 @@ int Machine::Step()
 	rule errRule;
 	WideChar tempChar = GetTapeChar(GetTapePosition());
 	if (tempChar == '\0') return -1;
+	if (!InAlphabet(tempChar)) return -3;
 	rule tempRule = GetTableRule(currentState, tempChar);
 	if (tempRule == errRule)
 	{
 		currentState = 1;
 		return -2;
 	}
+	if (!InAlphabet(tempRule.symbol)) return -3;
 
 	SetTapeChar(GetTapePosition(), tempRule.symbol);
 	ShiftTape(tempRule.shift);
@@ -53,8 +56,8 @@ int Machine::Step()
 		currentState = 1;
 		return 1;
 	}
-	if(tempRule.is_breakpoint == 0) return 0;
-	else return 2;
+	if(IsBreakepoint(tempRule.symbol, tempRule.new_state) == 1) return 2;
+	else return 0;
 }
 
 /*int Machine::TraceProgram()
@@ -100,21 +103,24 @@ int Machine::SaveProgram(WideChar* pathToFile)
 	file.open(pathToFile);
 	if (!file.is_open()) return -1;
 
+	//запись даных
 	file << tap->tape.size() << " " << Rows << " " << Columns << "\n";
 
+	//запись ленты
 	for (unsigned i = 0; i < tap->tape.size(); i++)
 	{
-		file << tap->tape[i];
+		file << (char)tap->tape[i];
 	}
 	file << "\n";
 
+	//запись таблицы
 	for (unsigned i = 0; i < Rows; i++)
 	{
 		for (unsigned ii = 0; ii < Columns; ii++)
 		{
 			if (ii != 0)
 			{
-				if (tab->table[i][ii].symbol != ' ') file << tab->table[i][ii].symbol;
+				if (tab->table[i][ii].symbol != ' ') file << (char)tab->table[i][ii].symbol;
 				else file << " ";
 				if (tab->table[i][ii].shift != -2)
 				{
@@ -128,7 +134,7 @@ int Machine::SaveProgram(WideChar* pathToFile)
 			}
 			else
 			{
-				file << tab->table[i][ii].symbol;
+				file << (char)tab->table[i][ii].symbol;
 			}
 			if (ii+1 < Columns) file << " ";
 		}
@@ -201,14 +207,23 @@ int Machine::LoadProgram(WideChar* pathToFile){
 				buff[0] = '\0';
 				buff[1] = '\0';
 				file.read(buff, 1);
-				if (buff[0] != '>' && buff[0] != '<' && buff[0] != '.') return -2;
+				if (buff[0] != '>' && buff[0] != '<' && buff[0] != '.' && buff[0] != ' ') return -2;
 				if (buff[0] == '>') tab->table[i][ii].shift = 1;
 				if (buff[0] == '<') tab->table[i][ii].shift = -1;
 				if (buff[0] == '.') tab->table[i][ii].shift = 0;
+				if (buff[0] == ' ') tab->table[i][ii].shift = -2;
 
-				file >> buff;
-				intTemp = atoi(buff);
-				if (intTemp < 0) return -2;
+				if (file.peek() == ' ')
+				{
+					file.ignore();
+					intTemp = -1;
+				}
+				else
+				{
+					file >> buff;
+					intTemp = atoi(buff);
+					if (intTemp < 0) return -2;
+				}
 				tab->table[i][ii].new_state = intTemp;
 
 				tab->table[i][ii].is_breakpoint = 0;
@@ -241,7 +256,6 @@ int Machine::LoadProgram(WideChar* pathToFile){
 	file.close();
 	return 0;
 }
-
 //Сохранение ленты в временное хранилище
 //isUser == U - сохранение в пользовательское хранилище
 //isUser != U - сохранение в системное хранилище

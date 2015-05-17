@@ -34,7 +34,7 @@ Machine::~Machine()
 //-1 - не удалось получить символ из ленты(выход за границы ленты)
 // 0 - шаг успешно завершен
 // 1 - шаг успешно завершен с переходом машины в 0-е состояние(окончание программы)
-// 2 - шаг успешно завершен, следующая ячейка - точка останова
+// 2 - шаг успешно завершен с выходом на ячейке с точкой останова
 int Machine::Step()
 {
 	rule errRule;
@@ -48,7 +48,7 @@ int Machine::Step()
 		return -2;
 	}
 	if (!InAlphabet(tempRule.symbol)) return -3;
-	if (tempRule.new_state < 0 || tempRule.new_state > (int)tab->table[0].size()) return -4;
+	if (tempRule.new_state < 0 || tempRule.new_state > tab->table[0].size()) return -4; 
 
 	SetTapeChar(GetTapePosition(), tempRule.symbol);
 	ShiftTape(tempRule.shift);
@@ -97,20 +97,22 @@ void Machine::SetInitialState()
 //Возвращаемые значения:
 //-1 - не удалось открыть файл для записи
 // 0 - сохранение успешно
-int Machine::SaveProgram(WideChar* pathToFile)
+int Machine::SaveProgram(UnicodeString pathToFile)
 {
-	std::ofstream file;
+	TFileStream* file;
 	unsigned Rows = tab->table.size();
 	unsigned Columns = tab->table[0].size();
-	file.open(pathToFile);
+	file = new TFileStream(pathToFile, fmRead);
+	file->Size;
 	if (!file.is_open()) return -1;
 
+	//запись даных
 	file << tap->tape.size() << " " << Rows << " " << Columns << "\n";
 
-	//Запись ленты
+	//запись ленты
 	for (unsigned i = 0; i < tap->tape.size(); i++)
 	{
-		file << tap->tape[i];
+		file << (char)tap->tape[i];
 	}
 	file << "\n";
 

@@ -28,22 +28,27 @@ Machine::~Machine()
 }
 //Шаг машины
 //Возвращаемые значения:
-//-2 - Машина перешла в незаполенную ячейку таблицы
-//-1 - Не удалось получить символ из ленты(выход за границы ленты)
-// 0 - Шаг успешно завершен
-// 1 - Шаг успешно завершен с переходом машины в 0-е состояние(окончание программы)
-// 2 - Шаг успешно завершен с выходом на ячейке с точкой останова
+//-4 - состояние в которое нужно перейти не существует
+//-3 - символ в ленте или символ в таблице не существует в алфавите
+//-2 - машина перешла в незаполенную ячейку таблицы
+//-1 - не удалось получить символ из ленты(выход за границы ленты)
+// 0 - шаг успешно завершен
+// 1 - шаг успешно завершен с переходом машины в 0-е состояние(окончание программы)
+// 2 - шаг успешно завершен с выходом на ячейке с точкой останова
 int Machine::Step()
 {
 	rule errRule;
 	WideChar tempChar = GetTapeChar(GetTapePosition());
 	if (tempChar == '\0') return -1;
+	if (!InAlphabet(tempChar)) return -3;
 	rule tempRule = GetTableRule(currentState, tempChar);
 	if (tempRule == errRule)
 	{
 		currentState = 1;
 		return -2;
 	}
+	if (!InAlphabet(tempRule.symbol)) return -3;
+	if (tempRule.new_state < 0 || tempRule.new_state > tab->table[0].size()) return -4; 
 
 	SetTapeChar(GetTapePosition(), tempRule.symbol);
 	ShiftTape(tempRule.shift);
@@ -53,8 +58,8 @@ int Machine::Step()
 		currentState = 1;
 		return 1;
 	}
-	if(tempRule.is_breakpoint == 0) return 0;
-	else return 2;
+	if(IsBreakepoint(tempRule.symbol, tempRule.new_state) == 1) return 2;
+	else return 0;
 }
 
 /*int Machine::TraceProgram()
@@ -94,10 +99,11 @@ void Machine::SetInitialState()
 // 0 - сохранение успешно
 int Machine::SaveProgram(WideChar* pathToFile)
 {
-	std::ofstream file;
+	TFileStream* file;
 	unsigned Rows = tab->table.size();
 	unsigned Columns = tab->table[0].size();
 	file.open(pathToFile);
+	
 	if (!file.is_open()) return -1;
 
 	//запись даных
@@ -151,7 +157,6 @@ int Machine::LoadProgram(WideChar* pathToFile){
 	std::ifstream file;
 	file.open(pathToFile);
 	if (!file.is_open()) return -1;
-
 	//1 - tapLen
 	//2 - Rows
 	//3 - Columns

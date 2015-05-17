@@ -1,14 +1,20 @@
-#include "Tape.h"
-#include "Table.h"
-#include <System.Classes.hpp>
-
 #ifndef MachineH
 #define MachineH
+
+#include "Tape.h"
+#include "Table.h"
+#include <fstream>
+#include <streambuf>
+#include <System.Classes.hpp>
+
+#define BUFF_SIZE 1024
+
 class Machine
 {
 private:
 	int currentState;
 	TapeMemento* tapMem;
+	TapeMemento* tapMemSys;
 	static Machine* mach;
 	Machine();
 public:
@@ -18,18 +24,24 @@ public:
 	static Machine* Create(unsigned tapLen = 101, unsigned tabRows = 4, unsigned tabCol = 5);
 
 	int Step();
-	int TraceProgram();
+//	int TraceProgram();
+	void SetInitialState();
 
-	int SaveProgram(char* pathToFile);
-	int LoadProgram(char* pathToFile);
-	void SaveTape();
-	int LoadTape();
+	int SaveProgram(UnicodeString pathToFile);
+	int LoadProgram(WideChar* pathToFile);
+	void SaveTape(WideChar isUser = 'U');
+	int LoadTape(WideChar isUser = 'U');
+	int CheckTable();
 
 	rule GetTableRule(unsigned state, WideChar c);
 	int SetTableRule(unsigned state, WideChar c, rule r);
 	int GetCurrentState();
+	int IsBreakepoint(unsigned state, WideChar c);
+	bool InAlphabet(WideChar c);
+	WideChar GetAlphabet(int index);
 
 	int SetTapeChar(unsigned index, WideChar c);
+	int SetTapePosition(unsigned index);
 	int ShiftTape(int shift);
 	WideChar GetTapeChar(unsigned index);
 	int GetTapePosition();
