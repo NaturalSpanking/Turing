@@ -1421,17 +1421,8 @@
 <XPD:REF name="Views[1]">CH7DSZ3fw0GKLAa8Ug9MRAAA</XPD:REF>
 <XPD:REF name="Views[2]">9cVGOJ3ZPEKSiBu/ZaqsNwAA</XPD:REF>
 <XPD:REF name="Views[3]">c9Ab2DFYK0epANle94nKHQAA</XPD:REF>
-<XPD:ATTR name="#Operations" type="integer">4</XPD:ATTR>
-<XPD:OBJ name="Operations[0]" type="UMLOperation" guid="VGmBXIbqxEugZKrxmzOcqwAA">
-<XPD:ATTR name="Name" type="string">TapeMemento</XPD:ATTR>
-<XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkPrivate</XPD:ATTR>
-<XPD:REF name="Owner">+oSw0TmQ+UK7WlDt0YiQ4AAA</XPD:REF>
-</XPD:OBJ>
-<XPD:OBJ name="Operations[1]" type="UMLOperation" guid="1CXwZFzsMU+b23MFTs/T9wAA">
-<XPD:ATTR name="Name" type="string">~TapeMemento</XPD:ATTR>
-<XPD:REF name="Owner">+oSw0TmQ+UK7WlDt0YiQ4AAA</XPD:REF>
-</XPD:OBJ>
-<XPD:OBJ name="Operations[2]" type="UMLOperation" guid="RxmuanHq8kOcUp/PdtyDRQAA">
+<XPD:ATTR name="#Operations" type="integer">2</XPD:ATTR>
+<XPD:OBJ name="Operations[0]" type="UMLOperation" guid="RxmuanHq8kOcUp/PdtyDRQAA">
 <XPD:ATTR name="Name" type="string">int SaveToFile</XPD:ATTR>
 <XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkProtected</XPD:ATTR>
 <XPD:REF name="Owner">+oSw0TmQ+UK7WlDt0YiQ4AAA</XPD:REF>
@@ -1441,7 +1432,7 @@
 <XPD:REF name="BehavioralFeature">RxmuanHq8kOcUp/PdtyDRQAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
-<XPD:OBJ name="Operations[3]" type="UMLOperation" guid="AZdsWsKIj0infTK0NKakzQAA">
+<XPD:OBJ name="Operations[1]" type="UMLOperation" guid="AZdsWsKIj0infTK0NKakzQAA">
 <XPD:ATTR name="Name" type="string">void LoadFromFile</XPD:ATTR>
 <XPD:ATTR name="Visibility" type="UMLVisibilityKind">vkProtected</XPD:ATTR>
 <XPD:REF name="Owner">+oSw0TmQ+UK7WlDt0YiQ4AAA</XPD:REF>
