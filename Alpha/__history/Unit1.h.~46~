@@ -13,6 +13,7 @@
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Grids.hpp>
 #include <Vcl.Dialogs.hpp>
+#include "ShellAPI.h"
 
 #include "machine.h"
 
@@ -66,8 +67,10 @@ __published: // IDE-managed Components
 	TMenuItem *N17;
 	TTimer *StatusTimer;
 	TTimer *StepTimer;
+	TTimer *ShadowSaveTimer;
 
-    int __fastcall SetRule();
+
+    void __fastcall SetRule();
 	void __fastcall N10Click(TObject *Sender);
 	void __fastcall N7Click(TObject *Sender);
 	void __fastcall N9Click(TObject *Sender);
@@ -112,11 +115,13 @@ __published: // IDE-managed Components
 	rule __fastcall StrToRule(UnicodeString Str);
 	UnicodeString __fastcall RuleToStr(rule Rule);
 	void __fastcall PauseBtnClick(TObject *Sender);
-
-
-
-
-
+	void __fastcall StopBtnClick(TObject *Sender);
+	void __fastcall TableGridKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
+	void __fastcall N2Click(TObject *Sender);
+	void __fastcall ShadowSaveTimerTimer(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+	void __fastcall N17Click(TObject *Sender);
+	void __fastcall ProblemMemoKeyPress(TObject *Sender, System::WideChar &Key);
 
 
 private: // User declarations

@@ -18,6 +18,7 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object GridSplitter: TSplitter
@@ -928,7 +929,6 @@ object MainForm: TMainForm
     Height = 41
     Align = alTop
     TabOrder = 4
-    OnClick = GridPanelClick
     object AddRowBtn: TBitBtn
       Left = 6
       Top = 5

@@ -324,8 +324,8 @@ object AboutForm: TAboutForm
   object Label2: TLabel
     Left = 25
     Top = 47
-    Width = 193
-    Height = 32
+    Width = 224
+    Height = 41
     Caption = #1050#1091#1088#1089#1086#1074#1086#1081' '#1087#1088#1086#1077#1082#1090' '#1087#1086' '#1076#1080#1089#1094#1080#1087#1083#1077#1085#1077' "'#1055#1088#1086#1075#1088#1072#1084#1084#1085#1072#1103' '#1080#1085#1078#1077#1085#1077#1088#1080#1103'"'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
@@ -402,19 +402,5 @@ object AboutForm: TAboutForm
     Width = 85
     Height = 13
     Caption = #1063#1077#1083#1103#1073#1080#1085#1089#1082', 2015'
-  end
-  object Label10: TLabel
-    Left = 272
-    Top = 156
-    Width = 54
-    Height = 13
-    Caption = #1042#1077#1088#1089#1080#1103' 1.0'
-  end
-  object Label11: TLabel
-    Left = 272
-    Top = 175
-    Width = 81
-    Height = 13
-    Caption = 'Build 19.05.2015'
   end
 end

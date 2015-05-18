@@ -14,6 +14,9 @@ TMainForm *MainForm;
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::UpdTape() {
+	if (OptForm->Edit1==NULL) {
+		return;
+	}
 	for (int i = 0; i < TapeGrid->ColCount; i++) {
 		TapeGrid->Cells[i][1] =
 			machine->GetTapeChar(TapeOffset + (i - TapeGrid->ColCount / 2) +
@@ -71,6 +74,7 @@ void __fastcall TMainForm::FormResize(TObject *Sender) {
 	SaveTapeBtn->Left = MainForm->Width - 84;
 	TapeGrid->ColCount = (MainForm->Width - 50) / 25 - 2;
 	TapeGrid->Refresh();
+	UpdTape();
 }
 // ---------------------------------------------------------------------------
 
@@ -302,6 +306,7 @@ void __fastcall TMainForm::FormCreate(TObject *Sender) {
 			SaveDialog->FileName = ParamStr(1);
 			TableGrid->Tag = 0;
 			MainForm->Tag = 1;
+			//UpdTape();
 		}
 		if (err == -1) {
 			MessageDlg("Не удалось открыть файл. Доступ запрещен.", mtError,
@@ -794,36 +799,19 @@ void __fastcall TMainForm::N17Click(TObject *Sender) {
 	StartBtn->Click();
 }
 // ---------------------------------------------------------------------------
-void __fastcall TMainForm::GridPanelClick(TObject *Sender)
-{
-ShowMessage(ProblemMemo->Lines->GetText());
-TFileStream *S = new TFileStream("qwe.txt",fmOpenReadWrite);
-UnicodeString W = "1234356 рюзьський";
-AnsiString A;
-char *c = new char[20];
-c = "qweasd";
-S->Write(W.w_str(),W.Length());
-S->Read(W.w_str(),W.Length());
-S->Free();
-ShowMessage(W);
-
-std::ifstream file;
-file.open("qwe");
-A=W;
-//file << A.c_str();
-file.close();
-file.open("qwe");
-file.read(c,20);
-W = c;
-ShowMessage(W);
-}
-//---------------------------------------------------------------------------
 
 
 void __fastcall TMainForm::ProblemMemoKeyPress(TObject *Sender, System::WideChar &Key)
 
 {
 TableGrid->Tag=1;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::FormShow(TObject *Sender)
+{
+UpdTape();
+UpdTable();
 }
 //---------------------------------------------------------------------------
 

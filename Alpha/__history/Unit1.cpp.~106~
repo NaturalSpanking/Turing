@@ -285,9 +285,22 @@ void __fastcall TMainForm::FormCreate(TObject *Sender) {
 	GridCell = new Graphics::TBitmap();
 	machine = machine->Create();
 	if (ParamCount() > 0) {
-		int err = machine->LoadProgram(ParamStr(1));
+		UnicodeString P,C;
+		int err = machine->LoadProgram(ParamStr(1), P, C);
 		if (err == 0) {
 			StatusBarHint("Файл открыт.");
+			ProblemMemo->Clear();
+			ProblemMemo->Lines->Text = P;
+			CommentMemo->Clear();
+			CommentMemo->Lines->Text = C;
+			UnicodeString S = ParamStr(1);
+				while (S.Pos("\\")) {
+					S.Delete(1, S.Pos("\\"));
+				}
+				MainForm->Caption = S + " - Машина Тьюринга";
+			SaveDialog->Tag = 1;
+			SaveDialog->FileName = ParamStr(1);
+			TableGrid->Tag = 0;
 			MainForm->Tag = 1;
 		}
 		if (err == -1) {
@@ -302,10 +315,14 @@ void __fastcall TMainForm::FormCreate(TObject *Sender) {
 		if (FileExists("ShadowSave.mtur")) {
 			if (MessageDlg("Найден файл резервного сохранения. Загрузить?",
 				mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0) == mrYes)
-			{
-				int err = machine->LoadProgram("ShadowSave.mtur");
+			{	UnicodeString P, C;
+				int err = machine->LoadProgram("ShadowSave.mtur", P, C);
 				if (err == 0) {
 					StatusBarHint("Файл открыт.");
+					ProblemMemo->Clear();
+					ProblemMemo->Lines->Text = P;
+					CommentMemo->Clear();
+					CommentMemo->Lines->Text = C;
 					MainForm->Tag = 1;
 					// OptForm->Edit1->Text = IntToStr((machine->tap->GetLenght() - 1) / 2);
 				}
@@ -347,7 +364,7 @@ void __fastcall TMainForm::N4Click(TObject *Sender) {
 				}
 			}
 			LoadTapeBtn->Click();
-			if (machine->SaveProgram(SaveDialog->FileName.w_str()) == 0) {
+			if (machine->SaveProgram(SaveDialog->FileName.w_str(),ProblemMemo->Lines->GetText(), CommentMemo->Lines->GetText()) == 0) {
 				StatusBarHint("Файл сохранен.");
 				UnicodeString S = SaveDialog->FileName;
 				while (S.Pos("\\")) {
@@ -365,7 +382,7 @@ void __fastcall TMainForm::N4Click(TObject *Sender) {
 	}
 	else {
 		LoadTapeBtn->Click();
-		if (machine->SaveProgram(SaveDialog->FileName) == 0) {
+		if (machine->SaveProgram(SaveDialog->FileName, ProblemMemo->Lines->GetText(), CommentMemo->Lines->GetText()) == 0) {
 			StatusBarHint("Файл сохранен.");
 			SaveDialog->Tag = 1;
 			TableGrid->Tag = 0;
@@ -387,7 +404,7 @@ void __fastcall TMainForm::N5Click(TObject *Sender) {
 			return;
 		}
 		LoadTapeBtn->Click();
-		if (machine->SaveProgram(SaveDialog->FileName.w_str()) == 0) {
+		if (machine->SaveProgram(SaveDialog->FileName.w_str(), ProblemMemo->Lines->GetText(), CommentMemo->Lines->GetText()) == 0) {
 			StatusBarHint("Файл сохранен.");
 			UnicodeString S = SaveDialog->FileName;
 				while (S.Pos("\\")) {
@@ -417,9 +434,14 @@ void __fastcall TMainForm::N3Click(TObject *Sender) {
 		}
 	}
 	if (OpenDialog->Execute(MainForm->Handle)) {
-		int err = machine->LoadProgram(OpenDialog->FileName);
+		UnicodeString P, C;
+		int err = machine->LoadProgram(OpenDialog->FileName, P, C);
 		if (err == 0) {
 			StatusBarHint("Файл открыт.");
+			ProblemMemo->Clear();
+			ProblemMemo->Lines->Text = P;
+			CommentMemo->Clear();
+			CommentMemo->Lines->Text = C;
 			UnicodeString S = OpenDialog->FileName;
 			while (S.Pos("\\")) {
 				S.Delete(1, S.Pos("\\"));
@@ -748,7 +770,7 @@ void __fastcall TMainForm::N2Click(TObject *Sender) {
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::ShadowSaveTimerTimer(TObject *Sender) {
-	machine->SaveProgram("ShadowSave.mtur");
+	machine->SaveProgram("ShadowSave.mtur", ProblemMemo->Lines->GetText(), CommentMemo->Lines->GetText());
 }
 
 // ---------------------------------------------------------------------------
@@ -772,3 +794,12 @@ void __fastcall TMainForm::N17Click(TObject *Sender) {
 	StartBtn->Click();
 }
 // ---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::ProblemMemoKeyPress(TObject *Sender, System::WideChar &Key)
+
+{
+TableGrid->Tag=1;
+}
+//---------------------------------------------------------------------------
+

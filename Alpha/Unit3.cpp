@@ -75,8 +75,8 @@ void TOptForm::ApplyChanges() {
 	MainForm->ShadowSaveTimer->Interval = StrToInt(Edit3->Text) * 60000;
 	MainForm->ShadowSaveTimer->Enabled = true;
 	MainForm->machine->SetTapePosition(StrToInt(OptForm->Edit1->Text));
-	MainForm->UpdTape();
 	MainForm->UpdTable();
+	MainForm->UpdTape();
 }
 
 // ---------------------------------------------------------------------------
