@@ -741,6 +741,7 @@ void __fastcall TMainForm::StopBtnClick(TObject *Sender) {
 	StopBtn->Enabled = false;
 	machine->SetInitialState();
 	UpdTable();
+	StatusBarHint("Выполнение остановлено.");
 }
 // ---------------------------------------------------------------------------
 

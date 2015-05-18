@@ -387,7 +387,6 @@ object AboutForm: TAboutForm
     Top = 200
     Width = 206
     Height = 13
-    Cursor = crHandPoint
     Caption = 'https://github.com/NaturalSpanking/Turing'
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clMenuHighlight
