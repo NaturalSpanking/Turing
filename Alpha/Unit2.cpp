@@ -14,3 +14,10 @@ __fastcall TAboutForm::TAboutForm(TComponent* Owner)
 {
 }
 //---------------------------------------------------------------------------
+void __fastcall TAboutForm::Label8Click(TObject *Sender)
+{
+ShellExecute(AboutForm->Handle,L"open",L"https://github.com/NaturalSpanking/Turing",L"",L"",SW_SHOW);
+//ShellExecute(MainForm->Handle, L"open", L"TuringHelp.chm", L"", L"", SW_SHOW);
+}
+//---------------------------------------------------------------------------
+

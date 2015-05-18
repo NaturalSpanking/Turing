@@ -69,11 +69,12 @@ void TOptForm::ApplyChanges() {
 	}
 	else {
 		Edit1->Text = IntToStr((MainForm->machine->tap->GetLenght() - 1) / 2);
-		MainForm->Tag=0;
+		MainForm->Tag = 0;
 	}
 	MainForm->StepTimer->Interval = StrToInt(Edit2->Text);
-	MainForm->ShadowSaveTimer->Interval=StrToInt(Edit3->Text)*60000;
-	MainForm->ShadowSaveTimer->Enabled=true;
+	MainForm->ShadowSaveTimer->Interval = StrToInt(Edit3->Text) * 60000;
+	MainForm->ShadowSaveTimer->Enabled = true;
+	MainForm->machine->SetTapePosition(StrToInt(OptForm->Edit1->Text));
 	MainForm->UpdTape();
 	MainForm->UpdTable();
 }
@@ -160,8 +161,8 @@ void __fastcall TOptForm::FormCreate(TObject *Sender) {
 	if (FileExists("Options.cfg")) {
 		BufList->LoadFromFile("Options.cfg");
 		ApplyToForm();
-		ApplyChanges();
 	}
+	ApplyChanges();
 }
 // ---------------------------------------------------------------------------
 

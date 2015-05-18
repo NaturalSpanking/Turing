@@ -102,7 +102,7 @@ void Machine::SetInitialState()
 //¬озвращаемые значени€:
 //-1 - не удалось открыть файл дл€ записи
 // 0 - сохранение успешно
-int Machine::SaveProgram(UnicodeString pathToFile)
+int Machine::SaveProgram(UnicodeString pathToFile, UnicodeString Problem, UnicodeString Comment)
 {
 	std::ofstream file;
 	unsigned Rows = tab->table.size();
@@ -112,7 +112,7 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 	file.open(A.c_str());
 	if (!file.is_open()) return -1;
 
-	file << tap->tape.size() << " " << Rows << " " << Columns << "\n";
+	file << tap->tape.size() << " " << Rows << " " << Columns << " " <<Problem.Length() << " " << Comment.Length() << "\n";
 
 	//«апись ленты
 	for (unsigned i = 0; i < tap->tape.size(); i++)
@@ -149,7 +149,10 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 		}
 		file << "\n";
 	}
-
+	A=Problem;
+	file << A.c_str();
+	A=Comment;
+	file << A.c_str();
 	file.close();
 	return 0;
 }
@@ -159,7 +162,7 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 //-2 - BadFile
 //-1 - не удалось открыть файл дл€ чтени€
 // 0 - сохранение успешно
-int Machine::LoadProgram(UnicodeString pathToFile){
+int Machine::LoadProgram(UnicodeString pathToFile, UnicodeString &Problem, UnicodeString &Comment){
 	std::ifstream file;
 	AnsiString A;
 	A=pathToFile;
@@ -168,11 +171,11 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 	//1 - tapLen
 	//2 - Rows
 	//3 - Columns
-	unsigned params[3] = {0};
+	unsigned params[5] = {0};
 	char buff[BUFF_SIZE];
 
 	//ѕолучение параметров ленты и таблицы
-	for (int i = 0; i < 3; i++){
+	for (int i = 0; i < 5; i++){
 		if (!file.good()) return -2;
 		file >> buff;
 		params[i] = atoi(buff);
@@ -268,6 +271,15 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 		return -3;
 	}
 
+	char *p = new char[params[3]];
+	file.read(p,params[3]-1);
+	Problem = p;
+	char* c = new char[params[4]];
+	file.read(c,params[4]-1);
+	c[params[4]-1] = '\0';
+	Comment = c;
+	delete [] p;
+	delete [] c;
 	file.close();
 	return 0;
 }

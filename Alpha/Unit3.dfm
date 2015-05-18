@@ -126,7 +126,7 @@ object OptForm: TOptForm
     Width = 121
     Height = 21
     TabOrder = 4
-    Text = '2000'
+    Text = '1000'
   end
   object Edit3: TEdit
     Left = 255
@@ -134,7 +134,7 @@ object OptForm: TOptForm
     Width = 121
     Height = 21
     TabOrder = 5
-    Text = '10'
+    Text = '2'
   end
   object CheckBox1: TCheckBox
     Left = 8

@@ -5,7 +5,6 @@
 #include "Table.h"
 #include <fstream>
 #include <streambuf>
-#include <System.Classes.hpp>
 
 #define BUFF_SIZE 1024
 
@@ -26,8 +25,8 @@ public:
 //	int TraceProgram();
 	void SetInitialState();
 
-	int SaveProgram(UnicodeString pathToFile);
-	int LoadProgram(UnicodeString pathToFile);
+	int SaveProgram(UnicodeString pathToFile, UnicodeString Problem, UnicodeString Comment);
+	int LoadProgram(UnicodeString pathToFile, UnicodeString &Problem, UnicodeString &Comment);
 	void SaveTape();
 	int LoadTape();
 	int CheckTable();

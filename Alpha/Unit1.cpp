@@ -14,8 +14,6 @@ TMainForm *MainForm;
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::UpdTape() {
-
-	// TapeOffset=machine->GetTapePosition()-StrToInt(OptForm->Edit1->Text);
 	for (int i = 0; i < TapeGrid->ColCount; i++) {
 		TapeGrid->Cells[i][1] =
 			machine->GetTapeChar(TapeOffset + (i - TapeGrid->ColCount / 2) +
@@ -38,7 +36,6 @@ void __fastcall TMainForm::UpdTable() {
 				RuleToStr(machine->GetTableRule(i, TableGrid->Cells[0][j][1]));
 		}
 	}
-
 }
 
 // ---------------------------------------------------------------------------
@@ -58,9 +55,14 @@ void __fastcall TMainForm::N7Click(TObject *Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::N9Click(TObject *Sender) {
-	// ShowMessage("Вызов справки");
-	ShellExecute(MainForm->Handle, L"open", L"TuringHelp.chm", L"", L"",
-		SW_SHOW);
+	if (FileExists("TuringHelp.chm")) {
+		ShellExecute(MainForm->Handle, L"open", L"TuringHelp.chm", L"", L"",
+			SW_SHOW);
+	}
+	else {
+		MessageDlg("Файл справки \"TuringHelp.chm\" не найден!", mtError,
+			TMsgDlgButtons() << mbOK, 0);
+	}
 }
 // ---------------------------------------------------------------------------
 
@@ -132,29 +134,25 @@ void __fastcall TMainForm::TapeGridMouseWheelUp(TObject *Sender,
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeGridKeyPress(TObject *Sender,
-	System::WideChar &Key)
-
-{
+	System::WideChar &Key) {
 	if (Key == 8) {
 		Key = ' ';
 	}
-
 	if (machine->SetTapeChar(TapeOffset + (TapeGrid->Col -
 		TapeGrid->ColCount / 2) + StrToInt(OptForm->Edit1->Text), Key) != 0) {
 		StatusBarHint("Ошибка: выход за границы ленты.");
 		Key = 0;
 		return;
-
 	}
 	else {
 		StatusBarHint("Готово.");
+		TableGrid->Tag = 1;
 	}
 	TapeGrid->Cells[TapeGrid->Col][1] = Key;
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::AddRowBtnClick(TObject *Sender) {
-	// AddRowBtn->Glyph->LoadFromResourceName((int)HInstance, "LeftGreenArrow");
 	UnicodeString C, S;
 	C = InputBox("Добавить символы", "Введите символы", "");
 	if (C == "") {
@@ -222,7 +220,6 @@ void __fastcall TMainForm::TableGridDrawCell(TObject *Sender, int ACol,
 		GridCell->Canvas->FillRect(TRect(0, 0, r.Width(), r.Height()));
 	}
 	if (machine->IsBreakepoint(ACol, TableGrid->Cells[0][ARow][1]) == 1) {
-		// GridCell->Canvas->Brush->Color = RGB(159, 182, 205);
 		GridCell->Canvas->Pen->Color = OptForm->Panel1->Color;
 		GridCell->Canvas->Rectangle(0, 0, r.Width(), r.Height());
 
@@ -246,7 +243,6 @@ void __fastcall TMainForm::TableGridKeyPress(TObject *Sender,
 	}
 	TGridCracker* C;
 	static unsigned int i;
-	// ShowMessage(IntToStr(C->GetCaretPosition(TableGrid)));
 	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 0) {
 		if ((C->GetCaretPosition(TableGrid) == 0) &&
 			((TableGrid->Cells[TableGrid->Col][TableGrid->Row][1] != '.') &&
@@ -289,9 +285,22 @@ void __fastcall TMainForm::FormCreate(TObject *Sender) {
 	GridCell = new Graphics::TBitmap();
 	machine = machine->Create();
 	if (ParamCount() > 0) {
-		int err = machine->LoadProgram(ParamStr(1));
+		UnicodeString P,C;
+		int err = machine->LoadProgram(ParamStr(1), P, C);
 		if (err == 0) {
 			StatusBarHint("Файл открыт.");
+			ProblemMemo->Clear();
+			ProblemMemo->Lines->Text = P;
+			CommentMemo->Clear();
+			CommentMemo->Lines->Text = C;
+			UnicodeString S = ParamStr(1);
+				while (S.Pos("\\")) {
+					S.Delete(1, S.Pos("\\"));
+				}
+				MainForm->Caption = S + " - Машина Тьюринга";
+			SaveDialog->Tag = 1;
+			SaveDialog->FileName = ParamStr(1);
+			TableGrid->Tag = 0;
 			MainForm->Tag = 1;
 		}
 		if (err == -1) {
@@ -301,17 +310,19 @@ void __fastcall TMainForm::FormCreate(TObject *Sender) {
 		if (err < -1) {
 			StatusBarHint("Ошибка: Не удалось открыть файл.");
 		}
-		// UpdTable();
-		// UpdTape();
 	}
 	else {
 		if (FileExists("ShadowSave.mtur")) {
 			if (MessageDlg("Найден файл резервного сохранения. Загрузить?",
 				mtConfirmation, TMsgDlgButtons() << mbYes << mbNo, 0) == mrYes)
-			{
-				int err = machine->LoadProgram("ShadowSave.mtur");
+			{	UnicodeString P, C;
+				int err = machine->LoadProgram("ShadowSave.mtur", P, C);
 				if (err == 0) {
 					StatusBarHint("Файл открыт.");
+					ProblemMemo->Clear();
+					ProblemMemo->Lines->Text = P;
+					CommentMemo->Clear();
+					CommentMemo->Lines->Text = C;
 					MainForm->Tag = 1;
 					// OptForm->Edit1->Text = IntToStr((machine->tap->GetLenght() - 1) / 2);
 				}
@@ -325,8 +336,6 @@ void __fastcall TMainForm::FormCreate(TObject *Sender) {
 			}
 		}
 	}
-
-	// ShowMessage("Открываем файл " + ParamStr(1));
 }
 
 // ---------------------------------------------------------------------------
@@ -353,11 +362,17 @@ void __fastcall TMainForm::N4Click(TObject *Sender) {
 					N4->Click();
 					return;
 				}
-
 			}
-			if (machine->SaveProgram(SaveDialog->FileName.w_str()) == 0) {
+			LoadTapeBtn->Click();
+			if (machine->SaveProgram(SaveDialog->FileName.w_str(),ProblemMemo->Lines->GetText(), CommentMemo->Lines->GetText()) == 0) {
 				StatusBarHint("Файл сохранен.");
+				UnicodeString S = SaveDialog->FileName;
+				while (S.Pos("\\")) {
+					S.Delete(1, S.Pos("\\"));
+				}
+				MainForm->Caption = S + " - Машина Тьюринга";
 				SaveDialog->Tag = 1;
+				TableGrid->Tag = 0;
 			}
 			else {
 				MessageDlg("Не удалось записать файл. Доступ запрещен.",
@@ -366,9 +381,11 @@ void __fastcall TMainForm::N4Click(TObject *Sender) {
 		}
 	}
 	else {
-		if (machine->SaveProgram(SaveDialog->FileName) == 0) {
+		LoadTapeBtn->Click();
+		if (machine->SaveProgram(SaveDialog->FileName, ProblemMemo->Lines->GetText(), CommentMemo->Lines->GetText()) == 0) {
 			StatusBarHint("Файл сохранен.");
 			SaveDialog->Tag = 1;
+			TableGrid->Tag = 0;
 		}
 		else {
 			MessageDlg("Не удалось записать файл. Доступ запрещен.", mtError,
@@ -386,9 +403,16 @@ void __fastcall TMainForm::N5Click(TObject *Sender) {
 			N5->Click();
 			return;
 		}
-		if (machine->SaveProgram(SaveDialog->FileName.w_str()) == 0) {
+		LoadTapeBtn->Click();
+		if (machine->SaveProgram(SaveDialog->FileName.w_str(), ProblemMemo->Lines->GetText(), CommentMemo->Lines->GetText()) == 0) {
 			StatusBarHint("Файл сохранен.");
+			UnicodeString S = SaveDialog->FileName;
+				while (S.Pos("\\")) {
+					S.Delete(1, S.Pos("\\"));
+				}
+				MainForm->Caption = S + " - Машина Тьюринга";
 			SaveDialog->Tag = 1;
+			TableGrid->Tag = 0;
 		}
 		else {
 			MessageDlg("Не удалось записать файл. Доступ запрещен.", mtError,
@@ -399,10 +423,33 @@ void __fastcall TMainForm::N5Click(TObject *Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::N3Click(TObject *Sender) {
+	if (TableGrid->Tag == 1) {
+		int res = MessageDlg("Сохранить файл перед открытием нового?",
+			mtConfirmation, TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
+		if (res == mrCancel) {
+			return;
+		}
+		if (res == mrYes) {
+			N4->Click();
+		}
+	}
 	if (OpenDialog->Execute(MainForm->Handle)) {
-		int err = machine->LoadProgram(OpenDialog->FileName);
+		UnicodeString P, C;
+		int err = machine->LoadProgram(OpenDialog->FileName, P, C);
 		if (err == 0) {
 			StatusBarHint("Файл открыт.");
+			ProblemMemo->Clear();
+			ProblemMemo->Lines->Text = P;
+			CommentMemo->Clear();
+			CommentMemo->Lines->Text = C;
+			UnicodeString S = OpenDialog->FileName;
+			while (S.Pos("\\")) {
+				S.Delete(1, S.Pos("\\"));
+			}
+			MainForm->Caption = S + " - Машина Тьюринга";
+			TableGrid->Tag = 0;
+			SaveDialog->Tag = 1;
+			SaveDialog->FileName = OpenDialog->FileName;
 			OptForm->Edit1->Text =
 				IntToStr((machine->tap->GetLenght() - 1) / 2);
 		}
@@ -413,25 +460,23 @@ void __fastcall TMainForm::N3Click(TObject *Sender) {
 		if (err < -1) {
 			StatusBarHint("Ошибка: Не удалось открыть файл.");
 		}
-		UpdTable();
 		UpdTape();
+		UpdTable();
 	}
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TapeGridFixedCellClick(TObject *Sender, int ACol,
-	int ARow)
-
-{
+	int ARow) {
 	if ((ACol == TapeGrid->ColCount / 2) && (ARow == 0)) {
 		TapeOffset = 0;
+		machine->SetTapePosition(StrToInt(OptForm->Edit1->Text));
 		UpdTape();
 	}
 	else {
-		// ShowMessage(IntToStr(TapeOffset + ACol - TapeGrid->ColCount /2));
 		TapeOffset += ACol - TapeGrid->ColCount / 2;
+		machine->ShiftTape(ACol - TapeGrid->ColCount / 2);
 		UpdTape();
-
 	}
 }
 
@@ -443,7 +488,6 @@ void __fastcall TMainForm::TapeGridExit(TObject *Sender) {
 
 void __fastcall TMainForm::TapeGridKeyDown(TObject *Sender, WORD &Key,
 	TShiftState Shift) {
-	// ShowMessage(IntToStr(Key));
 	if (Key == VK_DELETE) {
 		TapeGrid->Cells[TapeGrid->Col][TapeGrid->Row] = ' ';
 		if (machine->SetTapeChar(TapeOffset + (TapeGrid->Col -
@@ -451,7 +495,6 @@ void __fastcall TMainForm::TapeGridKeyDown(TObject *Sender, WORD &Key,
 		{
 			StatusBarHint("Ошибка: выход за границы ленты.");
 			return;
-
 		}
 		else {
 			StatusBarHint("Готово.");
@@ -464,7 +507,6 @@ void __fastcall TMainForm::TapeGridKeyDown(TObject *Sender, WORD &Key,
 		if (Key == VK_RIGHT) {
 			TapeRightBtnClick(MainForm);
 		}
-
 	}
 }
 
@@ -476,6 +518,7 @@ void __fastcall TMainForm::StatusTimerTimer(TObject *Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::StatusBarHint(UnicodeString Text) {
+	StatusTimer->Enabled = false;
 	StatusBar1->SimpleText = Text;
 	StatusTimer->Enabled = true;
 }
@@ -500,7 +543,7 @@ void __fastcall TMainForm::LoadTapeBtnClick(TObject *Sender) {
 
 // ---------------------------------------------------------------------------
 void __fastcall TMainForm::AddColBtnClick(TObject *Sender) {
-	machine->tab->AddCol(TableGrid->Col);
+	machine->tab->AddCol(TableGrid->Col + 1);
 	UpdTable();
 
 }
@@ -515,7 +558,6 @@ void __fastcall TMainForm::DelColBtnClick(TObject *Sender) {
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::DelRowBtnClick(TObject *Sender) {
-	// ShowMessage(TableGrid->Cells[TableGrid->Row][0]);
 	if (machine->tab->DelRow(TableGrid->Cells[0][TableGrid->Row][1]) != 0) {
 		StatusBarHint("Ошибка: Нельзя удалить пустой символ.");
 	}
@@ -531,7 +573,6 @@ void __fastcall TMainForm::TableGridSelectCell(TObject *Sender, int ACol,
 void __fastcall TMainForm::SetRule() {
 	rule NulRule;
 	if (TableGrid->Cells[TableGrid->Col][TableGrid->Row].Length() > 2) {
-		// ShowMessage(StrToInt(TableGrid->Col));
 		if (machine->SetTableRule(TableGrid->Col,
 			TableGrid->Cells[0][TableGrid->Row][1],
 			StrToRule(TableGrid->Cells[TableGrid->Col][TableGrid->Row])) != 0) {
@@ -539,6 +580,7 @@ void __fastcall TMainForm::SetRule() {
 		}
 		else {
 			StatusBarHint("Готово.");
+			TableGrid->Tag = 1;
 		}
 	}
 	else {
@@ -564,7 +606,6 @@ rule __fastcall TMainForm::StrToRule(UnicodeString Str) {
 	r.new_state = StrToInt(Str.SubString(3, Str.Length()));
 	r.is_breakpoint = machine->IsBreakepoint(TableGrid->Col,
 		TableGrid->Cells[0][TableGrid->Row][1]);
-	// ShowMessage(IntToStr(r.new_state));
 	return r;
 }
 
@@ -593,31 +634,37 @@ void __fastcall TMainForm::StepBtnClick(TObject *Sender) {
 	TapeOffset = machine->GetTapePosition() - StrToInt(OptForm->Edit1->Text);
 	UpdTape();
 	if (ErrCode != 0) {
+		StepTimer->Enabled = false;
 		PauseBtn->Enabled = false;
 		PauseBtn->Tag = 0;
 		StartBtn->Enabled = true;
 		StopBtn->Enabled = false;
-		StepTimer->Enabled = false;
 	}
 	if (ErrCode == -1) {
 		StatusBarHint("Ошибка: Выход за пределы ленты.");
+		PauseBtn->Tag = 0;
 	}
 	if (ErrCode == -2) {
 		StatusBarHint("Ошибка: Отсутствует правило перехода.");
+		PauseBtn->Tag = 0;
 	}
 	if (ErrCode == 1) {
 		StatusBarHint("Готово.");
 		MessageDlg("Выполнение успешно завершено.", mtInformation,
 			TMsgDlgButtons() << mbOK, 0);
+		PauseBtn->Tag = 0;
 	}
 	if (ErrCode == 2) {
 		StatusBarHint("Достигнута точка останова.");
+		PauseBtn->Tag = 1;
 	}
 	if (ErrCode == -4) {
 		StatusBarHint("Ошибка: Неизвестное состояние.");
+		PauseBtn->Tag = 0;
 	}
 	if (ErrCode == -3) {
 		StatusBarHint("Ошибка: Неизвестный символ.");
+		PauseBtn->Tag = 0;
 	}
 }
 // ---------------------------------------------------------------------------
@@ -654,8 +701,6 @@ void __fastcall TMainForm::N16Click(TObject *Sender) {
 	r.is_breakpoint < 1 ? r.is_breakpoint = 1 : r.is_breakpoint = 0;
 	machine->SetTableRule(TableGrid->Col,
 		TableGrid->Cells[0][TableGrid->Row][1], r);
-
-	;
 	TableGrid->Refresh();
 }
 // ---------------------------------------------------------------------------
@@ -664,11 +709,9 @@ void __fastcall TMainForm::GridMenuPopup(TObject *Sender) {
 	if (machine->IsBreakepoint(TableGrid->Col,
 		TableGrid->Cells[0][TableGrid->Row][1]) == 1) {
 		N16->Caption = "Удалить точку останова";
-		// ShowMessage("qwe213");
 	}
 	else {
 		N16->Caption = "Добавить точку останова";
-		// ShowMessage("qwe");
 	}
 }
 // ---------------------------------------------------------------------------
@@ -678,7 +721,6 @@ void __fastcall TMainForm::PauseBtnClick(TObject *Sender) {
 		return;
 	}
 	PauseBtn->Tag = 1;
-	// StepBtn->Enabled = false;
 	StartBtn->Enabled = true;
 	StepTimer->Enabled = false;
 	PauseBtn->Enabled = false;
@@ -688,19 +730,17 @@ void __fastcall TMainForm::PauseBtnClick(TObject *Sender) {
 
 void __fastcall TMainForm::StopBtnClick(TObject *Sender) {
 	PauseBtn->Tag = 0;
-	// StepBtn->Enabled = false;
 	StartBtn->Enabled = true;
 	StepTimer->Enabled = false;
 	PauseBtn->Enabled = false;
 	StopBtn->Enabled = false;
 	machine->SetInitialState();
+	UpdTable();
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::TableGridKeyDown(TObject *Sender, WORD &Key,
-	TShiftState Shift)
-
-{
+	TShiftState Shift) {
 	rule NulRule;
 	if (Key == VK_DELETE) {
 		machine->SetTableRule(TableGrid->Col,
@@ -711,14 +751,79 @@ void __fastcall TMainForm::TableGridKeyDown(TObject *Sender, WORD &Key,
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::N2Click(TObject *Sender) {
+	if (TableGrid->Tag == 1) {
+		int res = MessageDlg("Сохранить файл перед созданием нового?",
+			mtConfirmation, TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
+		if (res == mrCancel) {
+			return;
+		}
+		if (res == mrYes) {
+			N4->Click();
+		}
+	}
 	delete machine;
 	machine->Create();
+	TableGrid->Tag = 0;
 	UpdTape();
 	UpdTable();
 }
 // ---------------------------------------------------------------------------
 
 void __fastcall TMainForm::ShadowSaveTimerTimer(TObject *Sender) {
-	machine->SaveProgram("ShadowSave.mtur");
+	machine->SaveProgram("ShadowSave.mtur", ProblemMemo->Lines->GetText(), CommentMemo->Lines->GetText());
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action) {
+	if (TableGrid->Tag == 1) {
+		int res = MessageDlg("Сохранить файл перед закрытием?", mtConfirmation,
+			TMsgDlgButtons() << mbYes << mbNo << mbCancel, 0);
+		if (res == mrCancel) {
+			Action = caNone;
+			return;
+		}
+		if (res == mrYes) {
+			N4->Click();
+		}
+	}
+}
+
+// ---------------------------------------------------------------------------
+void __fastcall TMainForm::N17Click(TObject *Sender) {
+	N16->Click();
+	StartBtn->Click();
 }
 // ---------------------------------------------------------------------------
+void __fastcall TMainForm::GridPanelClick(TObject *Sender)
+{
+ShowMessage(ProblemMemo->Lines->GetText());
+TFileStream *S = new TFileStream("qwe.txt",fmOpenReadWrite);
+UnicodeString W = "1234356 рюзьський";
+AnsiString A;
+char *c = new char[20];
+c = "qweasd";
+S->Write(W.w_str(),W.Length());
+S->Read(W.w_str(),W.Length());
+S->Free();
+ShowMessage(W);
+
+std::ifstream file;
+file.open("qwe");
+A=W;
+//file << A.c_str();
+file.close();
+file.open("qwe");
+file.read(c,20);
+W = c;
+ShowMessage(W);
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::ProblemMemoKeyPress(TObject *Sender, System::WideChar &Key)
+
+{
+TableGrid->Tag=1;
+}
+//---------------------------------------------------------------------------
+

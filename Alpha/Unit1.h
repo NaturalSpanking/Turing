@@ -119,6 +119,10 @@ __published: // IDE-managed Components
 	void __fastcall TableGridKeyDown(TObject *Sender, WORD &Key, TShiftState Shift);
 	void __fastcall N2Click(TObject *Sender);
 	void __fastcall ShadowSaveTimerTimer(TObject *Sender);
+	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+	void __fastcall N17Click(TObject *Sender);
+	void __fastcall GridPanelClick(TObject *Sender);
+	void __fastcall ProblemMemoKeyPress(TObject *Sender, System::WideChar &Key);
 
 
 private: // User declarations
