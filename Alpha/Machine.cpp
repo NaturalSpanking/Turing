@@ -36,6 +36,7 @@ Machine::~Machine()
 // 2 - шаг успешно завершен, следующа€ €чейка - точка останова
 int Machine::Step()
 {
+	//ѕолучение данных и проверка на ошибки
 	rule errRule;
 	WideChar tempChar = GetTapeChar(GetTapePosition());
 	if (tempChar == '\0') return -1;
@@ -49,15 +50,20 @@ int Machine::Step()
 	if (!InAlphabet(tempRule.symbol)) return -3;
 	if (tempRule.new_state < 0 || tempRule.new_state > (int)tab->table[0].size()) return -4;
 
+	//»зменение состо€ни€ и данных
 	SetTapeChar(GetTapePosition(), tempRule.symbol);
 	ShiftTape(tempRule.shift);
 	currentState = tempRule.new_state;
+
+	//обработка точки останова
+	tempChar = GetTapeChar(GetTapePosition());
+	if(IsBreakepoint(currentState, tempChar) == 1) return 2;
+
 	if (currentState == 0)
 	{
 		currentState = 1;
 		return 1;
 	}
-	if(IsBreakepoint(tempRule.symbol, tempRule.new_state) == 1) return 2;
 	else return 0;
 }
 
@@ -266,12 +272,10 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 	return 0;
 }
 //—охранение ленты в временное хранилище
-
 void Machine::SaveTape()
 {
 	tapMem = tap->CreateMemento();
 }
-
 //¬озвращаемые значени€:
 //-1 - не найдено хранилище(лента не разу не сохранена)
 // 0 - загрузка успешна
@@ -280,7 +284,6 @@ int Machine::LoadTape()
 		if (tapMem == NULL) return -1;
 		tap->SetMemento(tapMem);
 		return 0;
-
 }
 //ѕроверка корректности таблицы
 //¬озвращаемые значени€:
