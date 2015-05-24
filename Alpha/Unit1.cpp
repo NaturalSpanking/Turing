@@ -653,7 +653,7 @@ void __fastcall TMainForm::StepBtnClick(TObject *Sender) {
 		PauseBtn->Enabled = false;
 		PauseBtn->Tag = 0;
 		StartBtn->Enabled = true;
-		StopBtn->Enabled = false;
+//		StopBtn->Enabled = false;
 	}
 	if (ErrCode == -1) {
 		StatusBarHint("Ошибка: Выход за пределы ленты.");
@@ -693,10 +693,10 @@ void __fastcall TMainForm::StartBtnClick(TObject *Sender) {
 	}
 	StartBtn->Enabled = false;
 	PauseBtn->Enabled = true;
-	StopBtn->Enabled = true;
-	StepBtn->Click();
+//	StopBtn->Enabled = true;
 	StepTimer->Enabled = true;
 	StatusBarHint("Выполнение...");
+	StepBtn->Click();
 }
 // ---------------------------------------------------------------------------
 
@@ -748,10 +748,11 @@ void __fastcall TMainForm::StopBtnClick(TObject *Sender) {
 	StartBtn->Enabled = true;
 	StepTimer->Enabled = false;
 	PauseBtn->Enabled = false;
-	StopBtn->Enabled = false;
+//	StopBtn->Enabled = false;
 	machine->SetInitialState();
+	LoadTapeBtn->Click();
 	UpdTable();
-	StatusBarHint("Выполнение остановлено.");
+	StatusBarHint("Выполнен сброс.");
 }
 // ---------------------------------------------------------------------------
 

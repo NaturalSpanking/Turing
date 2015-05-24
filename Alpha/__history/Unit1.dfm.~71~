@@ -18,6 +18,7 @@ object MainForm: TMainForm
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnResize = FormResize
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object GridSplitter: TSplitter
@@ -514,8 +515,7 @@ object MainForm: TMainForm
       Top = 2
       Width = 27
       Height = 27
-      Hint = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100' (Shift+F9)'
-      Enabled = False
+      Hint = #1054#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1080' '#1089#1073#1088#1086#1089#1080#1090#1100' (Shift+F9)'
       Glyph.Data = {
         82110000424D82110000000000003600000028000000360000001B0000000100
         1800000000004C11000000000000000000000000000000000000FFFFFFFFFFFF
@@ -1325,6 +1325,7 @@ object MainForm: TMainForm
         #1050#1086#1084#1084#1077#1085#1090#1072#1088#1080#1081)
       ScrollBars = ssVertical
       TabOrder = 0
+      OnKeyPress = ProblemMemoKeyPress
     end
     object ProblemMemo: TMemo
       Left = 1
@@ -1337,6 +1338,7 @@ object MainForm: TMainForm
         #1055#1086#1089#1090#1072#1085#1086#1074#1082#1072' '#1079#1072#1076#1072#1095#1080)
       ScrollBars = ssVertical
       TabOrder = 1
+      OnKeyPress = ProblemMemoKeyPress
     end
   end
   object MainMenu1: TMainMenu
@@ -1432,6 +1434,7 @@ object MainForm: TMainForm
     end
     object N17: TMenuItem
       Caption = #1042#1099#1087#1086#1083#1085#1080#1090#1100' '#1076#1086' '#1101#1090#1086#1075#1086' '#1084#1077#1089#1090#1072
+      OnClick = N17Click
     end
   end
   object StatusTimer: TTimer
