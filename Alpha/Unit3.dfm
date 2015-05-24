@@ -118,7 +118,7 @@ object OptForm: TOptForm
     Width = 121
     Height = 21
     TabOrder = 3
-    Text = '500'
+    Text = '100'
   end
   object Edit2: TEdit
     Left = 255

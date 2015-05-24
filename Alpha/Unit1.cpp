@@ -539,6 +539,8 @@ void __fastcall TMainForm::StatusBarHint(UnicodeString Text) {
 }
 
 void __fastcall TMainForm::SaveTapeBtnClick(TObject *Sender) {
+	machine->SetTapePosition(StrToInt(OptForm->Edit1->Text));
+	UpdTape();
 	machine->SaveTape();
 	StatusBarHint("Лента сохранена.");
 }
@@ -653,7 +655,7 @@ void __fastcall TMainForm::StepBtnClick(TObject *Sender) {
 		PauseBtn->Enabled = false;
 		PauseBtn->Tag = 0;
 		StartBtn->Enabled = true;
-//		StopBtn->Enabled = false;
+		// StopBtn->Enabled = false;
 	}
 	if (ErrCode == -1) {
 		StatusBarHint("Ошибка: Выход за пределы ленты.");
@@ -693,7 +695,7 @@ void __fastcall TMainForm::StartBtnClick(TObject *Sender) {
 	}
 	StartBtn->Enabled = false;
 	PauseBtn->Enabled = true;
-//	StopBtn->Enabled = true;
+	// StopBtn->Enabled = true;
 	StepTimer->Enabled = true;
 	StatusBarHint("Выполнение...");
 	StepBtn->Click();
@@ -748,7 +750,7 @@ void __fastcall TMainForm::StopBtnClick(TObject *Sender) {
 	StartBtn->Enabled = true;
 	StepTimer->Enabled = false;
 	PauseBtn->Enabled = false;
-//	StopBtn->Enabled = false;
+	// StopBtn->Enabled = false;
 	machine->SetInitialState();
 	LoadTapeBtn->Click();
 	UpdTable();
@@ -781,10 +783,12 @@ void __fastcall TMainForm::N2Click(TObject *Sender) {
 	delete machine;
 	machine->Create();
 	TableGrid->Tag = 0;
+	SaveDialog->Tag = 0;
 	ProblemMemo->Clear();
 	ProblemMemo->Lines->Add("Постановка задачи");
 	CommentMemo->Clear();
 	CommentMemo->Lines->Add("Комментарий");
+	MainForm->Caption = "Машина Тьюринга";
 	UpdTape();
 	UpdTable();
 }

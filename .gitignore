@@ -29,6 +29,5 @@ Alpha/Turing.cbproj.local
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
