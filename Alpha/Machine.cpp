@@ -67,32 +67,6 @@ int Machine::Step()
 	else return 0;
 }
 
-/*int Machine::TraceProgram()
-{
-	while (true)
-	{
-		rule errRule;
-		WideChar tempChar = GetTapeChar(GetTapePosition());
-		if (tempChar == '\0') return -1;
-		rule tempRule = GetTableRule(currentState, tempChar);
-		if (tempRule == errRule)
-		{
-			currentState = 1;
-			return -2;
-		}
-
-		if (tempRule.is_breakpoint == 1) return 0;
-
-		SetTapeChar(GetTapePosition(), tempRule.symbol);
-		ShiftTape(tempRule.shift);
-		currentState = tempRule.new_state;
-		if (currentState == 0)
-		{
-			currentState = 1;
-			return 1;
-		}
-	}
-}*/
 //Установка начального состояния в машине
 void Machine::SetInitialState()
 {

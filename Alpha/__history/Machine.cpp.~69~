@@ -15,7 +15,6 @@ Machine* Machine::Create(unsigned tapLen, unsigned tabRows, unsigned tabCol)
 	mach->tap = new Tape(tapLen);
 	mach->currentState = 1;
 	mach->tapMem = NULL;
-	mach->tapMemSys = NULL;
 	return mach;
 }
 //ƒеструктор
@@ -37,6 +36,7 @@ Machine::~Machine()
 // 2 - шаг успешно завершен, следующа€ €чейка - точка останова
 int Machine::Step()
 {
+	//ѕолучение данных и проверка на ошибки
 	rule errRule;
 	WideChar tempChar = GetTapeChar(GetTapePosition());
 	if (tempChar == '\0') return -1;
@@ -50,15 +50,20 @@ int Machine::Step()
 	if (!InAlphabet(tempRule.symbol)) return -3;
 	if (tempRule.new_state < 0 || tempRule.new_state > (int)tab->table[0].size()) return -4;
 
+	//»зменение состо€ни€ и данных
 	SetTapeChar(GetTapePosition(), tempRule.symbol);
 	ShiftTape(tempRule.shift);
 	currentState = tempRule.new_state;
+
+	//обработка точки останова
+	tempChar = GetTapeChar(GetTapePosition());
+	if(IsBreakepoint(currentState, tempChar) == 1) return 2;
+
 	if (currentState == 0)
 	{
 		currentState = 1;
 		return 1;
 	}
-	if(IsBreakepoint(tempRule.symbol, tempRule.new_state) == 1) return 2;
 	else return 0;
 }
 
@@ -97,7 +102,7 @@ void Machine::SetInitialState()
 //¬озвращаемые значени€:
 //-1 - не удалось открыть файл дл€ записи
 // 0 - сохранение успешно
-int Machine::SaveProgram(UnicodeString pathToFile)
+int Machine::SaveProgram(UnicodeString pathToFile, UnicodeString Problem, UnicodeString Comment)
 {
 	std::ofstream file;
 	unsigned Rows = tab->table.size();
@@ -107,7 +112,7 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 	file.open(A.c_str());
 	if (!file.is_open()) return -1;
 
-	file << tap->tape.size() << " " << Rows << " " << Columns << "\n";
+	file << tap->tape.size() << " " << Rows << " " << Columns << " " <<Problem.Length() << " " << Comment.Length() << "\n";
 
 	//«апись ленты
 	for (unsigned i = 0; i < tap->tape.size(); i++)
@@ -144,7 +149,10 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 		}
 		file << "\n";
 	}
-
+	A=Problem;
+	file << A.c_str();
+	A=Comment;
+	file << A.c_str();
 	file.close();
 	return 0;
 }
@@ -154,7 +162,7 @@ int Machine::SaveProgram(UnicodeString pathToFile)
 //-2 - BadFile
 //-1 - не удалось открыть файл дл€ чтени€
 // 0 - сохранение успешно
-int Machine::LoadProgram(UnicodeString pathToFile){
+int Machine::LoadProgram(UnicodeString pathToFile, UnicodeString &Problem, UnicodeString &Comment){
 	std::ifstream file;
 	AnsiString A;
 	A=pathToFile;
@@ -163,11 +171,11 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 	//1 - tapLen
 	//2 - Rows
 	//3 - Columns
-	unsigned params[3] = {0};
+	unsigned params[5] = {0};
 	char buff[BUFF_SIZE];
 
 	//ѕолучение параметров ленты и таблицы
-	for (int i = 0; i < 3; i++){
+	for (int i = 0; i < 5; i++){
 		if (!file.good()) return -2;
 		file >> buff;
 		params[i] = atoi(buff);
@@ -186,8 +194,7 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 	//ѕолучение ленты
 	file.ignore();
 	if (!file.good()) return -2;
-//	file.getline(buff, BUFF_SIZE);
-//	if (strlen(buff) != params[0]) return -2;
+
 	for (unsigned i = 0; i < params[0]; i++)
 	{
 		file >> buff;
@@ -197,18 +204,19 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 
 	//ѕолучение таблицы
 	int intTemp;
-	rule tempRule;
 	for (unsigned i = 0; i < params[1]; i++)
 	{
 		if (!file.good()) return -2;
 		for (unsigned ii = 0; ii < params[2]; ii++)
 		{
+			rule tempRule;
 			if (!file.good()) return -2;
 			if (ii != 0)
 			{
 				int counter = 0;
 				do
 				{
+					buff[counter+1] = '\0';
 					file.read(buff+counter, 1);
 					counter++;
 				}while(file.peek() != ' ' && file.peek() != '>' && file.peek() != '<' && file.peek() != '.');
@@ -255,7 +263,7 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 	if (CheckTable() == -1){
 		for (unsigned i = 0; i < tab->table.size(); i++)
 		{
-			for (unsigned ii = 1; ii < tab->table.size(); ii++)
+			for (unsigned ii = 1; ii < tab->table[0].size(); ii++)
 			{
 				tab->table[i][ii] = defRule;
 			}
@@ -263,35 +271,31 @@ int Machine::LoadProgram(UnicodeString pathToFile){
 		return -3;
 	}
 
+	char *p = new char[params[3]];
+	file.read(p,params[3]-1);
+	Problem = p;
+	char* c = new char[params[4]];
+	file.read(c,params[4]-1);
+	c[params[4]-1] = '\0';
+	Comment = c;
+	delete [] p;
+	delete [] c;
 	file.close();
 	return 0;
 }
 //—охранение ленты в временное хранилище
-//isUser == U - сохранение в пользовательское хранилище
-//isUser != U - сохранение в системное хранилище
-void Machine::SaveTape(WideChar isUser)
+void Machine::SaveTape()
 {
-	if (isUser == 'U') tapMem = tap->CreateMemento();
-	else tapMemSys = tap->CreateMemento();
+	tapMem = tap->CreateMemento();
 }
-//isUser == U - загрузка из пользовательского хранилищеа
-//isUser != U - загрузка из системного хранилищеа
 //¬озвращаемые значени€:
 //-1 - не найдено хранилище(лента не разу не сохранена)
 // 0 - загрузка успешна
-int Machine::LoadTape(WideChar isUser)
+int Machine::LoadTape()
 {
-	if (isUser == 'U') {
 		if (tapMem == NULL) return -1;
 		tap->SetMemento(tapMem);
 		return 0;
-	}
-	else
-	{
-		if (tapMemSys == NULL) return -1;
-		tap->SetMemento(tapMemSys);
-		return 0;
-	}
 }
 //ѕроверка корректности таблицы
 //¬озвращаемые значени€:
