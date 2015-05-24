@@ -249,8 +249,8 @@ int Machine::LoadProgram(UnicodeString pathToFile, UnicodeString &Problem, Unico
 	file.read(p,params[3]-1);
 	Problem = p;
 	char* c = new char[params[4]];
-	file.read(c,params[4]-1);
-	c[params[4]-1] = '\0';
+	file.read(c,params[4]);
+	c[params[4]] = '\0';
 	Comment = c;
 	delete [] p;
 	delete [] c;
